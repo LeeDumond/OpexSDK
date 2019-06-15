@@ -3,7 +3,7 @@
 namespace OpexSDK
 {
     /// <summary>
-    /// This element contains all information about a MICR read. NOTE: Different OPEX products can use Magnetic readers, Optical readers, or a combination of both, when reading a MICR line. There is no indication as to which type(s) of reader was used.
+    /// Contains information about a single MICR read. NOTE: Different OPEX products can use Magnetic readers, Optical readers, or a combination of both, when reading a MICR line. There is no indication as to which type(s) of reader was used.
     /// </summary>
     public class Micr
     {
