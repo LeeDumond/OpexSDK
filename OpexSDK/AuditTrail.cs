@@ -23,7 +23,7 @@ namespace OpexSDK
         public bool Apply { get; set; }
 
         /// <summary>
-        /// The actual text string that was prepared by the system. Check the "Apply" property to determine whether or not the text was actually imprinted on the document/image.
+        /// The actual text string that was prepared by the system. Check the "Apply" property to determine whether or not the text was actually imprinted on the document/image. //todo add more detail here
         /// </summary>
         public string Text { get; set; }
     }
