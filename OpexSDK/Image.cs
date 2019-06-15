@@ -2,9 +2,19 @@
 
 namespace OpexSDK
 {
+    /// <summary>
+    /// Contains information about a single image.
+    /// </summary>
     public class Image
     {
+        /// <summary>
+        /// The index of the Image, and (on AS36xx, AS7200, DS2200 or Falcon) its corresponding snippet definition in the job used to create the batch. Values are 1-indexed. (i.e., "1" is the first index.)
+        /// </summary>
         public int Index { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public bool RescanStatus { get; set; }
         public bool? ScantimeFinalBlankAreaDecision { get; set; }
         public Side Side { get; set; }

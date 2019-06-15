@@ -1,10 +1,13 @@
 ﻿namespace OpexSDK.Enumerations
 {
+    /// <summary>
+    /// Describes the type of a page.
+    /// </summary>
     public enum PageType
     {
         BatchTicket,
         PersonalCheck,
-        BisinessCheck,
+        BusinessCheck,
         MoneyOrder,
         Stub,
         Page,
