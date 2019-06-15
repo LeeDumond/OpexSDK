@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Groups together a collection of Group elements into a logical group. A transaction is envisioned to consist of the contents of a folder of pages.

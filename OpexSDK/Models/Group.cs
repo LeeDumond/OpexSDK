@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Groups together a collection of scanned pages into a logical group. A Group typically consists of the contents of a stapled collection of pages.

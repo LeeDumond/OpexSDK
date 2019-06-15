@@ -1,4 +1,4 @@
-﻿namespace OpexSDK
+﻿namespace OpexSDK.Models
 {
     /// <summary>
     /// Information returned by the ScanLink plug-in solicit_custom_data call.

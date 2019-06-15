@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Contains information about the batch that is determined once the batch is ended or closed.

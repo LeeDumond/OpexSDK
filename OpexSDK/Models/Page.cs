@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using OpexSDK.Enumerations;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Represents a single, physical piece of paper that was scanned.

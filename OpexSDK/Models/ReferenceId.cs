@@ -1,4 +1,4 @@
-﻿namespace OpexSDK
+﻿namespace OpexSDK.Models
 {
     /// <summary>
     /// The OSD can be configured to prompt the operator for any batch or page specific information. The operator is prompted at the beginning of each job or new batch.

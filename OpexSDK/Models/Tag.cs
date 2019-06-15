@@ -1,4 +1,4 @@
-﻿namespace OpexSDK
+﻿namespace OpexSDK.Models
 {
     /// <summary>
     /// Contains tag data, which is used to mark an item in the batch for a job-specific reason. 

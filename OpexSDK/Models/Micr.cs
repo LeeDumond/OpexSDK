@@ -1,6 +1,6 @@
 ﻿using OpexSDK.Enumerations;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Contains information about a single MICR read. NOTE: Different OPEX products can use Magnetic readers, Optical readers, or a combination of both, when reading a MICR line. There is no indication as to which type(s) of reader was used.

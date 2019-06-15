@@ -1,6 +1,6 @@
 ﻿using OpexSDK.Enumerations;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Contains information about a single audit trail. Audit trails are lines of text, often containing dates, batch numbers, sequence numbers, etc. They can be physically printed onto a page (i.e., by an inkjet printer) or can be electronically embedded into an image.

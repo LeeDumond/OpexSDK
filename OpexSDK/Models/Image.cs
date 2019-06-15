@@ -1,6 +1,6 @@
 ﻿using OpexSDK.Enumerations;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Contains information about a single image.

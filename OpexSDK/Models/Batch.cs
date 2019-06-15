@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using OpexSDK.Enumerations;
 
-namespace OpexSDK
+namespace OpexSDK.Models
 {
     /// <summary>
     /// Contains data about a batch of documents scanned by an OPEX scanning device.
