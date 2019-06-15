@@ -1,6 +1,4 @@
-﻿using OpexSDK.Enumerations;
-
-namespace OpexSDK
+﻿namespace OpexSDK
 {
     /// <summary>
     /// Contains tag data, which is used to mark an item in the batch for a job-specific reason. 
