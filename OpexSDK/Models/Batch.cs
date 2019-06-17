@@ -9,6 +9,12 @@ namespace OpexSDK.Models
     /// </summary>
     public class Batch
     {
+        internal Batch()
+        {
+            ReferenceIds = new List<ReferenceId>();
+            Transactions = new List<Transaction>();
+        }
+
         /// <summary>
         /// Version number of Batch Information File structure.
         /// </summary>
@@ -97,7 +103,7 @@ namespace OpexSDK.Models
         /// <summary>
         /// One for each Transaction in the batch.
         /// </summary>
-        public ICollection<Transaction> Transactions { get; }
+        public ICollection<Transaction> Transactions { get;  }
 
         /// <summary>
         /// Contains information about the batch that is determined once the batch is closed.
