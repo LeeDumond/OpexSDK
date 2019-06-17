@@ -48,12 +48,12 @@ namespace OpexSDK.Models
         /// <summary>
         /// Type of transactions in job.
         /// </summary>
-        public JobType JobType { get; set; }
+        public JobType? JobType { get; set; }
 
         /// <summary>
         /// Operating mode of OPEX Scanning Device.
         /// </summary>
-        public OperatingMode OperatingMode { get; set; }
+        public OperatingMode? OperatingMode { get; set; }
 
         /// <summary>
         /// Name of selected job, assigned by OPEX Scanning Device. Operator does not type in this job name, but rather selects it from a list of valid jobs.

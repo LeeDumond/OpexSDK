@@ -30,8 +30,9 @@
         /// </summary>
         /// 
         MultiWithPage,
+
         /// <summary>
-        /// one or more pages
+        /// One or more pages
         /// </summary>
         PageOnly,
 
