@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using OpexSDK.Models;
 using Xunit;
@@ -26,7 +28,17 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatch_AllCollectionsInitialized()
         {
-            var reader = new BatchReader(@"C:/Opex/test.oxi");
+            string batchFileContents = "<BATCH></BATCH>";
+
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) },
+                { @"c:\demo\jQuery.js", new MockFileData("some js") },
+                { @"c:\demo\image.gif", new MockFileData(new byte[] { 0x12, 0x34, 0x56, 0xd2 }) }
+            });
+
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
             Batch batch = await reader.ReadBatch();
 

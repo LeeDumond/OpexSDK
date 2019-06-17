@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml;
 using OpexSDK.Models;
+
+[assembly: InternalsVisibleTo("OpexSDK.Tests")]
 
 namespace OpexSDK
 {
     public class BatchReader
     {
         private readonly string _batchFilePath;
+        private readonly IFileSystem _fileSystem;
 
-        public BatchReader(string batchFilePath)
+        public BatchReader(string batchFilePath) : this(batchFilePath, new FileSystem())
+        {
+        }
+
+        internal BatchReader(string batchFilePath, IFileSystem fileSystem)
         {
             if (batchFilePath == null)
             {
@@ -24,16 +33,16 @@ namespace OpexSDK
             }
 
             _batchFilePath = batchFilePath;
+            _fileSystem = fileSystem;
         }
 
         public async Task<Batch> ReadBatch()
         {
             var batch = new Batch();
 
-            FileStream stream = new FileStream(_batchFilePath, FileMode.Open, FileAccess.Read);
+            Stream stream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
 
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.Async = true;
+            XmlReaderSettings settings = new XmlReaderSettings {Async = true};
 
             using (XmlReader reader = XmlReader.Create(stream, settings))
             {

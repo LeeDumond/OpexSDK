@@ -6,4 +6,8 @@
     <Authors>Lee Dumond</Authors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.IO.Abstractions" Version="6.0.7" />
+  </ItemGroup>
+
 </Project>
