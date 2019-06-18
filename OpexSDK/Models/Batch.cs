@@ -68,17 +68,17 @@ namespace OpexSDK.Models
         /// <summary>
         /// Batch creation date and time, i.e., when batch first started. Uses date set in OPEX Scanning Device PC.
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
         /// <summary>
         /// Batch receive date. A user selectable date indicating when the batch was received. Often the same date as in StartTime.
         /// </summary>
-        public DateTime ReceiveDate { get; set; }
+        public DateTime? ReceiveDate { get; set; }
 
         /// <summary>
         /// Batch process date. A user selectable date indicating when the batch was processed. Often the same date as in StartTime.
         /// </summary>
-        public DateTime ProcessDate { get; set; }
+        public DateTime? ProcessDate { get; set; }
 
         /// <summary>
         /// Path to image files, which may or may not be the same as the location of the Batch Information File. When this property is null, it indicates that the image files are in the same folder as the Batch Information File.

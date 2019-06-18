@@ -12,9 +12,9 @@ namespace OpexSDK.Tests
     {
         private string batchFileContents = @"<?xml version=""1.0"" encoding=""utf-8""?>
 
-<BATCH FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice="""" SoftwareVersion="""" TransportId="""" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
-       OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22T23:24:07"" ReceiveDate="""" ProcessDate="""" ImageFilePath=""X:\Images\OPEX\somebatchid""
-       PluginMessage="""" DeveloperReserved=""1234-56a"">
+<BATCH FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
+       OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
+       PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"">
   <REFERENCEID Index="""" Response="""" Name="""" />
   <TRANSACTION TransactionID="""">
     <GROUP GroupID="""" />
@@ -48,7 +48,6 @@ namespace OpexSDK.Tests
         [Fact]
         public void BatchReader_EmptyPath_Throws()
         {
-
             Func<BatchReader> func = () => new BatchReader("");
 
             Assert.Throws<ArgumentException>(func);
@@ -73,7 +72,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatch_ReturnsNonNullBatch()
         {
-            //batchFileContents = "<BATCH></BATCH>";
+            batchFileContents = "<BATCH></BATCH>";
 
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -88,7 +87,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_AllCollectionsInitialized()
+        public async Task ReadBatch_CollectionsInitialized()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -125,6 +124,12 @@ namespace OpexSDK.Tests
             Assert.Equal("Lee Dumond", batch.OperatorName);
             Assert.Equal(new DateTime(2019, 3, 22, 23, 24, 07), batch.StartTime);
             Assert.Equal(OperatingMode.Modified, batch.OperatingMode);
+            Assert.Equal("XYZ Plug-in", batch.PluginMessage);
+            Assert.Equal(new DateTime(2019, 3, 22), batch.ProcessDate);
+            Assert.Equal(new DateTime(2019, 3, 21), batch.ReceiveDate);
+            Assert.Equal("AS3600i", batch.ScanDevice);
+            Assert.Equal("02.23.00.05", batch.SoftwareVersion);
+            Assert.Equal("MyTransport", batch.TransportId);
         }
 
         [Fact]
@@ -153,6 +158,17 @@ namespace OpexSDK.Tests
             Assert.Null(BatchReader.GetOperatingMode(null));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => BatchReader.GetOperatingMode("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetTimeFromAttribute_ReturnsCorrectTime()
+        {
+            Assert.Equal(new DateTime(2019, 3, 22, 23, 24, 07), BatchReader.GetTimeFromAttribute("2019-03-22 23:24:07"));
+            Assert.Equal(new DateTime(2019, 3, 22), BatchReader.GetTimeFromAttribute("2019-03-22"));
+            Assert.Null(BatchReader.GetTimeFromAttribute(""));
+            Assert.Null(BatchReader.GetTimeFromAttribute(null));
+
+            Assert.Throws<FormatException>(() => BatchReader.GetTimeFromAttribute("not_a_time"));
         }
     }
 }

@@ -68,14 +68,30 @@ namespace OpexSDK
                         batch.JobType = GetJobType(reader.GetAttribute("JobType"));
                         batch.OperatorName = reader.GetAttribute("OperatorName");
                         batch.OperatingMode = GetOperatingMode(reader.GetAttribute("OperatingMode"));
-                        batch.StartTime = XmlConvert.ToDateTime(reader.GetAttribute("StartTime") ?? throw new InvalidOperationException(), XmlDateTimeSerializationMode.Local);
-
+                        batch.StartTime = GetTimeFromAttribute(reader.GetAttribute("StartTime"));
+                        batch.PluginMessage = reader.GetAttribute("PluginMessage");
+                        batch.ProcessDate = GetTimeFromAttribute(reader.GetAttribute("ProcessDate"))?.Date;
+                        batch.ReceiveDate = GetTimeFromAttribute(reader.GetAttribute("ReceiveDate"))?.Date;
+                        batch.ScanDevice = reader.GetAttribute("ScanDevice");
+                        batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
+                        batch.TransportId = reader.GetAttribute("TransportId");
+                        
                     }
 
                 }
             }
 
             return batch;
+        }
+
+        internal static DateTime? GetTimeFromAttribute(string attributeValue)
+        {
+            if (string.IsNullOrWhiteSpace(attributeValue))
+            {
+                return null;
+            }
+
+            return XmlConvert.ToDateTime(attributeValue, new string[] { "yyyy-MM-dd HH:mm:ss" , "yyyy-MM-dd" });
         }
 
         internal static OperatingMode? GetOperatingMode(string attributeValue)
