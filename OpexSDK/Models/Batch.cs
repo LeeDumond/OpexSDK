@@ -98,7 +98,7 @@ namespace OpexSDK.Models
         /// <summary>
         /// One for each ReferenceID configured in the job.
         /// </summary>
-        public ICollection<ReferenceId> ReferenceIds { get; }
+        public IList<ReferenceId> ReferenceIds { get; }
 
         /// <summary>
         /// One for each Transaction in the batch.

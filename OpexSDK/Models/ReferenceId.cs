@@ -5,10 +5,15 @@
     /// </summary>
     public class ReferenceId
     {
+        internal ReferenceId()
+        {
+            
+        }
+
         /// <summary>
         /// The index of the ReferenceID. Values are 1-indexed. (i.e., "1" is the first index.)
         /// </summary>
-        public int Index { get; set; }
+        public int? Index { get; set; }
 
         /// <summary>
         /// Text string containing the information that the Operator entered for the given item.

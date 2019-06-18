@@ -65,77 +65,35 @@ namespace OpexSDK
                         batch.DeveloperReserved = reader.GetAttribute("DeveloperReserved");
                         batch.ImageFilePath = reader.GetAttribute("ImageFilePath");
                         batch.JobName = reader.GetAttribute("JobName");
-                        batch.JobType = GetJobType(reader.GetAttribute("JobType"));
+                        batch.JobType = Helpers.GetJobType(reader.GetAttribute("JobType"));
                         batch.OperatorName = reader.GetAttribute("OperatorName");
-                        batch.OperatingMode = GetOperatingMode(reader.GetAttribute("OperatingMode"));
-                        batch.StartTime = GetTimeFromAttribute(reader.GetAttribute("StartTime"));
+                        batch.OperatingMode = Helpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
+                        batch.StartTime = Helpers.GetTimeFromAttribute(reader.GetAttribute("StartTime"));
                         batch.PluginMessage = reader.GetAttribute("PluginMessage");
-                        batch.ProcessDate = GetTimeFromAttribute(reader.GetAttribute("ProcessDate"))?.Date;
-                        batch.ReceiveDate = GetTimeFromAttribute(reader.GetAttribute("ReceiveDate"))?.Date;
+                        batch.ProcessDate = Helpers.GetTimeFromAttribute(reader.GetAttribute("ProcessDate"))?.Date;
+                        batch.ReceiveDate = Helpers.GetTimeFromAttribute(reader.GetAttribute("ReceiveDate"))?.Date;
                         batch.ScanDevice = reader.GetAttribute("ScanDevice");
                         batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
                         batch.TransportId = reader.GetAttribute("TransportId");
-                        
+                    }
+
+                    if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
+                        reader.Name.Equals("REFERENCEID", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var referenceId = new ReferenceId
+                        {
+                            Index = Helpers.GetIntFromAttribute(reader.GetAttribute("Index")),
+                            Response = reader.GetAttribute("Response"),
+                            Name = reader.GetAttribute("Name")
+                        };
+
+                        batch.ReferenceIds.Add(referenceId);
                     }
 
                 }
             }
 
             return batch;
-        }
-
-        internal static DateTime? GetTimeFromAttribute(string attributeValue)
-        {
-            if (string.IsNullOrWhiteSpace(attributeValue))
-            {
-                return null;
-            }
-
-            return XmlConvert.ToDateTime(attributeValue, new string[] { "yyyy-MM-dd HH:mm:ss" , "yyyy-MM-dd" });
-        }
-
-        internal static OperatingMode? GetOperatingMode(string attributeValue)
-        {
-            switch (attributeValue)
-            {
-                case "MANUAL_SCAN":
-                    return OperatingMode.ManualScan;
-                case "MODIFIED":
-                    return OperatingMode.Modified;
-                case "":
-                case null:
-                    return null;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
-            }
-        }
-
-        internal static JobType? GetJobType(string attributeValue)
-        {
-            switch (attributeValue)
-            {
-                case "SINGLE":
-                    return JobType.Single;
-                case "MULTI":
-                    return JobType.Multi;
-                case "STUB_ONLY":
-                    return JobType.StubOnly;
-                case "CHECK_ONLY":
-                    return JobType.CheckOnly;
-                case "MULTI_WITH_PAGE":
-                    return JobType.MultiWithPage;
-                case "PAGE_ONLY":
-                    return JobType.PageOnly;
-                case "UNSTRUCTURED":
-                    return JobType.Unstructured;
-                case "STRUCTURED":
-                    return JobType.Structured;
-                case "":
-                case null:
-                    return null;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
-            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace OpexSDK.Tests
 <BATCH FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
        OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
        PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"">
-  <REFERENCEID Index="""" Response="""" Name="""" />
+  <REFERENCEID Index=""1"" Response=""High Priority"" Name=""Batch 1234"" />
   <TRANSACTION TransactionID="""">
     <GROUP GroupID="""" />
     <PAGE DocumentLocator="""" TransactionSequence="""" GroupSequence="""" BatchSequence="""" ScanSequence="""" ScanTime=""""
@@ -133,42 +133,22 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void GetJobType_ReturnsCorrectJobType()
+        public async Task ReadBatch_ReferenceIdsPopulated()
         {
-            Assert.Equal(JobType.Single, BatchReader.GetJobType("SINGLE"));
-            Assert.Equal(JobType.Multi, BatchReader.GetJobType("MULTI"));
-            Assert.Equal(JobType.StubOnly, BatchReader.GetJobType("STUB_ONLY"));
-            Assert.Equal(JobType.CheckOnly, BatchReader.GetJobType("CHECK_ONLY"));
-            Assert.Equal(JobType.MultiWithPage, BatchReader.GetJobType("MULTI_WITH_PAGE"));
-            Assert.Equal(JobType.PageOnly, BatchReader.GetJobType("PAGE_ONLY"));
-            Assert.Equal(JobType.Unstructured, BatchReader.GetJobType("UNSTRUCTURED"));
-            Assert.Equal(JobType.Structured, BatchReader.GetJobType("STRUCTURED"));
-            Assert.Null(BatchReader.GetJobType(""));
-            Assert.Null(BatchReader.GetJobType(null));
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+            });
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => BatchReader.GetJobType("SOME_RANDOM_STRING"));
-        }
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-        [Fact]
-        public void GetOperatingMode_ReturnsCorrectOperatingMode()
-        {
-            Assert.Equal(OperatingMode.ManualScan, BatchReader.GetOperatingMode("MANUAL_SCAN"));
-            Assert.Equal(OperatingMode.Modified, BatchReader.GetOperatingMode("MODIFIED"));
-            Assert.Null(BatchReader.GetOperatingMode(""));
-            Assert.Null(BatchReader.GetOperatingMode(null));
+            Batch batch = await reader.ReadBatch();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => BatchReader.GetOperatingMode("SOME_RANDOM_STRING"));
-        }
+            Assert.Equal(1, batch.ReferenceIds.Count);
 
-        [Fact]
-        public void GetTimeFromAttribute_ReturnsCorrectTime()
-        {
-            Assert.Equal(new DateTime(2019, 3, 22, 23, 24, 07), BatchReader.GetTimeFromAttribute("2019-03-22 23:24:07"));
-            Assert.Equal(new DateTime(2019, 3, 22), BatchReader.GetTimeFromAttribute("2019-03-22"));
-            Assert.Null(BatchReader.GetTimeFromAttribute(""));
-            Assert.Null(BatchReader.GetTimeFromAttribute(null));
-
-            Assert.Throws<FormatException>(() => BatchReader.GetTimeFromAttribute("not_a_time"));
+            Assert.Equal(1, batch.ReferenceIds[0].Index);
+            Assert.Equal("High Priority", batch.ReferenceIds[0].Response);
+            Assert.Equal("Batch 1234", batch.ReferenceIds[0].Name);
         }
     }
 }
