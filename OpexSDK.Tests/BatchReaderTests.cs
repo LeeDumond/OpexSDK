@@ -13,29 +13,40 @@ namespace OpexSDK.Tests
         private string batchFileContents = @"<?xml version=""1.0"" encoding=""utf-8""?>
 
 <BATCH FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
-       OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
-       PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"">
-  <REFERENCEID Index=""1"" Response=""High Priority"" Name=""Batch 1234"" />
-  <REFERENCEID Index=""2"" Response=""Normal Priority"" Name=""Batch 5678"" />
-  <TRANSACTION TransactionID="""">
-    <GROUP GroupID="""" />
-    <PAGE DocumentLocator="""" TransactionSequence="""" GroupSequence="""" BatchSequence="""" ScanSequence="""" ScanTime=""""
-          ItemStatus="""" IsVirtual="""" PageType="""" PageName="""" SubPageName="""" OperatorSelect="""" EnvelopeDetect=""""
-          AverageThickness="""" SkewDegrees="""" DeskewStatus="""" FrontStreakDetectStatus="""" BackStreakDetectStatus=""""
-          PlugInPageMessage="""">
-      <IMAGE Index="""" RescanStatus="""" ScantimeFinalBlankAreaDecision="""" Side="""" Type="""" Depth="""" Format="""" FileName=""""
-             FileSize="""" Lenght="""" Height="""" OffsetLength="""" OffsetHeight="""" ResolutionLength="""" ResolutionHeight="""">
-      </IMAGE>
-      <CUSTOMDATA Entry="""" />
-      <MICR Status="""" RtStatus="""" CheckType="""" Side="""" Value="""" />
-      <OCR Index="""" Side="""" Value="""" Name="""" />
-      <BARCODE Index="""" Type="""" Side="""" Value="""" />
-      <MARKDETECT Index="""" Side="""" Result="""" Name="""" />
-      <AUDITTRAIL Index="""" Side="""" Apply="""" Text="""" />
-      <TAG Source="""" Value="""" />
-    </PAGE>
-  </TRANSACTION>
-  <ENDINFO EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" />
+   OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
+   PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"">
+    <REFERENCEID Index=""1"" Response=""High Priority"" Name=""Batch 1234"" />
+    <REFERENCEID Index=""2"" Response=""Normal Priority"" Name=""Batch 5678"" />
+    <TRANSACTION TransactionID=""3141"">
+        <GROUP GroupID=""98"">
+            <PAGE DocumentLocator=""1"" TransactionSequence="""" GroupSequence="""" BatchSequence="""" ScanSequence="""" ScanTime=""""
+              ItemStatus="""" IsVirtual="""" PageType="""" PageName="""" SubPageName="""" OperatorSelect="""" EnvelopeDetect=""""
+              AverageThickness="""" SkewDegrees="""" DeskewStatus="""" FrontStreakDetectStatus="""" BackStreakDetectStatus=""""
+              PlugInPageMessage="""">
+                <IMAGE Index="""" RescanStatus="""" ScantimeFinalBlankAreaDecision="""" Side="""" Type="""" Depth="""" Format="""" FileName=""""
+                     FileSize="""" Lenght="""" Height="""" OffsetLength="""" OffsetHeight="""" ResolutionLength="""" ResolutionHeight="""">
+                </IMAGE>
+                <CUSTOMDATA Entry="""" />
+                <MICR Status="""" RtStatus="""" CheckType="""" Side="""" Value="""" />
+                <OCR Index="""" Side="""" Value="""" Name="""" />
+                <BARCODE Index="""" Type="""" Side="""" Value="""" />
+                <MARKDETECT Index="""" Side="""" Result="""" Name="""" />
+                <AUDITTRAIL Index="""" Side="""" Apply="""" Text="""" />
+                <TAG Source="""" Value="""" />
+            </PAGE>
+            <PAGE DocumentLocator=""2"">
+            </PAGE>
+        </GROUP>
+        <GROUP GroupID=""108"">
+            <PAGE DocumentLocator=""3"">
+            </PAGE>
+        </GROUP>
+    </TRANSACTION>
+    <TRANSACTION TransactionID=""3152"">
+        <GROUP GroupID=""125"">
+        </GROUP>
+    </TRANSACTION>
+    <ENDINFO EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" />
 </BATCH>";
 
         [Fact]
@@ -154,6 +165,97 @@ namespace OpexSDK.Tests
             Assert.Equal(2, batch.ReferenceIds[1].Index);
             Assert.Equal("Normal Priority", batch.ReferenceIds[1].Response);
             Assert.Equal("Batch 5678", batch.ReferenceIds[1].Name);
+        }
+
+        [Fact]
+        public async Task ReadBatch_TransactionsPopulated()
+        {
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+            });
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+
+            Batch batch = await reader.ReadBatch();
+
+            Assert.Equal(2, batch.Transactions.Count);
+
+            Assert.Equal(3141, batch.Transactions[0].TransactionId);
+            Assert.NotNull(batch.Transactions[0].Groups);
+
+            Assert.Equal(3152, batch.Transactions[1].TransactionId);
+            Assert.NotNull(batch.Transactions[1].Groups);
+        }
+
+        [Fact]
+        public async Task ReadBatch_GroupsPopulated()
+        {
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+            });
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+
+            Batch batch = await reader.ReadBatch();
+
+            Assert.Equal(2, batch.Transactions[0].Groups.Count);
+
+            Assert.Equal(98, batch.Transactions[0].Groups[0].GroupId);
+            Assert.Equal(108, batch.Transactions[0].Groups[1].GroupId);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages);
+
+            Assert.Equal(1, batch.Transactions[1].Groups.Count);
+
+            Assert.Equal(125, batch.Transactions[1].Groups[0].GroupId);
+            Assert.NotNull(batch.Transactions[1].Groups[0].Pages);
+        }
+
+        [Fact]
+        public async Task ReadBatch_PagesPopulated()
+        {
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+            });
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+
+            Batch batch = await reader.ReadBatch();
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages.Count);
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].DocumentLocator);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].AuditTrails);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Barcodes);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Images);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].MarkDetects);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Micrs);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Ocrs);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].ReferenceIds);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Tags);
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].DocumentLocator);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].AuditTrails);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Barcodes);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Images);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].MarkDetects);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Micrs);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Ocrs);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].ReferenceIds);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
+
+            Assert.Equal(3, batch.Transactions[0].Groups[1].Pages[0].DocumentLocator);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].AuditTrails);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Barcodes);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Images);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].MarkDetects);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Micrs);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Ocrs);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].ReferenceIds);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
         }
 
         [Fact]

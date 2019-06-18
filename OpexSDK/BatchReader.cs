@@ -56,7 +56,8 @@ namespace OpexSDK
             {
                 while (await reader.ReadAsync())
                 {
-                    if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("BATCH", StringComparison.InvariantCultureIgnoreCase))
+                    if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
+                        reader.Name.Equals("BATCH", StringComparison.InvariantCultureIgnoreCase))
                     {
                         // this is the batch element
                         batch.BaseMachine = reader.GetAttribute("BaseMachine");
@@ -105,6 +106,82 @@ namespace OpexSDK
                         batch.EndInfo = endInfo;
                     }
 
+                    if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
+                        reader.Name.Equals("TRANSACTION", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var transaction = new Transaction
+                        {
+                            TransactionId = Helpers.GetIntFromAttribute(reader.GetAttribute("TransactionID"))
+                        };
+
+                        //if (reader.ReadToDescendant("GROUP"))
+                        //{
+                        //    var group = new Group
+                        //    {
+                        //        GroupId = Helpers.GetIntFromAttribute(reader.GetAttribute("GroupID"))
+                        //    };
+
+                        //    if (reader.ReadToDescendant("PAGE"))
+                        //    {
+                        //        var page = new Page
+                        //        {
+                        //            DocumentLocator =
+                        //                Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
+                        //        };
+
+                        //        group.Pages.Add(page);
+                        //    }
+
+                        //    while (reader.ReadToNextSibling("PAGE"))
+                        //    {
+                        //        var nextPage = new Page
+                        //        {
+                        //            DocumentLocator =
+                        //                Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
+                        //        };
+
+                        //        group.Pages.Add(nextPage);
+
+                        //    }
+
+                        //    transaction.Groups.Add(group);
+
+                        //    while (reader.ReadToNextSibling("GROUP"))
+                        //    {
+                        //        var nextGroup = new Group
+                        //        {
+                        //            GroupId = Helpers.GetIntFromAttribute(reader.GetAttribute("GroupID"))
+                        //        };
+
+                        //        if (reader.ReadToDescendant("PAGE"))
+                        //        {
+                        //            var page = new Page
+                        //            {
+                        //                DocumentLocator =
+                        //                    Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
+                        //            };
+
+                        //            nextGroup.Pages.Add(page);
+                        //        }
+
+                        //        while (reader.ReadToNextSibling("PAGE"))
+                        //        {
+                        //            var nextPage = new Page
+                        //            {
+                        //                DocumentLocator =
+                        //                    Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
+                        //            };
+
+                        //            nextGroup.Pages.Add(nextPage);
+
+                        //        }
+
+                        //        transaction.Groups.Add(nextGroup);
+                        //    }
+                        //}
+
+                        batch.Transactions.Add(transaction);
+                    }
                 }
             }
 

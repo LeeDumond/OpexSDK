@@ -103,7 +103,7 @@ namespace OpexSDK.Models
         /// <summary>
         /// One for each Transaction in the batch.
         /// </summary>
-        public ICollection<Transaction> Transactions { get;  }
+        public IList<Transaction> Transactions { get;  }
 
         /// <summary>
         /// Contains information about the batch that is determined once the batch is closed.
