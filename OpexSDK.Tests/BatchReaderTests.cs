@@ -16,6 +16,7 @@ namespace OpexSDK.Tests
        OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
        PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"">
   <REFERENCEID Index=""1"" Response=""High Priority"" Name=""Batch 1234"" />
+  <REFERENCEID Index=""2"" Response=""Normal Priority"" Name=""Batch 5678"" />
   <TRANSACTION TransactionID="""">
     <GROUP GroupID="""" />
     <PAGE DocumentLocator="""" TransactionSequence="""" GroupSequence="""" BatchSequence="""" ScanSequence="""" ScanTime=""""
@@ -34,7 +35,7 @@ namespace OpexSDK.Tests
       <TAG Source="""" Value="""" />
     </PAGE>
   </TRANSACTION>
-  <ENDINFO EndTime="""" NumPages="""" NumGroups="""" NumTransactions="""" IsModified="""" />
+  <ENDINFO EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" />
 </BATCH>";
 
         [Fact]
@@ -144,11 +145,34 @@ namespace OpexSDK.Tests
 
             Batch batch = await reader.ReadBatch();
 
-            Assert.Equal(1, batch.ReferenceIds.Count);
+            Assert.Equal(2, batch.ReferenceIds.Count);
 
             Assert.Equal(1, batch.ReferenceIds[0].Index);
             Assert.Equal("High Priority", batch.ReferenceIds[0].Response);
             Assert.Equal("Batch 1234", batch.ReferenceIds[0].Name);
+
+            Assert.Equal(2, batch.ReferenceIds[1].Index);
+            Assert.Equal("Normal Priority", batch.ReferenceIds[1].Response);
+            Assert.Equal("Batch 5678", batch.ReferenceIds[1].Name);
+        }
+
+        [Fact]
+        public async Task ReadBatch_EndInfoPopulated()
+        {
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+            });
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+
+            Batch batch = await reader.ReadBatch();
+
+            Assert.Equal(new DateTime(2019, 3, 22, 23, 32, 45), batch.EndInfo.EndTime);
+            Assert.Equal(4, batch.EndInfo.NumPages);
+            Assert.Equal(2, batch.EndInfo.NumGroups);
+            Assert.Equal(2, batch.EndInfo.NumTransactions);
+            Assert.False(batch.EndInfo.IsModified);
         }
     }
 }

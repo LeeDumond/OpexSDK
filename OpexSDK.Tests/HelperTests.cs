@@ -55,5 +55,16 @@ namespace OpexSDK.Tests
 
             Assert.Throws<FormatException>(() => Helpers.GetIntFromAttribute("not_an_int"));
         }
+
+        [Fact]
+        public void GetBooleanFromAttribute_ReturnsCorrectBoolean()
+        {
+            Assert.True(Helpers.GetBooleanFromAttribute("TRUE"));
+            Assert.False(Helpers.GetBooleanFromAttribute("FALSE"));
+            Assert.Null(Helpers.GetIntFromAttribute(""));
+            Assert.Null(Helpers.GetIntFromAttribute(null));
+
+            Assert.Throws<FormatException>(() => Helpers.GetBooleanFromAttribute("not_a bool"));
+        }
     }
 }

@@ -108,6 +108,6 @@ namespace OpexSDK.Models
         /// <summary>
         /// Contains information about the batch that is determined once the batch is closed.
         /// </summary>
-        public EndInfo EndInfo { get; }
+        public EndInfo EndInfo { get; internal set; }
     }
 }

@@ -90,6 +90,21 @@ namespace OpexSDK
                         batch.ReferenceIds.Add(referenceId);
                     }
 
+                    if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
+                        reader.Name.Equals("ENDINFO", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var endInfo = new EndInfo
+                        {
+                            EndTime = Helpers.GetTimeFromAttribute(reader.GetAttribute("EndTime")),
+                            NumPages = Helpers.GetIntFromAttribute(reader.GetAttribute("NumPages")),
+                            NumGroups = Helpers.GetIntFromAttribute(reader.GetAttribute("NumGroups")),
+                            NumTransactions = Helpers.GetIntFromAttribute(reader.GetAttribute("NumTransactions")),
+                            IsModified = Helpers.GetBooleanFromAttribute(reader.GetAttribute("IsModified"))
+                        };
+
+                        batch.EndInfo = endInfo;
+                    }
+
                 }
             }
 

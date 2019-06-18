@@ -72,5 +72,15 @@ namespace OpexSDK
                     throw new ArgumentOutOfRangeException(nameof(attributeValue));
             }
         }
+
+        public static bool? GetBooleanFromAttribute(string attributeValue)
+        {
+            if (string.IsNullOrWhiteSpace(attributeValue))
+            {
+                return null;
+            }
+
+            return Convert.ToBoolean(attributeValue);
+        }
     }
 }
