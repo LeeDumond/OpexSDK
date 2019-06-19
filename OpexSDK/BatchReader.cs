@@ -114,88 +114,46 @@ namespace OpexSDK
                             TransactionId = Helpers.GetIntFromAttribute(reader.GetAttribute("TransactionID"))
                         };
 
-                        using (XmlReader subReader = reader.ReadSubtree())
+                        using (XmlReader groupReader = reader.ReadSubtree())
                         {
-                            while (await subReader.ReadAsync())
+                            while (await groupReader.ReadAsync())
                             {
-                                if (await subReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                    subReader.Name.Equals("GROUP", StringComparison.InvariantCultureIgnoreCase))
+                                if (await groupReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                    groupReader.Name.Equals("GROUP", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     var group = new Group
                                     {
                                         GroupId = Helpers.GetIntFromAttribute(reader.GetAttribute("GroupID"))
                                     };
 
+
+                                    using (XmlReader pageReader = groupReader.ReadSubtree())
+                                    {
+                                        while (await pageReader.ReadAsync())
+                                        {
+                                            if (await pageReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                pageReader.Name.Equals("PAGE",
+                                                    StringComparison.InvariantCultureIgnoreCase))
+                                            {
+                                                var page = new Page()
+                                                {
+                                                    DocumentLocator =
+                                                        Helpers.GetIntFromAttribute(
+                                                            reader.GetAttribute("DocumentLocator"))
+                                                };
+
+                                                group.Pages.Add(page);
+                                            }
+                                        }
+                                    }
+
+
+
                                     transaction.Groups.Add(group);
                                 }
                             }
                         }
 
-                        //if (reader.ReadToDescendant("GROUP"))
-                        //{
-                        //    var group = new Group
-                        //    {
-                        //        GroupId = Helpers.GetIntFromAttribute(reader.GetAttribute("GroupID"))
-                        //    };
-
-                        //    if (reader.ReadToDescendant("PAGE"))
-                        //    {
-                        //        var page = new Page
-                        //        {
-                        //            DocumentLocator =
-                        //                Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
-                        //        };
-
-                        //        group.Pages.Add(page);
-                        //    }
-
-                        //    while (reader.ReadToNextSibling("PAGE"))
-                        //    {
-                        //        var nextPage = new Page
-                        //        {
-                        //            DocumentLocator =
-                        //                Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
-                        //        };
-
-                        //        group.Pages.Add(nextPage);
-
-                        //    }
-
-                        //    transaction.Groups.Add(group);
-
-                        //    while (reader.ReadToNextSibling("GROUP"))
-                        //    {
-                        //        var nextGroup = new Group
-                        //        {
-                        //            GroupId = Helpers.GetIntFromAttribute(reader.GetAttribute("GroupID"))
-                        //        };
-
-                        //        if (reader.ReadToDescendant("PAGE"))
-                        //        {
-                        //            var page = new Page
-                        //            {
-                        //                DocumentLocator =
-                        //                    Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
-                        //            };
-
-                        //            nextGroup.Pages.Add(page);
-                        //        }
-
-                        //        while (reader.ReadToNextSibling("PAGE"))
-                        //        {
-                        //            var nextPage = new Page
-                        //            {
-                        //                DocumentLocator =
-                        //                    Helpers.GetIntFromAttribute(reader.GetAttribute("DocumentLocator"))
-                        //            };
-
-                        //            nextGroup.Pages.Add(nextPage);
-
-                        //        }
-
-                        //        transaction.Groups.Add(nextGroup);
-                        //    }
-                        //}
 
                         batch.Transactions.Add(transaction);
                     }
