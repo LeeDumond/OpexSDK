@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Xml;
 using OpexSDK.Enumerations;
 
@@ -19,7 +20,7 @@ namespace OpexSDK
             return XmlConvert.ToDateTime(attributeValue, new string[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" });
         }
 
-        public static int? GetIntFromAttribute(string attributeValue)
+        internal static int? GetIntFromAttribute(string attributeValue)
         {
             if (string.IsNullOrWhiteSpace(attributeValue))
             {
@@ -73,7 +74,7 @@ namespace OpexSDK
             }
         }
 
-        public static bool? GetBooleanFromAttribute(string attributeValue)
+        internal static bool? GetBooleanFromTrueFalseAttribute(string attributeValue)
         {
             if (string.IsNullOrWhiteSpace(attributeValue))
             {
@@ -82,5 +83,97 @@ namespace OpexSDK
 
             return Convert.ToBoolean(attributeValue);
         }
+
+        internal static bool? GetBooleanFromYesNoAttribute(string attributeValue)
+        {
+            if (string.IsNullOrWhiteSpace(attributeValue))
+            {
+                return null;
+            }
+
+            if (attributeValue.Equals("yes", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return true;
+            }
+
+            if (attributeValue.Equals("no", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+
+            if (attributeValue.Equals("inactive", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
+            }
+
+            throw new FormatException("Value must be yes or no.");
+        }
+
+        internal static ItemStatus? GetItemStatus(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "VALID":
+                    return ItemStatus.Valid;
+                case "VOID":
+                    return ItemStatus.Void;
+                case "VOID MARKED":
+                    return ItemStatus.VoidMarked;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
+
+        internal static PageType? GetPageTypeFromAttribute(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "BATCH_TICKET":
+                    return PageType.BatchTicket;
+                case "PERSONAL_CHECK":
+                    return PageType.PersonalCheck;
+                case "BUSINESS_CHECK":
+                    return PageType.BusinessCheck;
+                case "MONEY_ORDER":
+                    return PageType.MoneyOrder;
+                case "STUB":
+                    return PageType.Stub;
+                case "PAGE":
+                    return PageType.Page;
+                case "ENVELOPE":
+                    return PageType.Envelope;
+                case "CHECK_LIST":
+                    return PageType.CheckList;
+                case "CASH":
+                    return PageType.Cash;
+                case "CUSTOM_PAGE1":
+                    return PageType.CustomPage1;
+                case "CUSTOM_PAGE2":
+                    return PageType.CustomPage2;
+                case "CUSTOM_PAGE3":
+                    return PageType.CustomPage3;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
+
+        internal static float? GetFloatFromAttribute(string attributeValue)
+        {
+            if (string.IsNullOrWhiteSpace(attributeValue))
+            {
+                return null;
+            }
+
+            return Convert.ToSingle(attributeValue);
+        }
+
+ 
+        
     }
 }

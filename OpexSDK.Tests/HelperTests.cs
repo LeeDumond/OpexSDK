@@ -36,6 +36,40 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetItemStatus_ReturnsCorrectItemStatus()
+        {
+            Assert.Equal(ItemStatus.Valid, Helpers.GetItemStatus("VALID"));
+            Assert.Equal(ItemStatus.Void, Helpers.GetItemStatus("VOID"));
+            Assert.Equal(ItemStatus.VoidMarked, Helpers.GetItemStatus("VOID MARKED"));
+            Assert.Null(Helpers.GetItemStatus(""));
+            Assert.Null(Helpers.GetItemStatus(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetItemStatus("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetPageType_ReturnsCorrectPageType()
+        {
+            Assert.Equal(PageType.BatchTicket, Helpers.GetPageTypeFromAttribute("BATCH_TICKET"));
+            Assert.Equal(PageType.PersonalCheck, Helpers.GetPageTypeFromAttribute("PERSONAL_CHECK"));
+            Assert.Equal(PageType.BusinessCheck, Helpers.GetPageTypeFromAttribute("BUSINESS_CHECK"));
+            Assert.Equal(PageType.MoneyOrder, Helpers.GetPageTypeFromAttribute("MONEY_ORDER"));
+            Assert.Equal(PageType.Stub, Helpers.GetPageTypeFromAttribute("STUB"));
+            Assert.Equal(PageType.Page, Helpers.GetPageTypeFromAttribute("PAGE"));
+            Assert.Equal(PageType.Envelope, Helpers.GetPageTypeFromAttribute("ENVELOPE"));
+            Assert.Equal(PageType.CheckList, Helpers.GetPageTypeFromAttribute("CHECK_LIST"));
+            Assert.Equal(PageType.Cash, Helpers.GetPageTypeFromAttribute("CASH"));
+            Assert.Equal(PageType.CustomPage1, Helpers.GetPageTypeFromAttribute("CUSTOM_PAGE1"));
+            Assert.Equal(PageType.CustomPage2, Helpers.GetPageTypeFromAttribute("CUSTOM_PAGE2"));
+            Assert.Equal(PageType.CustomPage3, Helpers.GetPageTypeFromAttribute("CUSTOM_PAGE3"));
+            
+            Assert.Null(Helpers.GetPageTypeFromAttribute(""));
+            Assert.Null(Helpers.GetPageTypeFromAttribute(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetPageTypeFromAttribute("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
         public void GetTimeFromAttribute_ReturnsCorrectTime()
         {
             Assert.Equal(new DateTime(2019, 3, 22, 23, 24, 07), Helpers.GetTimeFromAttribute("2019-03-22 23:24:07"));
@@ -57,14 +91,44 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void GetBooleanFromAttribute_ReturnsCorrectBoolean()
+        public void GetFloatFromAttribute_ReturnsCorrectFloat()
         {
-            Assert.True(Helpers.GetBooleanFromAttribute("TRUE"));
-            Assert.False(Helpers.GetBooleanFromAttribute("FALSE"));
-            Assert.Null(Helpers.GetIntFromAttribute(""));
-            Assert.Null(Helpers.GetIntFromAttribute(null));
+            Assert.Equal(12345, Helpers.GetFloatFromAttribute("12345"));
+            Assert.Equal(123.45f, Helpers.GetFloatFromAttribute("123.45"));
+            Assert.Equal(-123.45f, Helpers.GetFloatFromAttribute("-123.45"));
+            Assert.Equal(0.45f, Helpers.GetFloatFromAttribute("0.45"));
+            Assert.Equal(0.45f, Helpers.GetFloatFromAttribute(".45"));
+            Assert.Equal(-0.45f, Helpers.GetFloatFromAttribute("-0.45"));
+            Assert.Equal(-0.45f, Helpers.GetFloatFromAttribute("-.45"));
+            Assert.Null(Helpers.GetFloatFromAttribute(""));
+            Assert.Null(Helpers.GetFloatFromAttribute(null));
 
-            Assert.Throws<FormatException>(() => Helpers.GetBooleanFromAttribute("not_a bool"));
+            Assert.Throws<FormatException>(() => Helpers.GetFloatFromAttribute("not_a_float"));
         }
+
+        [Fact]
+        public void GetBooleanFromTrueFalseAttribute_ReturnsCorrectBoolean()
+        {
+            Assert.True(Helpers.GetBooleanFromTrueFalseAttribute("TRUE"));
+            Assert.False(Helpers.GetBooleanFromTrueFalseAttribute("FALSE"));
+            Assert.Null(Helpers.GetBooleanFromTrueFalseAttribute(""));
+            Assert.Null(Helpers.GetBooleanFromTrueFalseAttribute(null));
+
+            Assert.Throws<FormatException>(() => Helpers.GetBooleanFromTrueFalseAttribute("not_a_bool"));
+        }
+
+        [Fact]
+        public void GetBooleanFromYesNoAttribute_ReturnsCorrectBoolean()
+        {
+            Assert.True(Helpers.GetBooleanFromYesNoAttribute("YES"));
+            Assert.False(Helpers.GetBooleanFromYesNoAttribute("NO"));
+            Assert.Null(Helpers.GetBooleanFromYesNoAttribute("INACTIVE"));
+            Assert.Null(Helpers.GetBooleanFromYesNoAttribute(""));
+            Assert.Null(Helpers.GetBooleanFromYesNoAttribute(null));
+
+            Assert.Throws<FormatException>(() => Helpers.GetBooleanFromYesNoAttribute("not_a_yes_or_no"));
+        }
+
+
     }
 }

@@ -19,10 +19,10 @@ namespace OpexSDK.Tests
     <REFERENCEID Index=""2"" Response=""Normal Priority"" Name=""Batch 5678"" />
     <TRANSACTION TransactionID=""3141"">
         <GROUP GroupID=""98"">
-            <PAGE DocumentLocator=""1"" TransactionSequence="""" GroupSequence="""" BatchSequence="""" ScanSequence="""" ScanTime=""""
-              ItemStatus="""" IsVirtual="""" PageType="""" PageName="""" SubPageName="""" OperatorSelect="""" EnvelopeDetect=""""
-              AverageThickness="""" SkewDegrees="""" DeskewStatus="""" FrontStreakDetectStatus="""" BackStreakDetectStatus=""""
-              PlugInPageMessage="""">
+            <PAGE DocumentLocator=""1"" TransactionSequence=""1"" GroupSequence=""1"" BatchSequence=""1"" ScanSequence=""4"" ScanTime=""2019-03-22 23:25:11""
+              ItemStatus=""VALID"" IsVirtual=""NO"" PageType=""PAGE"" PageName=""Invoice"" SubPageName=""Signature"" OperatorSelect=""NO"" Bin=""MyBin"" Length=""20.32 CM"" 
+              Height=""11.00 IN"" EnvelopeDetect=""INACTIVE"" AverageThickness=""1.11"" SkewDegrees=""-0.12"" DeskewStatus=""YES"" FrontStreakDetectStatus=""NO"" 
+              BackStreakDetectStatus=""YES"" PlugInPageMessage=""Queue 3"">
                 <IMAGE Index="""" RescanStatus="""" ScantimeFinalBlankAreaDecision="""" Side="""" Type="""" Depth="""" Format="""" FileName=""""
                      FileSize="""" Lenght="""" Height="""" OffsetLength="""" OffsetHeight="""" ResolutionLength="""" ResolutionHeight="""">
                 </IMAGE>
@@ -34,7 +34,10 @@ namespace OpexSDK.Tests
                 <AUDITTRAIL Index="""" Side="""" Apply="""" Text="""" />
                 <TAG Source="""" Value="""" />
             </PAGE>
-            <PAGE DocumentLocator=""2"">
+            <PAGE DocumentLocator=""2"" TransactionSequence=""2"" GroupSequence=""2"" BatchSequence=""2"" ScanSequence=""5"" ScanTime=""2019-03-22 23:25:18""
+              ItemStatus=""VOID"" IsVirtual=""YES"" PageType=""CUSTOM_PAGE1"" PageName=""Affidavit"" SubPageName=""Notarization"" OperatorSelect=""YES"" Bin=""MyBin2"" Length=""8.500 IN"" 
+              Height=""27.94 CM"" EnvelopeDetect=""YES"" AverageThickness=""1.35"" SkewDegrees=""13.2"" DeskewStatus=""NO"" FrontStreakDetectStatus=""YES"" 
+              BackStreakDetectStatus=""INACTIVE"" PlugInPageMessage=""Queue 4"">
             </PAGE>
         </GROUP>
         <GROUP GroupID=""108"">
@@ -228,6 +231,27 @@ namespace OpexSDK.Tests
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages.Count);
 
             Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].DocumentLocator);
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].BatchSequence);
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].TransactionSequence);
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].GroupSequence);
+            Assert.Equal(4, batch.Transactions[0].Groups[0].Pages[0].ScanSequence);
+            Assert.Equal(new DateTime(2019, 3, 22, 23, 25, 11), batch.Transactions[0].Groups[0].Pages[0].ScanTime);
+            Assert.Equal(ItemStatus.Valid, batch.Transactions[0].Groups[0].Pages[0].ItemStatus);
+            Assert.False(batch.Transactions[0].Groups[0].Pages[0].IsVirtual);
+            Assert.Equal(PageType.Page, batch.Transactions[0].Groups[0].Pages[0].PageType);
+            Assert.Equal("Invoice", batch.Transactions[0].Groups[0].Pages[0].PageName);
+            Assert.Equal("Signature", batch.Transactions[0].Groups[0].Pages[0].SubPageName);
+            Assert.False(batch.Transactions[0].Groups[0].Pages[0].OperatorSelect);
+            Assert.Equal("MyBin", batch.Transactions[0].Groups[0].Pages[0].Bin);
+            Assert.Equal("20.32 CM", batch.Transactions[0].Groups[0].Pages[0].Length);
+            Assert.Equal("11.00 IN", batch.Transactions[0].Groups[0].Pages[0].Height);
+            Assert.Null(batch.Transactions[0].Groups[0].Pages[0].EnvelopeDetect);
+            Assert.Equal(1.11f, batch.Transactions[0].Groups[0].Pages[0].AverageThickness);
+            Assert.Equal(-0.12f, batch.Transactions[0].Groups[0].Pages[0].SkewDegrees);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[0].DeskewStatus);
+            Assert.False(batch.Transactions[0].Groups[0].Pages[0].FrontStreakDetectStatus);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[0].BackStreakDetectStatus);
+            Assert.Equal("Queue 3", batch.Transactions[0].Groups[0].Pages[0].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Barcodes);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Images);
@@ -238,6 +262,27 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Tags);
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].DocumentLocator);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].BatchSequence);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].TransactionSequence);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].GroupSequence);
+            Assert.Equal(5, batch.Transactions[0].Groups[0].Pages[1].ScanSequence);
+            Assert.Equal(new DateTime(2019, 3, 22, 23, 25, 18), batch.Transactions[0].Groups[0].Pages[1].ScanTime);
+            Assert.Equal(ItemStatus.Void, batch.Transactions[0].Groups[0].Pages[1].ItemStatus);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[1].IsVirtual);
+            Assert.Equal(PageType.CustomPage1, batch.Transactions[0].Groups[0].Pages[1].PageType);
+            Assert.Equal("Affidavit", batch.Transactions[0].Groups[0].Pages[1].PageName);
+            Assert.Equal("Notarization", batch.Transactions[0].Groups[0].Pages[1].SubPageName);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[1].OperatorSelect);
+            Assert.Equal("MyBin2", batch.Transactions[0].Groups[0].Pages[1].Bin);
+            Assert.Equal("8.500 IN", batch.Transactions[0].Groups[0].Pages[1].Length);
+            Assert.Equal("27.94 CM", batch.Transactions[0].Groups[0].Pages[1].Height);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[1].EnvelopeDetect);
+            Assert.Equal(1.35f, batch.Transactions[0].Groups[0].Pages[1].AverageThickness);
+            Assert.Equal(13.2f, batch.Transactions[0].Groups[0].Pages[1].SkewDegrees);
+            Assert.False(batch.Transactions[0].Groups[0].Pages[1].DeskewStatus);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[1].FrontStreakDetectStatus);
+            Assert.Null(batch.Transactions[0].Groups[0].Pages[1].BackStreakDetectStatus);
+            Assert.Equal("Queue 4", batch.Transactions[0].Groups[0].Pages[1].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Barcodes);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Images);
@@ -247,15 +292,15 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
 
-            Assert.Equal(3, batch.Transactions[0].Groups[1].Pages[0].DocumentLocator);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].AuditTrails);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Barcodes);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Images);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].MarkDetects);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Micrs);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Ocrs);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].ReferenceIds);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
+            
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].AuditTrails);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Barcodes);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Images);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].MarkDetects);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Micrs);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Ocrs);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].ReferenceIds);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Tags);
         }
 
         [Fact]

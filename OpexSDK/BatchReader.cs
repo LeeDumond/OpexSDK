@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml;
-using OpexSDK.Enumerations;
 using OpexSDK.Models;
 
 [assembly: InternalsVisibleTo("OpexSDK.Tests")]
@@ -100,7 +98,7 @@ namespace OpexSDK
                             NumPages = Helpers.GetIntFromAttribute(reader.GetAttribute("NumPages")),
                             NumGroups = Helpers.GetIntFromAttribute(reader.GetAttribute("NumGroups")),
                             NumTransactions = Helpers.GetIntFromAttribute(reader.GetAttribute("NumTransactions")),
-                            IsModified = Helpers.GetBooleanFromAttribute(reader.GetAttribute("IsModified"))
+                            IsModified = Helpers.GetBooleanFromTrueFalseAttribute(reader.GetAttribute("IsModified"))
                         };
 
                         batch.EndInfo = endInfo;
@@ -123,7 +121,7 @@ namespace OpexSDK
                                 {
                                     var group = new Group
                                     {
-                                        GroupId = Helpers.GetIntFromAttribute(reader.GetAttribute("GroupID"))
+                                        GroupId = Helpers.GetIntFromAttribute(groupReader.GetAttribute("GroupID"))
                                     };
 
 
@@ -135,11 +133,36 @@ namespace OpexSDK
                                                 pageReader.Name.Equals("PAGE",
                                                     StringComparison.InvariantCultureIgnoreCase))
                                             {
-                                                var page = new Page()
+                                                var page = new Page
                                                 {
                                                     DocumentLocator =
                                                         Helpers.GetIntFromAttribute(
-                                                            reader.GetAttribute("DocumentLocator"))
+                                                            pageReader.GetAttribute("DocumentLocator")),
+                                                    BatchSequence = Helpers.GetIntFromAttribute(
+                                                        pageReader.GetAttribute("BatchSequence")),
+                                                    TransactionSequence = Helpers.GetIntFromAttribute(
+                                                        pageReader.GetAttribute("TransactionSequence")),
+                                                    GroupSequence = Helpers.GetIntFromAttribute(
+                                                        pageReader.GetAttribute("GroupSequence")),
+                                                    ScanSequence = Helpers.GetIntFromAttribute(
+                                                        pageReader.GetAttribute("ScanSequence")),
+                                                    ScanTime = Helpers.GetTimeFromAttribute(pageReader.GetAttribute("ScanTime")),
+                                                    ItemStatus = Helpers.GetItemStatus(pageReader.GetAttribute("ItemStatus")),
+                                                    IsVirtual = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("IsVirtual")),
+                                                    PageType = Helpers.GetPageTypeFromAttribute(pageReader.GetAttribute("PageType")),
+                                                    PageName = pageReader.GetAttribute("PageName"),
+                                                    SubPageName = pageReader.GetAttribute("SubPageName"),
+                                                    OperatorSelect = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("OperatorSelect")),
+                                                    Bin = pageReader.GetAttribute("Bin"),
+                                                    AverageThickness = Helpers.GetFloatFromAttribute(pageReader.GetAttribute("AverageThickness")),
+                                                    EnvelopeDetect = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("EnvelopeDetect")),
+                                                    SkewDegrees = Helpers.GetFloatFromAttribute(pageReader.GetAttribute("SkewDegrees")),
+                                                    DeskewStatus = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("DeskewStatus")),
+                                                    FrontStreakDetectStatus = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("FrontStreakDetectStatus")),
+                                                    BackStreakDetectStatus = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("BackStreakDetectStatus")),
+                                                    PlugInPageMessage = pageReader.GetAttribute("PlugInPageMessage"),
+                                                    Length = pageReader.GetAttribute("Length"),
+                                                    Height = pageReader.GetAttribute("Height")
                                                 };
 
                                                 group.Pages.Add(page);
