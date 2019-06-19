@@ -93,7 +93,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.NotNull(batch);
         }
@@ -108,7 +108,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.NotNull(batch.ReferenceIds);
             Assert.NotNull(batch.Transactions);
@@ -124,7 +124,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal("MODEL_51", batch.BaseMachine);
             Assert.Equal("03.14", batch.FormatVersion);
@@ -154,7 +154,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.ReferenceIds.Count);
 
@@ -177,7 +177,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions.Count);
 
@@ -198,7 +198,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups.Count);
 
@@ -223,7 +223,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages.Count);
 
@@ -268,7 +268,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
 
-            Batch batch = await reader.ReadBatch();
+            Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(new DateTime(2019, 3, 22, 23, 32, 45), batch.EndInfo.EndTime);
             Assert.Equal(4, batch.EndInfo.NumPages);

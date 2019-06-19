@@ -44,7 +44,7 @@ namespace OpexSDK
             _fileSystem = fileSystem;
         }
 
-        public async Task<Batch> ReadBatch()
+        public async Task<Batch> ReadBatchAsync()
         {
             var batch = new Batch();
 
@@ -113,6 +113,23 @@ namespace OpexSDK
                         {
                             TransactionId = Helpers.GetIntFromAttribute(reader.GetAttribute("TransactionID"))
                         };
+
+                        using (XmlReader subReader = reader.ReadSubtree())
+                        {
+                            while (await subReader.ReadAsync())
+                            {
+                                if (await subReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                    subReader.Name.Equals("GROUP", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    var group = new Group
+                                    {
+                                        GroupId = Helpers.GetIntFromAttribute(reader.GetAttribute("GroupID"))
+                                    };
+
+                                    transaction.Groups.Add(group);
+                                }
+                            }
+                        }
 
                         //if (reader.ReadToDescendant("GROUP"))
                         //{
