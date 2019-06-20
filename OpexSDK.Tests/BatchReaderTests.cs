@@ -58,7 +58,7 @@ namespace OpexSDK.Tests
 
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+                {@"C:\Opex\test.oxi", new MockFileData(batchFileContents)}
             });
 
             var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
@@ -122,7 +122,6 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_TransactionsPopulated()
         {
-
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
@@ -192,6 +191,7 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Ocrs);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Tags);
+            Assert.Null(batch.Transactions[0].Groups[0].Pages[0].CustomData);
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].DocumentLocator);
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].BatchSequence);
@@ -223,6 +223,7 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Ocrs);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
+            Assert.Null(batch.Transactions[0].Groups[0].Pages[1].CustomData);
 
             Assert.Equal(1, batch.Transactions[0].Groups[1].Pages.Count);
 
@@ -231,23 +232,23 @@ namespace OpexSDK.Tests
             Assert.Equal(3, batch.Transactions[0].Groups[1].Pages[0].TransactionSequence);
             Assert.Equal(5, batch.Transactions[0].Groups[1].Pages[0].GroupSequence);
             Assert.Equal(6, batch.Transactions[0].Groups[1].Pages[0].ScanSequence);
-            Assert.Equal(new DateTime(2019, 3, 22, 23, 25, 11), batch.Transactions[0].Groups[1].Pages[0].ScanTime);
-            Assert.Equal(ItemStatus.Valid, batch.Transactions[0].Groups[1].Pages[0].ItemStatus);
-            Assert.False(batch.Transactions[0].Groups[1].Pages[0].IsVirtual);
-            Assert.Equal(PageType.Page, batch.Transactions[0].Groups[1].Pages[0].PageType);
-            Assert.Equal("Invoice", batch.Transactions[0].Groups[1].Pages[0].PageName);
-            Assert.Equal("Signature", batch.Transactions[0].Groups[1].Pages[0].SubPageName);
+            Assert.Equal(new DateTime(2019, 3, 22, 23, 29, 22), batch.Transactions[0].Groups[1].Pages[0].ScanTime);
+            Assert.Equal(ItemStatus.VoidMarked, batch.Transactions[0].Groups[1].Pages[0].ItemStatus);
+            Assert.True(batch.Transactions[0].Groups[1].Pages[0].IsVirtual);
+            Assert.Equal(PageType.Envelope, batch.Transactions[0].Groups[1].Pages[0].PageType);
+            Assert.Equal("Lawsuit", batch.Transactions[0].Groups[1].Pages[0].PageName);
+            Assert.Equal("Cover", batch.Transactions[0].Groups[1].Pages[0].SubPageName);
             Assert.False(batch.Transactions[0].Groups[1].Pages[0].OperatorSelect);
-            Assert.Equal("MyBin", batch.Transactions[0].Groups[1].Pages[0].Bin);
-            Assert.Equal("20.32 CM", batch.Transactions[0].Groups[1].Pages[0].Length);
-            Assert.Equal("11.00 IN", batch.Transactions[0].Groups[1].Pages[0].Height);
-            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].EnvelopeDetect);
-            Assert.Equal(1.11f, batch.Transactions[0].Groups[1].Pages[0].AverageThickness);
-            Assert.Equal(-0.12f, batch.Transactions[0].Groups[1].Pages[0].SkewDegrees);
-            Assert.True(batch.Transactions[0].Groups[1].Pages[0].DeskewStatus);
-            Assert.False(batch.Transactions[0].Groups[1].Pages[0].FrontStreakDetectStatus);
-            Assert.True(batch.Transactions[0].Groups[1].Pages[0].BackStreakDetectStatus);
-            Assert.Equal("Queue 3", batch.Transactions[0].Groups[1].Pages[0].PlugInPageMessage);
+            Assert.Equal("MyBin3", batch.Transactions[0].Groups[1].Pages[0].Bin);
+            Assert.Equal("11.00 IN", batch.Transactions[0].Groups[1].Pages[0].Length);
+            Assert.Equal("21.56 CM", batch.Transactions[0].Groups[1].Pages[0].Height);
+            Assert.False(batch.Transactions[0].Groups[1].Pages[0].EnvelopeDetect);
+            Assert.Equal(2.14f, batch.Transactions[0].Groups[1].Pages[0].AverageThickness);
+            Assert.Equal(-9.5f, batch.Transactions[0].Groups[1].Pages[0].SkewDegrees);
+            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].DeskewStatus);
+            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].FrontStreakDetectStatus);
+            Assert.False(batch.Transactions[0].Groups[1].Pages[0].BackStreakDetectStatus);
+            Assert.Equal("Queue 4", batch.Transactions[0].Groups[1].Pages[0].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Barcodes);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Images);
@@ -256,12 +257,12 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Ocrs);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Tags);
+            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].CustomData);
         }
 
         [Fact]
         public async Task ReadBatchAsync_EndInfoPopulated()
         {
-
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
@@ -272,20 +273,11 @@ namespace OpexSDK.Tests
             Assert.False(batch.EndInfo.IsModified);
         }
 
-        [Fact(Skip = "placeholder")]
-        public async Task ReadBatchAsync_UnexpectedAttributeIgnored()
+        [Fact]
+        public async Task ReadBatchAsync_UnexpectedAttributeAndElementIgnored()
         {
-
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
-            Batch batch = await reader.ReadBatchAsync();
-        }
-
-        [Fact(Skip = "placeholder")]
-        public async Task ReadBatchAsync_UnexpectedElementIgnored()
-        {
-
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
-            Batch batch = await reader.ReadBatchAsync();
+            var reader = new BatchReader(@"C:\Opex\test2.oxi", _fileSystemFixture.FileSystem);
+            await reader.ReadBatchAsync();
         }
     }
 }
