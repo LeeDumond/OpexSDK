@@ -48,7 +48,7 @@ namespace OpexSDK
 
             Stream stream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
 
-            XmlReaderSettings settings = new XmlReaderSettings {Async = true};
+            var settings = new XmlReaderSettings {Async = true};
 
             using (XmlReader reader = XmlReader.Create(stream, settings))
             {
@@ -124,7 +124,6 @@ namespace OpexSDK
                                         GroupId = Helpers.GetIntFromAttribute(groupReader.GetAttribute("GroupID"))
                                     };
 
-
                                     using (XmlReader pageReader = groupReader.ReadSubtree())
                                     {
                                         while (await pageReader.ReadAsync())
@@ -146,20 +145,38 @@ namespace OpexSDK
                                                         pageReader.GetAttribute("GroupSequence")),
                                                     ScanSequence = Helpers.GetIntFromAttribute(
                                                         pageReader.GetAttribute("ScanSequence")),
-                                                    ScanTime = Helpers.GetTimeFromAttribute(pageReader.GetAttribute("ScanTime")),
-                                                    ItemStatus = Helpers.GetItemStatus(pageReader.GetAttribute("ItemStatus")),
-                                                    IsVirtual = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("IsVirtual")),
-                                                    PageType = Helpers.GetPageTypeFromAttribute(pageReader.GetAttribute("PageType")),
+                                                    ScanTime = Helpers.GetTimeFromAttribute(
+                                                        pageReader.GetAttribute("ScanTime")),
+                                                    ItemStatus =
+                                                        Helpers.GetItemStatus(pageReader.GetAttribute("ItemStatus")),
+                                                    IsVirtual = Helpers.GetBooleanFromYesNoAttribute(
+                                                        pageReader.GetAttribute("IsVirtual")),
+                                                    PageType = Helpers.GetPageTypeFromAttribute(
+                                                        pageReader.GetAttribute("PageType")),
                                                     PageName = pageReader.GetAttribute("PageName"),
                                                     SubPageName = pageReader.GetAttribute("SubPageName"),
-                                                    OperatorSelect = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("OperatorSelect")),
+                                                    OperatorSelect =
+                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                            pageReader.GetAttribute("OperatorSelect")),
                                                     Bin = pageReader.GetAttribute("Bin"),
-                                                    AverageThickness = Helpers.GetFloatFromAttribute(pageReader.GetAttribute("AverageThickness")),
-                                                    EnvelopeDetect = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("EnvelopeDetect")),
-                                                    SkewDegrees = Helpers.GetFloatFromAttribute(pageReader.GetAttribute("SkewDegrees")),
-                                                    DeskewStatus = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("DeskewStatus")),
-                                                    FrontStreakDetectStatus = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("FrontStreakDetectStatus")),
-                                                    BackStreakDetectStatus = Helpers.GetBooleanFromYesNoAttribute(pageReader.GetAttribute("BackStreakDetectStatus")),
+                                                    AverageThickness =
+                                                        Helpers.GetFloatFromAttribute(
+                                                            pageReader.GetAttribute("AverageThickness")),
+                                                    EnvelopeDetect =
+                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                            pageReader.GetAttribute("EnvelopeDetect")),
+                                                    SkewDegrees =
+                                                        Helpers.GetFloatFromAttribute(
+                                                            pageReader.GetAttribute("SkewDegrees")),
+                                                    DeskewStatus =
+                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                            pageReader.GetAttribute("DeskewStatus")),
+                                                    FrontStreakDetectStatus =
+                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                            pageReader.GetAttribute("FrontStreakDetectStatus")),
+                                                    BackStreakDetectStatus =
+                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                            pageReader.GetAttribute("BackStreakDetectStatus")),
                                                     PlugInPageMessage = pageReader.GetAttribute("PlugInPageMessage"),
                                                     Length = pageReader.GetAttribute("Length"),
                                                     Height = pageReader.GetAttribute("Height")
@@ -169,8 +186,6 @@ namespace OpexSDK
                                             }
                                         }
                                     }
-
-
 
                                     transaction.Groups.Add(group);
                                 }
