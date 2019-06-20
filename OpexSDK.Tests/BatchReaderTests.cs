@@ -261,6 +261,16 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public async Task ReadBatchesAsync_ImagesPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images.Count);
+        }
+
+
+        [Fact]
         public async Task ReadBatchAsync_EndInfoPopulated()
         {
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
