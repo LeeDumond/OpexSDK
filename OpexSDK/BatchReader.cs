@@ -182,6 +182,88 @@ namespace OpexSDK
                                                     Height = pageReader.GetAttribute("Height")
                                                 };
 
+                                                using (XmlReader pageSubReader = pageReader.ReadSubtree())
+                                                {
+                                                    while (await pageSubReader.ReadAsync())
+                                                    {
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("IMAGE",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var image = new Image
+                                                            {
+                                                                Index = Helpers.GetIntFromAttribute(pageSubReader.GetAttribute("Index")),
+                                                                RescanStatus = Helpers.GetRescanStatusFromAttribute(pageSubReader.GetAttribute("RescanStatus"))
+                                                            };
+
+                                                            page.Images.Add(image);
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("CUSTOMDATA",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var customData = new CustomData();
+
+                                                            page.CustomData = customData;
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("MICR",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var micr = new Micr();
+
+                                                            page.Micrs.Add(micr);
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("OCR",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var ocr = new Ocr();
+
+                                                            page.Ocrs.Add(ocr);
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("BARCODE",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var barcode = new Barcode();
+
+                                                            page.Barcodes.Add(barcode);
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("MARKDETECT",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var markDetect = new MarkDetect();
+
+                                                            page.MarkDetects.Add(markDetect);
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("AUDITTRAIL",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var auditTrail = new AuditTrail();
+
+                                                            page.AuditTrails.Add(auditTrail);
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageReader.Name.Equals("TAG",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var tag = new Tag();
+
+                                                            page.Tags.Add(tag);
+                                                        }
+                                                    }
+                                                }
+
                                                 group.Pages.Add(page);
                                             }
                                         }

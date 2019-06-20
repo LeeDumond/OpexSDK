@@ -7,6 +7,11 @@ namespace OpexSDK.Models
     /// </summary>
     public class Micr
     {
+        internal Micr()
+        {
+
+        }
+
         /// <summary>
         /// Indicates the outcome of the MICR read.
         /// </summary>

@@ -191,7 +191,7 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Ocrs);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Tags);
-            Assert.Null(batch.Transactions[0].Groups[0].Pages[0].CustomData);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].DocumentLocator);
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].BatchSequence);
@@ -267,6 +267,91 @@ namespace OpexSDK.Tests
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images.Count);
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Images[0].Index);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[0].Images[0].RescanStatus);
+            Assert.Null(batch.Transactions[0].Groups[0].Pages[0].Images[0].ScantimeFinalBlankAreaDecision);
+            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Images[0].Side);
+            Assert.Equal(ImageType.Full, batch.Transactions[0].Groups[0].Pages[0].Images[0].Type);
+            Assert.Equal(ImageDepth.Grayscale, batch.Transactions[0].Groups[0].Pages[0].Images[0].Depth);
+            Assert.Equal(ImageFormat.TIFF, batch.Transactions[0].Groups[0].Pages[0].Images[0].Format);
+            Assert.Equal("12345.tif", batch.Transactions[0].Groups[0].Pages[0].Images[0].Filename);
+            Assert.Equal(1234567, batch.Transactions[0].Groups[0].Pages[0].Images[0].Filesize);
+            Assert.Equal(1700, batch.Transactions[0].Groups[0].Pages[0].Images[0].Length);
+            Assert.Equal(300, batch.Transactions[0].Groups[0].Pages[0].Images[0].Height);
+            Assert.Equal(400, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetLength);
+            Assert.Equal(60, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetHeight);
+            Assert.Equal(ImageResolution.ThreeHundred, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
+            Assert.Equal(ImageResolution.TwoHundredForty, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionHeight);
+        }
+
+        [Fact]
+        public async Task ReadBatchesAsync_MicrsPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Micrs.Count);
+
+        }
+
+        [Fact]
+        public async Task ReadBatchesAsync_CustomDataPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
+
+        }
+
+        [Fact]
+        public async Task ReadBatchesAsync_OcrsPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Ocrs.Count);
+
+        }
+
+        [Fact]
+        public async Task ReadBatchesAsync_BarcodesPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Barcodes.Count);
+
+        }
+
+        [Fact]
+        public async Task ReadBatchesAsync_MarkDetectsPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].MarkDetects.Count);
+
+        }
+
+        [Fact]
+        public async Task ReadBatchesAsync_AuditTrailsPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].AuditTrails.Count);
+
+        }
+
+        [Fact]
+        public async Task ReadBatchesAsync_TagsPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Tags.Count);
+
         }
 
 

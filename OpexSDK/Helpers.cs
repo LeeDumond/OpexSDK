@@ -173,7 +173,21 @@ namespace OpexSDK
             return Convert.ToSingle(attributeValue);
         }
 
- 
-        
+
+        public static bool? GetRescanStatusFromAttribute(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "RESCAN":
+                    return true;
+                case "NOT_RESCAN":
+                    return false;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
     }
 }
