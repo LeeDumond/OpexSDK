@@ -86,7 +86,7 @@ namespace OpexSDK
                             Name = reader.GetAttribute("Name")
                         };
 
-                        batch.ReferenceIds.Add(referenceId);
+                        batch.Add(referenceId);
                     }
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
@@ -264,7 +264,7 @@ namespace OpexSDK
                                                     }
                                                 }
 
-                                                group.Pages.Add(page);
+                                                group.Add(page);
                                             }
                                         }
                                     }
@@ -275,7 +275,7 @@ namespace OpexSDK
                         }
 
 
-                        batch.Transactions.Add(transaction);
+                        batch.Add(transaction);
                     }
                 }
             }

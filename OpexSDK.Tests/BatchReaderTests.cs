@@ -11,12 +11,10 @@ namespace OpexSDK.Tests
     public class BatchReaderTests : IClassFixture<FileSystemFixture>
     {
         private readonly FileSystemFixture _fileSystemFixture;
-        //private readonly BatchReader reader;
 
         public BatchReaderTests(FileSystemFixture fileSystemFixture)
         {
             _fileSystemFixture = fileSystemFixture;
-            //var reader = new BatchReader(@"C:\Opex\test1.oxi", fileSystemFixture.FileSystem);
         }
 
         [Fact]
