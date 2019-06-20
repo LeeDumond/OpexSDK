@@ -41,7 +41,10 @@ namespace OpexSDK.Tests
             </PAGE>
         </GROUP>
         <GROUP GroupID=""108"">
-            <PAGE DocumentLocator=""3"">
+            <PAGE DocumentLocator=""3"" TransactionSequence=""3"" GroupSequence=""5"" BatchSequence=""4"" ScanSequence=""6"" ScanTime=""2019-03-22 23:25:18""
+              ItemStatus=""VOID"" IsVirtual=""YES"" PageType=""CUSTOM_PAGE1"" PageName=""Affidavit"" SubPageName=""Notarization"" OperatorSelect=""YES"" Bin=""MyBin2"" Length=""8.500 IN"" 
+              Height=""27.94 CM"" EnvelopeDetect=""YES"" AverageThickness=""1.35"" SkewDegrees=""13.2"" DeskewStatus=""NO"" FrontStreakDetectStatus=""YES"" 
+              BackStreakDetectStatus=""INACTIVE"" PlugInPageMessage=""Queue 4"">
             </PAGE>
         </GROUP>
     </TRANSACTION>
@@ -85,7 +88,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_ReturnsNonNullBatch()
+        public async Task ReadBatchAsync_ReturnsNonNullBatch()
         {
             batchFileContents = "<BATCH></BATCH>";
 
@@ -102,7 +105,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_CollectionsInitialized()
+        public async Task ReadBatchAsync_CollectionsInitialized()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -118,7 +121,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_BatchPropertiesPopulated()
+        public async Task ReadBatchAsync_BatchPropertiesPopulated()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -148,7 +151,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_ReferenceIdsPopulated()
+        public async Task ReadBatchAsync_ReferenceIdsPopulated()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -171,7 +174,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_TransactionsPopulated()
+        public async Task ReadBatchAsync_TransactionsPopulated()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -192,7 +195,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_GroupsPopulated()
+        public async Task ReadBatchAsync_GroupsPopulated()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -217,7 +220,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_PagesPopulated()
+        public async Task ReadBatchAsync_PagesPopulated()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -292,7 +295,30 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
 
-            
+            Assert.Equal(1, batch.Transactions[0].Groups[1].Pages.Count);
+
+            Assert.Equal(3, batch.Transactions[0].Groups[1].Pages[0].DocumentLocator);
+            Assert.Equal(4, batch.Transactions[0].Groups[1].Pages[0].BatchSequence);
+            Assert.Equal(3, batch.Transactions[0].Groups[1].Pages[0].TransactionSequence);
+            Assert.Equal(5, batch.Transactions[0].Groups[1].Pages[0].GroupSequence);
+            Assert.Equal(6, batch.Transactions[0].Groups[1].Pages[0].ScanSequence);
+            Assert.Equal(new DateTime(2019, 3, 22, 23, 25, 11), batch.Transactions[0].Groups[1].Pages[0].ScanTime);
+            Assert.Equal(ItemStatus.Valid, batch.Transactions[0].Groups[1].Pages[0].ItemStatus);
+            Assert.False(batch.Transactions[0].Groups[1].Pages[0].IsVirtual);
+            Assert.Equal(PageType.Page, batch.Transactions[0].Groups[1].Pages[0].PageType);
+            Assert.Equal("Invoice", batch.Transactions[0].Groups[1].Pages[0].PageName);
+            Assert.Equal("Signature", batch.Transactions[0].Groups[1].Pages[0].SubPageName);
+            Assert.False(batch.Transactions[0].Groups[1].Pages[0].OperatorSelect);
+            Assert.Equal("MyBin", batch.Transactions[0].Groups[1].Pages[0].Bin);
+            Assert.Equal("20.32 CM", batch.Transactions[0].Groups[1].Pages[0].Length);
+            Assert.Equal("11.00 IN", batch.Transactions[0].Groups[1].Pages[0].Height);
+            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].EnvelopeDetect);
+            Assert.Equal(1.11f, batch.Transactions[0].Groups[1].Pages[0].AverageThickness);
+            Assert.Equal(-0.12f, batch.Transactions[0].Groups[1].Pages[0].SkewDegrees);
+            Assert.True(batch.Transactions[0].Groups[1].Pages[0].DeskewStatus);
+            Assert.False(batch.Transactions[0].Groups[1].Pages[0].FrontStreakDetectStatus);
+            Assert.True(batch.Transactions[0].Groups[1].Pages[0].BackStreakDetectStatus);
+            Assert.Equal("Queue 3", batch.Transactions[0].Groups[1].Pages[0].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Barcodes);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Images);
@@ -304,7 +330,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatch_EndInfoPopulated()
+        public async Task ReadBatchAsync_EndInfoPopulated()
         {
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -320,6 +346,32 @@ namespace OpexSDK.Tests
             Assert.Equal(2, batch.EndInfo.NumGroups);
             Assert.Equal(2, batch.EndInfo.NumTransactions);
             Assert.False(batch.EndInfo.IsModified);
+        }
+
+        [Fact(Skip = "placeholder")]
+        public async Task ReadBatchAsync_UnexpectedAttributeIgnored()
+        {
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+            });
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+
+            Batch batch = await reader.ReadBatchAsync();
+        }
+
+        [Fact(Skip = "placeholder")]
+        public async Task ReadBatchAsync_UnexpectedElementIgnored()
+        {
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                { @"C:\Opex\test.oxi", new MockFileData(batchFileContents) }
+            });
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+
+            Batch batch = await reader.ReadBatchAsync();
         }
     }
 }
