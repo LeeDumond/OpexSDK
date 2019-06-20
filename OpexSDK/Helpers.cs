@@ -174,14 +174,14 @@ namespace OpexSDK
         }
 
 
-        public static bool? GetRescanStatusFromAttribute(string attributeValue)
+        public static RescanStatus? GetRescanStatusFromAttribute(string attributeValue)
         {
             switch (attributeValue)
             {
                 case "RESCAN":
-                    return true;
+                    return RescanStatus.Rescan;
                 case "NOT_RESCAN":
-                    return false;
+                    return RescanStatus.NotRescan;
                 case "":
                 case null:
                     return null;

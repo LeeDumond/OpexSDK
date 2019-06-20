@@ -48,6 +48,17 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetRescanStatus_ReturnsCorrectItemStatus()
+        {
+            Assert.Equal(RescanStatus.Rescan, Helpers.GetRescanStatusFromAttribute("RESCAN"));
+            Assert.Equal(RescanStatus.NotRescan, Helpers.GetRescanStatusFromAttribute("NOT_RESCAN"));
+            Assert.Null(Helpers.GetRescanStatusFromAttribute(""));
+            Assert.Null(Helpers.GetRescanStatusFromAttribute(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetRescanStatusFromAttribute("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
             Assert.Equal(PageType.BatchTicket, Helpers.GetPageTypeFromAttribute("BATCH_TICKET"));

@@ -266,7 +266,7 @@ namespace OpexSDK.Tests
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images.Count);
             Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Images[0].Index);
-            Assert.True(batch.Transactions[0].Groups[0].Pages[0].Images[0].RescanStatus);
+            Assert.Equal(RescanStatus.Rescan, batch.Transactions[0].Groups[0].Pages[0].Images[0].RescanStatus);
             Assert.Null(batch.Transactions[0].Groups[0].Pages[0].Images[0].ScantimeFinalBlankAreaDecision);
             Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Images[0].Side);
             Assert.Equal(ImageType.Full, batch.Transactions[0].Groups[0].Pages[0].Images[0].Type);
