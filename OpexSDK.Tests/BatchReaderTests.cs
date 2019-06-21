@@ -177,9 +177,9 @@ namespace OpexSDK.Tests
             Assert.Null(batch.Transactions[0].Groups[0].Pages[0].EnvelopeDetect);
             Assert.Equal(1.11f, batch.Transactions[0].Groups[0].Pages[0].AverageThickness);
             Assert.Equal(-0.12f, batch.Transactions[0].Groups[0].Pages[0].SkewDegrees);
-            Assert.True(batch.Transactions[0].Groups[0].Pages[0].DeskewStatus);
-            Assert.False(batch.Transactions[0].Groups[0].Pages[0].FrontStreakDetectStatus);
-            Assert.True(batch.Transactions[0].Groups[0].Pages[0].BackStreakDetectStatus);
+            Assert.Equal(DeskewStatus.Yes, batch.Transactions[0].Groups[0].Pages[0].DeskewStatus);
+            Assert.Equal(FrontStreakDetectStatus.No, batch.Transactions[0].Groups[0].Pages[0].FrontStreakDetectStatus);
+            Assert.Equal(BackStreakDetectStatus.Yes, batch.Transactions[0].Groups[0].Pages[0].BackStreakDetectStatus);
             Assert.Equal("Queue 3", batch.Transactions[0].Groups[0].Pages[0].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Barcodes);
@@ -206,12 +206,12 @@ namespace OpexSDK.Tests
             Assert.Equal("MyBin2", batch.Transactions[0].Groups[0].Pages[1].Bin);
             Assert.Equal("8.500 IN", batch.Transactions[0].Groups[0].Pages[1].Length);
             Assert.Equal("27.94 CM", batch.Transactions[0].Groups[0].Pages[1].Height);
-            Assert.True(batch.Transactions[0].Groups[0].Pages[1].EnvelopeDetect);
+            Assert.Equal(EnvelopeDetect.Yes, batch.Transactions[0].Groups[0].Pages[1].EnvelopeDetect);
             Assert.Equal(1.35f, batch.Transactions[0].Groups[0].Pages[1].AverageThickness);
             Assert.Equal(13.2f, batch.Transactions[0].Groups[0].Pages[1].SkewDegrees);
-            Assert.False(batch.Transactions[0].Groups[0].Pages[1].DeskewStatus);
-            Assert.True(batch.Transactions[0].Groups[0].Pages[1].FrontStreakDetectStatus);
-            Assert.Null(batch.Transactions[0].Groups[0].Pages[1].BackStreakDetectStatus);
+            Assert.Equal(DeskewStatus.No, batch.Transactions[0].Groups[0].Pages[1].DeskewStatus);
+            Assert.Equal(FrontStreakDetectStatus.Yes, batch.Transactions[0].Groups[0].Pages[1].FrontStreakDetectStatus);
+            Assert.Equal(BackStreakDetectStatus.Inactive, batch.Transactions[0].Groups[0].Pages[1].BackStreakDetectStatus);
             Assert.Equal("Queue 4", batch.Transactions[0].Groups[0].Pages[1].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Barcodes);
@@ -223,7 +223,7 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
             Assert.Null(batch.Transactions[0].Groups[0].Pages[1].CustomData);
 
-            Assert.Equal(1, batch.Transactions[0].Groups[1].Pages.Count);
+            Assert.Single(batch.Transactions[0].Groups[1].Pages);
 
             Assert.Equal(3, batch.Transactions[0].Groups[1].Pages[0].DocumentLocator);
             Assert.Equal(4, batch.Transactions[0].Groups[1].Pages[0].BatchSequence);
@@ -240,12 +240,12 @@ namespace OpexSDK.Tests
             Assert.Equal("MyBin3", batch.Transactions[0].Groups[1].Pages[0].Bin);
             Assert.Equal("11.00 IN", batch.Transactions[0].Groups[1].Pages[0].Length);
             Assert.Equal("21.56 CM", batch.Transactions[0].Groups[1].Pages[0].Height);
-            Assert.False(batch.Transactions[0].Groups[1].Pages[0].EnvelopeDetect);
+            Assert.Equal(EnvelopeDetect.No, batch.Transactions[0].Groups[1].Pages[0].EnvelopeDetect);
             Assert.Equal(2.14f, batch.Transactions[0].Groups[1].Pages[0].AverageThickness);
             Assert.Equal(-9.5f, batch.Transactions[0].Groups[1].Pages[0].SkewDegrees);
-            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].DeskewStatus);
-            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].FrontStreakDetectStatus);
-            Assert.False(batch.Transactions[0].Groups[1].Pages[0].BackStreakDetectStatus);
+            Assert.Equal(DeskewStatus.Inactive, batch.Transactions[0].Groups[1].Pages[0].DeskewStatus);
+            Assert.Equal(FrontStreakDetectStatus.Inactive, batch.Transactions[0].Groups[1].Pages[0].FrontStreakDetectStatus);
+            Assert.Equal(BackStreakDetectStatus.No, batch.Transactions[0].Groups[1].Pages[0].BackStreakDetectStatus);
             Assert.Equal("Queue 4", batch.Transactions[0].Groups[1].Pages[0].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Barcodes);
