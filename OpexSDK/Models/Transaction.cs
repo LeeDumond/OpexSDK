@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace OpexSDK.Models
 {
@@ -7,9 +8,11 @@ namespace OpexSDK.Models
     /// </summary>
     public class Transaction
     {
+        private readonly IList<Group> _groups;
+
         internal Transaction()
         {
-            Groups = new List<Group>();
+            _groups = new List<Group>();
         }
 
         /// <summary>
@@ -20,6 +23,11 @@ namespace OpexSDK.Models
         /// <summary>
         /// One for each group within the transaction.
         /// </summary>
-        public IList<Group> Groups { get; }
+        public ReadOnlyCollection<Group> Groups => new ReadOnlyCollection<Group>(_groups);
+
+        internal void Add(Group group)
+        {
+            _groups.Add(group);
+        }
     }
 }

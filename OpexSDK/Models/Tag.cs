@@ -5,14 +5,19 @@
     /// </summary>
     public class Tag
     {
-        /// <summary>
-        /// A string associated with how this data became a tag. The string is host specific.
-        /// </summary>
-        public string Source { get; set; }
+        internal Tag()
+        {
+            
+        }
 
         /// <summary>
         /// A string associated with how this data became a tag. The string is host specific.
         /// </summary>
-        public string Value { get; set; }
+        public string Source { get; internal set; }
+
+        /// <summary>
+        /// A string associated with how this data became a tag. The string is host specific.
+        /// </summary>
+        public string Value { get; internal set; }
     }
 }

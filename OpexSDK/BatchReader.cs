@@ -269,7 +269,7 @@ namespace OpexSDK
                                         }
                                     }
 
-                                    transaction.Groups.Add(group);
+                                    transaction.Add(group);
                                 }
                             }
                         }
