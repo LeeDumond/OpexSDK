@@ -28,14 +28,14 @@ namespace OpexSDK
 
             if (string.IsNullOrWhiteSpace(batchFilePath))
             {
-                throw new ArgumentException("Value cannot be null", nameof(batchFilePath));
+                throw new ArgumentException("Value cannot be empty", nameof(batchFilePath));
             }
 
             string ext = Path.GetExtension(batchFilePath);
 
             if (string.IsNullOrEmpty(ext) || !ext.Equals(".oxi", StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new NotSupportedException("The file indicated by the supplied file path must end in '.oxi'");
+                throw new NotSupportedException("The file indicated by the supplied path must end in '.oxi'");
             }
 
             _batchFilePath = batchFilePath;
@@ -193,7 +193,9 @@ namespace OpexSDK
                                                             var image = new Image
                                                             {
                                                                 Index = AttributeHelpers.GetInt(pageSubReader.GetAttribute("Index")),
-                                                                RescanStatus = AttributeHelpers.GetRescanStatus(pageSubReader.GetAttribute("RescanStatus"))
+                                                                RescanStatus = AttributeHelpers.GetRescanStatus(pageSubReader.GetAttribute("RescanStatus")),
+                                                                ScantimeFinalBlankAreaDecision = AttributeHelpers.GetScantimeFinalBlankAreaDecision(pageSubReader.GetAttribute("ScantimeFinalBlankAreaDecision")),
+                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side"))
                                                             };
 
                                                             page.Add(image);

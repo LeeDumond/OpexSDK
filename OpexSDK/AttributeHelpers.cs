@@ -229,5 +229,62 @@ namespace OpexSDK
 
             throw new ArgumentOutOfRangeException(nameof(attributeValue));
         }
+
+        internal static ScantimeFinalBlankAreaDecision? GetScantimeFinalBlankAreaDecision(string attributeValue)
+        {
+            if (string.IsNullOrWhiteSpace(attributeValue))
+            {
+                return null;
+            }
+
+            if (attributeValue == "BLANK")
+            {
+                return ScantimeFinalBlankAreaDecision.Blank;
+            }
+
+            if (attributeValue == "NOT_BLANK")
+            {
+                return ScantimeFinalBlankAreaDecision.NotBlank;
+            }
+
+            if (attributeValue == "UNDETERMINED")
+            {
+                return ScantimeFinalBlankAreaDecision.Undetermined;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(attributeValue));
+        }
+
+        internal static AuditTrailType? GetAuditTrailType(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "ELECTRONIC":
+                    return AuditTrailType.Electronic;
+                case "PRINTED":
+                    return AuditTrailType.Printed;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
+
+        internal static Side? GetSide(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "FRONT":
+                    return Side.Front;
+                case "BACK":
+                    return Side.Back;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
     }
 }

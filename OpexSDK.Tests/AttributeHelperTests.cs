@@ -107,6 +107,40 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetScantimeFinalBlankAreaDecision_ReturnsCorrectScantimeFinalBlankAreaDecision()
+        {
+            Assert.Equal(ScantimeFinalBlankAreaDecision.Blank, AttributeHelpers.GetScantimeFinalBlankAreaDecision("BLANK"));
+            Assert.Equal(ScantimeFinalBlankAreaDecision.NotBlank, AttributeHelpers.GetScantimeFinalBlankAreaDecision("NOT_BLANK"));
+            Assert.Equal(ScantimeFinalBlankAreaDecision.Undetermined, AttributeHelpers.GetScantimeFinalBlankAreaDecision("UNDETERMINED"));
+            Assert.Null(AttributeHelpers.GetScantimeFinalBlankAreaDecision(""));
+            Assert.Null(AttributeHelpers.GetScantimeFinalBlankAreaDecision(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetScantimeFinalBlankAreaDecision("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetAuditTrailType_ReturnsCorrectAuditTrailType()
+        {
+            Assert.Equal(AuditTrailType.Electronic, AttributeHelpers.GetAuditTrailType("ELECTRONIC"));
+            Assert.Equal(AuditTrailType.Printed, AttributeHelpers.GetAuditTrailType("PRINTED"));
+            Assert.Null(AttributeHelpers.GetAuditTrailType(""));
+            Assert.Null(AttributeHelpers.GetAuditTrailType(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetAuditTrailType("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetSide_ReturnsCorrectSide()
+        {
+            Assert.Equal(Side.Front, AttributeHelpers.GetSide("FRONT"));
+            Assert.Equal(Side.Back, AttributeHelpers.GetSide("BACK"));
+            Assert.Null(AttributeHelpers.GetSide(""));
+            Assert.Null(AttributeHelpers.GetSide(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetSide("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
             Assert.Equal(PageType.BatchTicket, AttributeHelpers.GetPageType("BATCH_TICKET"));
