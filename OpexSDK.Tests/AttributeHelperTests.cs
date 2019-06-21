@@ -5,7 +5,7 @@ using Xunit;
 namespace OpexSDK.Tests
 {
     
-    public class HelperTests
+    public class AttributeHelperTests
     {
         [Fact]
         public void GetJobType_ReturnsCorrectJobType()
@@ -59,6 +59,54 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetEnvelopeDetect_ReturnsCorrectEnvelopeDetect()
+        {
+            Assert.Equal(EnvelopeDetect.Yes, AttributeHelpers.GetEnvelopeDetect("YES"));
+            Assert.Equal(EnvelopeDetect.No, AttributeHelpers.GetEnvelopeDetect("NO"));
+            Assert.Equal(EnvelopeDetect.Inactive, AttributeHelpers.GetEnvelopeDetect("INACTIVE"));
+            Assert.Null(AttributeHelpers.GetEnvelopeDetect(""));
+            Assert.Null(AttributeHelpers.GetEnvelopeDetect(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetEnvelopeDetect("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetDeskewStatus_ReturnsCorrectDeskewStatus()
+        {
+            Assert.Equal(DeskewStatus.Yes, AttributeHelpers.GetDeskewStatus("YES"));
+            Assert.Equal(DeskewStatus.No, AttributeHelpers.GetDeskewStatus("NO"));
+            Assert.Equal(DeskewStatus.Inactive, AttributeHelpers.GetDeskewStatus("INACTIVE"));
+            Assert.Null(AttributeHelpers.GetDeskewStatus(""));
+            Assert.Null(AttributeHelpers.GetDeskewStatus(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetDeskewStatus("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetFrontStreakDetectStatus_ReturnsCorrectFrontStreakDetectStatus()
+        {
+            Assert.Equal(FrontStreakDetectStatus.Yes, AttributeHelpers.GetFrontStreakDetectStatus("YES"));
+            Assert.Equal(FrontStreakDetectStatus.No, AttributeHelpers.GetFrontStreakDetectStatus("NO"));
+            Assert.Equal(FrontStreakDetectStatus.Inactive, AttributeHelpers.GetFrontStreakDetectStatus("INACTIVE"));
+            Assert.Null(AttributeHelpers.GetFrontStreakDetectStatus(""));
+            Assert.Null(AttributeHelpers.GetFrontStreakDetectStatus(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetFrontStreakDetectStatus("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetBackStreakDetectStatus_ReturnsCorrectBackStreakDetectStatus()
+        {
+            Assert.Equal(BackStreakDetectStatus.Yes, AttributeHelpers.GetBackStreakDetectStatus("YES"));
+            Assert.Equal(BackStreakDetectStatus.No, AttributeHelpers.GetBackStreakDetectStatus("NO"));
+            Assert.Equal(BackStreakDetectStatus.Inactive, AttributeHelpers.GetBackStreakDetectStatus("INACTIVE"));
+            Assert.Null(AttributeHelpers.GetBackStreakDetectStatus(""));
+            Assert.Null(AttributeHelpers.GetBackStreakDetectStatus(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetBackStreakDetectStatus("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
             Assert.Equal(PageType.BatchTicket, AttributeHelpers.GetPageType("BATCH_TICKET"));
@@ -81,7 +129,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void GetTimeFromAttribute_ReturnsCorrectTime()
+        public void GetDateTime_ReturnsCorrectDateTime()
         {
             Assert.Equal(new DateTime(2019, 3, 22, 23, 24, 07), AttributeHelpers.GetDateTime("2019-03-22 23:24:07"));
             Assert.Equal(new DateTime(2019, 3, 22), AttributeHelpers.GetDateTime("2019-03-22"));
@@ -92,7 +140,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void GetIntFromAttribute_ReturnsCorrectInt()
+        public void GetInt_ReturnsCorrectInt()
         {
             Assert.Equal(12345, AttributeHelpers.GetInt("12345"));
             Assert.Null(AttributeHelpers.GetInt(""));
@@ -102,7 +150,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void GetFloatFromAttribute_ReturnsCorrectFloat()
+        public void GetFloat_ReturnsCorrectFloat()
         {
             Assert.Equal(12345, AttributeHelpers.GetFloat("12345"));
             Assert.Equal(123.45f, AttributeHelpers.GetFloat("123.45"));
@@ -118,7 +166,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void GetBooleanFromTrueFalseAttribute_ReturnsCorrectBoolean()
+        public void GetBooleanFromTrueFalse_ReturnsCorrectBoolean()
         {
             Assert.True(AttributeHelpers.GetBooleanFromTrueFalse("TRUE"));
             Assert.False(AttributeHelpers.GetBooleanFromTrueFalse("FALSE"));
@@ -129,7 +177,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void GetBooleanFromYesNoAttribute_ReturnsCorrectBoolean()
+        public void GetBooleanFromYesNo_ReturnsCorrectBoolean()
         {
             Assert.True(AttributeHelpers.GetBooleanFromYesNo("YES"));
             Assert.False(AttributeHelpers.GetBooleanFromYesNo("NO"));
