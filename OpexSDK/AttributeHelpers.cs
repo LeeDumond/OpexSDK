@@ -286,5 +286,39 @@ namespace OpexSDK
                     throw new ArgumentOutOfRangeException(nameof(attributeValue));
             }
         }
+
+        public static ImageType? GetImageType(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "FULL":
+                    return ImageType.Full;
+                case "SNIPPET":
+                    return ImageType.Snippet;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
+
+        public static ImageDepth? GetImageDepth(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "1":
+                    return ImageDepth.Bitonal;
+                case "8":
+                    return ImageDepth.Grayscale;
+                case "24":
+                    return ImageDepth.Color;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
     }
 }

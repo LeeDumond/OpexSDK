@@ -195,7 +195,9 @@ namespace OpexSDK
                                                                 Index = AttributeHelpers.GetInt(pageSubReader.GetAttribute("Index")),
                                                                 RescanStatus = AttributeHelpers.GetRescanStatus(pageSubReader.GetAttribute("RescanStatus")),
                                                                 ScantimeFinalBlankAreaDecision = AttributeHelpers.GetScantimeFinalBlankAreaDecision(pageSubReader.GetAttribute("ScantimeFinalBlankAreaDecision")),
-                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side"))
+                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side")),
+                                                                Type = AttributeHelpers.GetImageType(pageSubReader.GetAttribute("Type")),
+                                                                Depth = AttributeHelpers.GetImageDepth(pageSubReader.GetAttribute("Depth"))
                                                             };
 
                                                             page.Add(image);

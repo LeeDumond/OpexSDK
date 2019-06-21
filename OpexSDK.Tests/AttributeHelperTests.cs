@@ -141,6 +141,29 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetImageType_ReturnsCorrectImageType()
+        {
+            Assert.Equal(ImageType.Full, AttributeHelpers.GetImageType("FULL"));
+            Assert.Equal(ImageType.Snippet, AttributeHelpers.GetImageType("SNIPPET"));
+            Assert.Null(AttributeHelpers.GetImageType(""));
+            Assert.Null(AttributeHelpers.GetImageType(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetImageType("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetImageDepth_ReturnsCorrectImageDepth()
+        {
+            Assert.Equal(ImageDepth.Bitonal, AttributeHelpers.GetImageDepth("1"));
+            Assert.Equal(ImageDepth.Grayscale, AttributeHelpers.GetImageDepth("8"));
+            Assert.Equal(ImageDepth.Color, AttributeHelpers.GetImageDepth("24"));
+            Assert.Null(AttributeHelpers.GetImageDepth(""));
+            Assert.Null(AttributeHelpers.GetImageDepth(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetImageDepth("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
             Assert.Equal(PageType.BatchTicket, AttributeHelpers.GetPageType("BATCH_TICKET"));
