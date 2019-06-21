@@ -20,10 +20,10 @@ namespace OpexSDK.Tests
               ItemStatus=""VALID"" IsVirtual=""NO"" PageType=""PAGE"" PageName=""Invoice"" SubPageName=""Signature"" OperatorSelect=""NO"" Bin=""MyBin"" Length=""20.32 CM"" 
               Height=""11.00 IN"" EnvelopeDetect=""INACTIVE"" AverageThickness=""1.11"" SkewDegrees=""-0.12"" DeskewStatus=""YES"" FrontStreakDetectStatus=""NO"" 
               BackStreakDetectStatus=""YES"" PlugInPageMessage=""Queue 3"">
-                <IMAGE Index=""1"" RescanStatus=""RESCAN"" ScantimeFinalBlankAreaDecision=""NOT_BLANK"" Side=""FRONT"" Type=""FULL"" Depth=""8"" Format=""TIFF"" FileName=""12345.tif""
-                     FileSize=""1234567"" Length=""1700"" Height=""300"" OffsetLength=""400"" OffsetHeight=""60"" ResolutionLength=""300"" ResolutionHeight=""240"">
+                <IMAGE Index=""1"" RescanStatus=""RESCAN"" ScantimeFinalBlankAreaDecision=""NOT_BLANK"" Side=""FRONT"" Type=""FULL"" Depth=""8"" Format=""TIFF"" Filename=""12345.tif""
+                     Filesize=""1234567"" Length=""1700"" Height=""300"" OffsetLength=""400"" OffsetHeight=""60"" ResolutionLength=""300"" ResolutionHeight=""240"">
                 </IMAGE>
-                <IMAGE Index=""2"" RescanStatus=""NOT_RESCAN"" ScantimeFinalBlankAreaDecision=""UNDETERMINED"" Side=""BACK"" Type=""SNIPPET"" Depth=""24"" Format=""JPEG"" FileName=""67890.jpg""
+                <IMAGE Index=""2"" RescanStatus=""NOT_RESCAN"" ScantimeFinalBlankAreaDecision=""UNDETERMINED"" Side=""BACK"" Type=""SNIPPET"" Depth=""24"" Format=""JPEG"" Filename=""67890.jpg""
                      FileSize=""23456789"" Length=""200"" Height=""1800"" OffsetLength=""0"" OffsetHeight=""240"" ResolutionLength=""200"" ResolutionHeight=""150"">
                 </IMAGE>
                 <CUSTOMDATA Entry="""" />

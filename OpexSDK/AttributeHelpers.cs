@@ -30,6 +30,16 @@ namespace OpexSDK
             return Convert.ToInt32(attributeValue);
         }
 
+        public static long? GetLong(string attributeValue)
+        {
+            if (string.IsNullOrWhiteSpace(attributeValue))
+            {
+                return null;
+            }
+
+            return Convert.ToInt64(attributeValue);
+        }
+
         internal static OperatingMode? GetOperatingMode(string attributeValue)
         {
             switch (attributeValue)
@@ -287,7 +297,7 @@ namespace OpexSDK
             }
         }
 
-        public static ImageType? GetImageType(string attributeValue)
+        internal static ImageType? GetImageType(string attributeValue)
         {
             switch (attributeValue)
             {
@@ -303,7 +313,7 @@ namespace OpexSDK
             }
         }
 
-        public static ImageDepth? GetImageDepth(string attributeValue)
+        internal static ImageDepth? GetImageDepth(string attributeValue)
         {
             switch (attributeValue)
             {
@@ -313,6 +323,46 @@ namespace OpexSDK
                     return ImageDepth.Grayscale;
                 case "24":
                     return ImageDepth.Color;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
+
+        internal static ImageFormat? GetImageFormat(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "JPEG":
+                    return ImageFormat.JPEG;
+                case "RAW":
+                    return ImageFormat.RAW;
+                case "TIFF":
+                    return ImageFormat.TIFF;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
+
+        internal static ImageResolution? GetImageResolution(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "100":
+                    return ImageResolution.OneHundred;
+                case "150":
+                    return ImageResolution.OneHundredFifty;
+                case "200":
+                    return ImageResolution.TwoHundred;
+                case "240":
+                    return ImageResolution.TwoHundredForty;
+                case "300":
+                    return ImageResolution.ThreeHundred;
                 case "":
                 case null:
                     return null;

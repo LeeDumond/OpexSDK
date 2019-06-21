@@ -197,7 +197,16 @@ namespace OpexSDK
                                                                 ScantimeFinalBlankAreaDecision = AttributeHelpers.GetScantimeFinalBlankAreaDecision(pageSubReader.GetAttribute("ScantimeFinalBlankAreaDecision")),
                                                                 Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side")),
                                                                 Type = AttributeHelpers.GetImageType(pageSubReader.GetAttribute("Type")),
-                                                                Depth = AttributeHelpers.GetImageDepth(pageSubReader.GetAttribute("Depth"))
+                                                                Depth = AttributeHelpers.GetImageDepth(pageSubReader.GetAttribute("Depth")),
+                                                                Format = AttributeHelpers.GetImageFormat(pageSubReader.GetAttribute("Format")),
+                                                                Filename = pageSubReader.GetAttribute("Filename"),
+                                                                Filesize = AttributeHelpers.GetLong(pageSubReader.GetAttribute("Filesize")),
+                                                                Length = AttributeHelpers.GetInt(pageSubReader.GetAttribute("Length")),
+                                                                Height = AttributeHelpers.GetInt(pageSubReader.GetAttribute("Height")),
+                                                                OffsetLength = AttributeHelpers.GetInt(pageSubReader.GetAttribute("OffsetLength")),
+                                                                OffsetHeight = AttributeHelpers.GetInt(pageSubReader.GetAttribute("OffsetHeight")),
+                                                                ResolutionLength = AttributeHelpers.GetImageResolution(pageSubReader.GetAttribute("ResolutionLength")),
+                                                                ResolutionHeight = AttributeHelpers.GetImageResolution(pageSubReader.GetAttribute("ResolutionHeight")),
                                                             };
 
                                                             page.Add(image);

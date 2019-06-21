@@ -164,6 +164,33 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetImageFormat_ReturnsCorrectImageFormat()
+        {
+            Assert.Equal(ImageFormat.JPEG, AttributeHelpers.GetImageFormat("JPEG"));
+            Assert.Equal(ImageFormat.TIFF, AttributeHelpers.GetImageFormat("TIFF"));
+            Assert.Equal(ImageFormat.RAW, AttributeHelpers.GetImageFormat("RAW"));
+            Assert.Null(AttributeHelpers.GetImageFormat(""));
+            Assert.Null(AttributeHelpers.GetImageFormat(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetImageFormat("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetImageResolution_ReturnsCorrectImageResolution()
+        {
+            Assert.Equal(ImageResolution.OneHundred, AttributeHelpers.GetImageResolution("100"));
+            Assert.Equal(ImageResolution.OneHundredFifty, AttributeHelpers.GetImageResolution("150"));
+            Assert.Equal(ImageResolution.TwoHundred, AttributeHelpers.GetImageResolution("200"));
+            Assert.Equal(ImageResolution.TwoHundredForty, AttributeHelpers.GetImageResolution("240"));
+            Assert.Equal(ImageResolution.ThreeHundred, AttributeHelpers.GetImageResolution("300"));
+            
+            Assert.Null(AttributeHelpers.GetImageResolution(""));
+            Assert.Null(AttributeHelpers.GetImageResolution(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetImageResolution("250"));
+        }
+
+        [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
             Assert.Equal(PageType.BatchTicket, AttributeHelpers.GetPageType("BATCH_TICKET"));
@@ -204,6 +231,16 @@ namespace OpexSDK.Tests
             Assert.Null(AttributeHelpers.GetInt(null));
 
             Assert.Throws<FormatException>(() => AttributeHelpers.GetInt("not_an_int"));
+        }
+
+        [Fact]
+        public void GetLong_ReturnsCorrectLong()
+        {
+            Assert.Equal(12345, AttributeHelpers.GetLong("12345"));
+            Assert.Null(AttributeHelpers.GetLong(""));
+            Assert.Null(AttributeHelpers.GetLong(null));
+
+            Assert.Throws<FormatException>(() => AttributeHelpers.GetLong("not_a_long"));
         }
 
         [Fact]

@@ -265,6 +265,7 @@ namespace OpexSDK.Tests
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images.Count);
+
             Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Images[0].Index);
             Assert.Equal(RescanStatus.Rescan, batch.Transactions[0].Groups[0].Pages[0].Images[0].RescanStatus);
             Assert.Equal(ScantimeFinalBlankAreaDecision.NotBlank, batch.Transactions[0].Groups[0].Pages[0].Images[0].ScantimeFinalBlankAreaDecision);
@@ -280,6 +281,22 @@ namespace OpexSDK.Tests
             Assert.Equal(60, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetHeight);
             Assert.Equal(ImageResolution.ThreeHundred, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
             Assert.Equal(ImageResolution.TwoHundredForty, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionHeight);
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Images[1].Index);
+            Assert.Equal(RescanStatus.Rescan, batch.Transactions[0].Groups[0].Pages[0].Images[1].RescanStatus);
+            Assert.Equal(ScantimeFinalBlankAreaDecision.NotBlank, batch.Transactions[0].Groups[0].Pages[0].Images[1].ScantimeFinalBlankAreaDecision);
+            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Images[1].Side);
+            Assert.Equal(ImageType.Full, batch.Transactions[0].Groups[0].Pages[0].Images[1].Type);
+            Assert.Equal(ImageDepth.Grayscale, batch.Transactions[0].Groups[0].Pages[0].Images[1].Depth);
+            Assert.Equal(ImageFormat.TIFF, batch.Transactions[0].Groups[0].Pages[0].Images[1].Format);
+            Assert.Equal("12345.tif", batch.Transactions[0].Groups[0].Pages[0].Images[1].Filename);
+            Assert.Equal(1234567, batch.Transactions[0].Groups[0].Pages[0].Images[1].Filesize);
+            Assert.Equal(1700, batch.Transactions[0].Groups[0].Pages[0].Images[1].Length);
+            Assert.Equal(300, batch.Transactions[0].Groups[0].Pages[0].Images[1].Height);
+            Assert.Equal(400, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetLength);
+            Assert.Equal(60, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetHeight);
+            Assert.Equal(ImageResolution.ThreeHundred, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
+            Assert.Equal(ImageResolution.TwoHundredForty, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionHeight);
         }
 
         [Fact]
