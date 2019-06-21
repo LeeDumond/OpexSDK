@@ -174,7 +174,7 @@ namespace OpexSDK.Tests
             Assert.Equal("MyBin", batch.Transactions[0].Groups[0].Pages[0].Bin);
             Assert.Equal("20.32 CM", batch.Transactions[0].Groups[0].Pages[0].Length);
             Assert.Equal("11.00 IN", batch.Transactions[0].Groups[0].Pages[0].Height);
-            Assert.Null(batch.Transactions[0].Groups[0].Pages[0].EnvelopeDetect);
+            Assert.Equal(EnvelopeDetect.Inactive, batch.Transactions[0].Groups[0].Pages[0].EnvelopeDetect);
             Assert.Equal(1.11f, batch.Transactions[0].Groups[0].Pages[0].AverageThickness);
             Assert.Equal(-0.12f, batch.Transactions[0].Groups[0].Pages[0].SkewDegrees);
             Assert.Equal(DeskewStatus.Yes, batch.Transactions[0].Groups[0].Pages[0].DeskewStatus);

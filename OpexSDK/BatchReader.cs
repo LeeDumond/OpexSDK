@@ -64,13 +64,13 @@ namespace OpexSDK
                         batch.DeveloperReserved = reader.GetAttribute("DeveloperReserved");
                         batch.ImageFilePath = reader.GetAttribute("ImageFilePath");
                         batch.JobName = reader.GetAttribute("JobName");
-                        batch.JobType = Helpers.GetJobType(reader.GetAttribute("JobType"));
+                        batch.JobType = AttributeHelpers.GetJobType(reader.GetAttribute("JobType"));
                         batch.OperatorName = reader.GetAttribute("OperatorName");
-                        batch.OperatingMode = Helpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
-                        batch.StartTime = Helpers.GetTimeFromAttribute(reader.GetAttribute("StartTime"));
+                        batch.OperatingMode = AttributeHelpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
+                        batch.StartTime = AttributeHelpers.GetDateTime(reader.GetAttribute("StartTime"));
                         batch.PluginMessage = reader.GetAttribute("PluginMessage");
-                        batch.ProcessDate = Helpers.GetTimeFromAttribute(reader.GetAttribute("ProcessDate"))?.Date;
-                        batch.ReceiveDate = Helpers.GetTimeFromAttribute(reader.GetAttribute("ReceiveDate"))?.Date;
+                        batch.ProcessDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ProcessDate"))?.Date;
+                        batch.ReceiveDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ReceiveDate"))?.Date;
                         batch.ScanDevice = reader.GetAttribute("ScanDevice");
                         batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
                         batch.TransportId = reader.GetAttribute("TransportId");
@@ -81,7 +81,7 @@ namespace OpexSDK
                     {
                         var referenceId = new ReferenceId
                         {
-                            Index = Helpers.GetIntFromAttribute(reader.GetAttribute("Index")),
+                            Index = AttributeHelpers.GetInt(reader.GetAttribute("Index")),
                             Response = reader.GetAttribute("Response"),
                             Name = reader.GetAttribute("Name")
                         };
@@ -94,11 +94,11 @@ namespace OpexSDK
                     {
                         var endInfo = new EndInfo
                         {
-                            EndTime = Helpers.GetTimeFromAttribute(reader.GetAttribute("EndTime")),
-                            NumPages = Helpers.GetIntFromAttribute(reader.GetAttribute("NumPages")),
-                            NumGroups = Helpers.GetIntFromAttribute(reader.GetAttribute("NumGroups")),
-                            NumTransactions = Helpers.GetIntFromAttribute(reader.GetAttribute("NumTransactions")),
-                            IsModified = Helpers.GetBooleanFromTrueFalseAttribute(reader.GetAttribute("IsModified"))
+                            EndTime = AttributeHelpers.GetDateTime(reader.GetAttribute("EndTime")),
+                            NumPages = AttributeHelpers.GetInt(reader.GetAttribute("NumPages")),
+                            NumGroups = AttributeHelpers.GetInt(reader.GetAttribute("NumGroups")),
+                            NumTransactions = AttributeHelpers.GetInt(reader.GetAttribute("NumTransactions")),
+                            IsModified = AttributeHelpers.GetBooleanFromTrueFalse(reader.GetAttribute("IsModified"))
                         };
 
                         batch.EndInfo = endInfo;
@@ -109,7 +109,7 @@ namespace OpexSDK
                     {
                         var transaction = new Transaction
                         {
-                            TransactionId = Helpers.GetIntFromAttribute(reader.GetAttribute("TransactionID"))
+                            TransactionId = AttributeHelpers.GetInt(reader.GetAttribute("TransactionID"))
                         };
 
                         using (XmlReader groupReader = reader.ReadSubtree())
@@ -121,7 +121,7 @@ namespace OpexSDK
                                 {
                                     var group = new Group
                                     {
-                                        GroupId = Helpers.GetIntFromAttribute(groupReader.GetAttribute("GroupID"))
+                                        GroupId = AttributeHelpers.GetInt(groupReader.GetAttribute("GroupID"))
                                     };
 
                                     using (XmlReader pageReader = groupReader.ReadSubtree())
@@ -135,47 +135,47 @@ namespace OpexSDK
                                                 var page = new Page
                                                 {
                                                     DocumentLocator =
-                                                        Helpers.GetIntFromAttribute(
+                                                        AttributeHelpers.GetInt(
                                                             pageReader.GetAttribute("DocumentLocator")),
-                                                    BatchSequence = Helpers.GetIntFromAttribute(
+                                                    BatchSequence = AttributeHelpers.GetInt(
                                                         pageReader.GetAttribute("BatchSequence")),
-                                                    TransactionSequence = Helpers.GetIntFromAttribute(
+                                                    TransactionSequence = AttributeHelpers.GetInt(
                                                         pageReader.GetAttribute("TransactionSequence")),
-                                                    GroupSequence = Helpers.GetIntFromAttribute(
+                                                    GroupSequence = AttributeHelpers.GetInt(
                                                         pageReader.GetAttribute("GroupSequence")),
-                                                    ScanSequence = Helpers.GetIntFromAttribute(
+                                                    ScanSequence = AttributeHelpers.GetInt(
                                                         pageReader.GetAttribute("ScanSequence")),
-                                                    ScanTime = Helpers.GetTimeFromAttribute(
+                                                    ScanTime = AttributeHelpers.GetDateTime(
                                                         pageReader.GetAttribute("ScanTime")),
                                                     ItemStatus =
-                                                        Helpers.GetItemStatus(pageReader.GetAttribute("ItemStatus")),
-                                                    IsVirtual = Helpers.GetBooleanFromYesNoAttribute(
+                                                        AttributeHelpers.GetItemStatus(pageReader.GetAttribute("ItemStatus")),
+                                                    IsVirtual = AttributeHelpers.GetBooleanFromYesNo(
                                                         pageReader.GetAttribute("IsVirtual")),
-                                                    PageType = Helpers.GetPageTypeFromAttribute(
+                                                    PageType = AttributeHelpers.GetPageType(
                                                         pageReader.GetAttribute("PageType")),
                                                     PageName = pageReader.GetAttribute("PageName"),
                                                     SubPageName = pageReader.GetAttribute("SubPageName"),
                                                     OperatorSelect =
-                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                        AttributeHelpers.GetBooleanFromYesNo(
                                                             pageReader.GetAttribute("OperatorSelect")),
                                                     Bin = pageReader.GetAttribute("Bin"),
                                                     AverageThickness =
-                                                        Helpers.GetFloatFromAttribute(
+                                                        AttributeHelpers.GetFloat(
                                                             pageReader.GetAttribute("AverageThickness")),
                                                     EnvelopeDetect =
-                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                        AttributeHelpers.GetEnvelopeDetect(
                                                             pageReader.GetAttribute("EnvelopeDetect")),
                                                     SkewDegrees =
-                                                        Helpers.GetFloatFromAttribute(
+                                                        AttributeHelpers.GetFloat(
                                                             pageReader.GetAttribute("SkewDegrees")),
                                                     DeskewStatus =
-                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                        AttributeHelpers.GetDeskewStatus(
                                                             pageReader.GetAttribute("DeskewStatus")),
                                                     FrontStreakDetectStatus =
-                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                        AttributeHelpers.GetFrontStreakDetectStatus(
                                                             pageReader.GetAttribute("FrontStreakDetectStatus")),
                                                     BackStreakDetectStatus =
-                                                        Helpers.GetBooleanFromYesNoAttribute(
+                                                        AttributeHelpers.GetBackStreakDetectStatus(
                                                             pageReader.GetAttribute("BackStreakDetectStatus")),
                                                     PlugInPageMessage = pageReader.GetAttribute("PlugInPageMessage"),
                                                     Length = pageReader.GetAttribute("Length"),
@@ -192,8 +192,8 @@ namespace OpexSDK
                                                         {
                                                             var image = new Image
                                                             {
-                                                                Index = Helpers.GetIntFromAttribute(pageSubReader.GetAttribute("Index")),
-                                                                RescanStatus = Helpers.GetRescanStatusFromAttribute(pageSubReader.GetAttribute("RescanStatus"))
+                                                                Index = AttributeHelpers.GetInt(pageSubReader.GetAttribute("Index")),
+                                                                RescanStatus = AttributeHelpers.GetRescanStatus(pageSubReader.GetAttribute("RescanStatus"))
                                                             };
 
                                                             page.Add(image);

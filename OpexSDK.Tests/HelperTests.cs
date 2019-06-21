@@ -10,134 +10,133 @@ namespace OpexSDK.Tests
         [Fact]
         public void GetJobType_ReturnsCorrectJobType()
         {
-            Assert.Equal(JobType.Single, Helpers.GetJobType("SINGLE"));
-            Assert.Equal(JobType.Multi, Helpers.GetJobType("MULTI"));
-            Assert.Equal(JobType.StubOnly, Helpers.GetJobType("STUB_ONLY"));
-            Assert.Equal(JobType.CheckOnly, Helpers.GetJobType("CHECK_ONLY"));
-            Assert.Equal(JobType.MultiWithPage, Helpers.GetJobType("MULTI_WITH_PAGE"));
-            Assert.Equal(JobType.PageOnly, Helpers.GetJobType("PAGE_ONLY"));
-            Assert.Equal(JobType.Unstructured, Helpers.GetJobType("UNSTRUCTURED"));
-            Assert.Equal(JobType.Structured, Helpers.GetJobType("STRUCTURED"));
-            Assert.Null(Helpers.GetJobType(""));
-            Assert.Null(Helpers.GetJobType(null));
+            Assert.Equal(JobType.Single, AttributeHelpers.GetJobType("SINGLE"));
+            Assert.Equal(JobType.Multi, AttributeHelpers.GetJobType("MULTI"));
+            Assert.Equal(JobType.StubOnly, AttributeHelpers.GetJobType("STUB_ONLY"));
+            Assert.Equal(JobType.CheckOnly, AttributeHelpers.GetJobType("CHECK_ONLY"));
+            Assert.Equal(JobType.MultiWithPage, AttributeHelpers.GetJobType("MULTI_WITH_PAGE"));
+            Assert.Equal(JobType.PageOnly, AttributeHelpers.GetJobType("PAGE_ONLY"));
+            Assert.Equal(JobType.Unstructured, AttributeHelpers.GetJobType("UNSTRUCTURED"));
+            Assert.Equal(JobType.Structured, AttributeHelpers.GetJobType("STRUCTURED"));
+            Assert.Null(AttributeHelpers.GetJobType(""));
+            Assert.Null(AttributeHelpers.GetJobType(null));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetJobType("SOME_RANDOM_STRING"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetJobType("SOME_RANDOM_STRING"));
         }
 
         [Fact]
         public void GetOperatingMode_ReturnsCorrectOperatingMode()
         {
-            Assert.Equal(OperatingMode.ManualScan, Helpers.GetOperatingMode("MANUAL_SCAN"));
-            Assert.Equal(OperatingMode.Modified, Helpers.GetOperatingMode("MODIFIED"));
-            Assert.Null(Helpers.GetOperatingMode(""));
-            Assert.Null(Helpers.GetOperatingMode(null));
+            Assert.Equal(OperatingMode.ManualScan, AttributeHelpers.GetOperatingMode("MANUAL_SCAN"));
+            Assert.Equal(OperatingMode.Modified, AttributeHelpers.GetOperatingMode("MODIFIED"));
+            Assert.Null(AttributeHelpers.GetOperatingMode(""));
+            Assert.Null(AttributeHelpers.GetOperatingMode(null));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetOperatingMode("SOME_RANDOM_STRING"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetOperatingMode("SOME_RANDOM_STRING"));
         }
 
         [Fact]
         public void GetItemStatus_ReturnsCorrectItemStatus()
         {
-            Assert.Equal(ItemStatus.Valid, Helpers.GetItemStatus("VALID"));
-            Assert.Equal(ItemStatus.Void, Helpers.GetItemStatus("VOID"));
-            Assert.Equal(ItemStatus.VoidMarked, Helpers.GetItemStatus("VOID MARKED"));
-            Assert.Null(Helpers.GetItemStatus(""));
-            Assert.Null(Helpers.GetItemStatus(null));
+            Assert.Equal(ItemStatus.Valid, AttributeHelpers.GetItemStatus("VALID"));
+            Assert.Equal(ItemStatus.Void, AttributeHelpers.GetItemStatus("VOID"));
+            Assert.Equal(ItemStatus.VoidMarked, AttributeHelpers.GetItemStatus("VOID MARKED"));
+            Assert.Null(AttributeHelpers.GetItemStatus(""));
+            Assert.Null(AttributeHelpers.GetItemStatus(null));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetItemStatus("SOME_RANDOM_STRING"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetItemStatus("SOME_RANDOM_STRING"));
         }
 
         [Fact]
         public void GetRescanStatus_ReturnsCorrectItemStatus()
         {
-            Assert.Equal(RescanStatus.Rescan, Helpers.GetRescanStatusFromAttribute("RESCAN"));
-            Assert.Equal(RescanStatus.NotRescan, Helpers.GetRescanStatusFromAttribute("NOT_RESCAN"));
-            Assert.Null(Helpers.GetRescanStatusFromAttribute(""));
-            Assert.Null(Helpers.GetRescanStatusFromAttribute(null));
+            Assert.Equal(RescanStatus.Rescan, AttributeHelpers.GetRescanStatus("RESCAN"));
+            Assert.Equal(RescanStatus.NotRescan, AttributeHelpers.GetRescanStatus("NOT_RESCAN"));
+            Assert.Null(AttributeHelpers.GetRescanStatus(""));
+            Assert.Null(AttributeHelpers.GetRescanStatus(null));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetRescanStatusFromAttribute("SOME_RANDOM_STRING"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetRescanStatus("SOME_RANDOM_STRING"));
         }
 
         [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
-            Assert.Equal(PageType.BatchTicket, Helpers.GetPageTypeFromAttribute("BATCH_TICKET"));
-            Assert.Equal(PageType.PersonalCheck, Helpers.GetPageTypeFromAttribute("PERSONAL_CHECK"));
-            Assert.Equal(PageType.BusinessCheck, Helpers.GetPageTypeFromAttribute("BUSINESS_CHECK"));
-            Assert.Equal(PageType.MoneyOrder, Helpers.GetPageTypeFromAttribute("MONEY_ORDER"));
-            Assert.Equal(PageType.Stub, Helpers.GetPageTypeFromAttribute("STUB"));
-            Assert.Equal(PageType.Page, Helpers.GetPageTypeFromAttribute("PAGE"));
-            Assert.Equal(PageType.Envelope, Helpers.GetPageTypeFromAttribute("ENVELOPE"));
-            Assert.Equal(PageType.CheckList, Helpers.GetPageTypeFromAttribute("CHECK_LIST"));
-            Assert.Equal(PageType.Cash, Helpers.GetPageTypeFromAttribute("CASH"));
-            Assert.Equal(PageType.CustomPage1, Helpers.GetPageTypeFromAttribute("CUSTOM_PAGE1"));
-            Assert.Equal(PageType.CustomPage2, Helpers.GetPageTypeFromAttribute("CUSTOM_PAGE2"));
-            Assert.Equal(PageType.CustomPage3, Helpers.GetPageTypeFromAttribute("CUSTOM_PAGE3"));
+            Assert.Equal(PageType.BatchTicket, AttributeHelpers.GetPageType("BATCH_TICKET"));
+            Assert.Equal(PageType.PersonalCheck, AttributeHelpers.GetPageType("PERSONAL_CHECK"));
+            Assert.Equal(PageType.BusinessCheck, AttributeHelpers.GetPageType("BUSINESS_CHECK"));
+            Assert.Equal(PageType.MoneyOrder, AttributeHelpers.GetPageType("MONEY_ORDER"));
+            Assert.Equal(PageType.Stub, AttributeHelpers.GetPageType("STUB"));
+            Assert.Equal(PageType.Page, AttributeHelpers.GetPageType("PAGE"));
+            Assert.Equal(PageType.Envelope, AttributeHelpers.GetPageType("ENVELOPE"));
+            Assert.Equal(PageType.CheckList, AttributeHelpers.GetPageType("CHECK_LIST"));
+            Assert.Equal(PageType.Cash, AttributeHelpers.GetPageType("CASH"));
+            Assert.Equal(PageType.CustomPage1, AttributeHelpers.GetPageType("CUSTOM_PAGE1"));
+            Assert.Equal(PageType.CustomPage2, AttributeHelpers.GetPageType("CUSTOM_PAGE2"));
+            Assert.Equal(PageType.CustomPage3, AttributeHelpers.GetPageType("CUSTOM_PAGE3"));
             
-            Assert.Null(Helpers.GetPageTypeFromAttribute(""));
-            Assert.Null(Helpers.GetPageTypeFromAttribute(null));
+            Assert.Null(AttributeHelpers.GetPageType(""));
+            Assert.Null(AttributeHelpers.GetPageType(null));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => Helpers.GetPageTypeFromAttribute("SOME_RANDOM_STRING"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetPageType("SOME_RANDOM_STRING"));
         }
 
         [Fact]
         public void GetTimeFromAttribute_ReturnsCorrectTime()
         {
-            Assert.Equal(new DateTime(2019, 3, 22, 23, 24, 07), Helpers.GetTimeFromAttribute("2019-03-22 23:24:07"));
-            Assert.Equal(new DateTime(2019, 3, 22), Helpers.GetTimeFromAttribute("2019-03-22"));
-            Assert.Null(Helpers.GetTimeFromAttribute(""));
-            Assert.Null(Helpers.GetTimeFromAttribute(null));
+            Assert.Equal(new DateTime(2019, 3, 22, 23, 24, 07), AttributeHelpers.GetDateTime("2019-03-22 23:24:07"));
+            Assert.Equal(new DateTime(2019, 3, 22), AttributeHelpers.GetDateTime("2019-03-22"));
+            Assert.Null(AttributeHelpers.GetDateTime(""));
+            Assert.Null(AttributeHelpers.GetDateTime(null));
 
-            Assert.Throws<FormatException>(() => Helpers.GetTimeFromAttribute("not_a_time"));
+            Assert.Throws<FormatException>(() => AttributeHelpers.GetDateTime("not_a_time"));
         }
 
         [Fact]
         public void GetIntFromAttribute_ReturnsCorrectInt()
         {
-            Assert.Equal(12345, Helpers.GetIntFromAttribute("12345"));
-            Assert.Null(Helpers.GetIntFromAttribute(""));
-            Assert.Null(Helpers.GetIntFromAttribute(null));
+            Assert.Equal(12345, AttributeHelpers.GetInt("12345"));
+            Assert.Null(AttributeHelpers.GetInt(""));
+            Assert.Null(AttributeHelpers.GetInt(null));
 
-            Assert.Throws<FormatException>(() => Helpers.GetIntFromAttribute("not_an_int"));
+            Assert.Throws<FormatException>(() => AttributeHelpers.GetInt("not_an_int"));
         }
 
         [Fact]
         public void GetFloatFromAttribute_ReturnsCorrectFloat()
         {
-            Assert.Equal(12345, Helpers.GetFloatFromAttribute("12345"));
-            Assert.Equal(123.45f, Helpers.GetFloatFromAttribute("123.45"));
-            Assert.Equal(-123.45f, Helpers.GetFloatFromAttribute("-123.45"));
-            Assert.Equal(0.45f, Helpers.GetFloatFromAttribute("0.45"));
-            Assert.Equal(0.45f, Helpers.GetFloatFromAttribute(".45"));
-            Assert.Equal(-0.45f, Helpers.GetFloatFromAttribute("-0.45"));
-            Assert.Equal(-0.45f, Helpers.GetFloatFromAttribute("-.45"));
-            Assert.Null(Helpers.GetFloatFromAttribute(""));
-            Assert.Null(Helpers.GetFloatFromAttribute(null));
+            Assert.Equal(12345, AttributeHelpers.GetFloat("12345"));
+            Assert.Equal(123.45f, AttributeHelpers.GetFloat("123.45"));
+            Assert.Equal(-123.45f, AttributeHelpers.GetFloat("-123.45"));
+            Assert.Equal(0.45f, AttributeHelpers.GetFloat("0.45"));
+            Assert.Equal(0.45f, AttributeHelpers.GetFloat(".45"));
+            Assert.Equal(-0.45f, AttributeHelpers.GetFloat("-0.45"));
+            Assert.Equal(-0.45f, AttributeHelpers.GetFloat("-.45"));
+            Assert.Null(AttributeHelpers.GetFloat(""));
+            Assert.Null(AttributeHelpers.GetFloat(null));
 
-            Assert.Throws<FormatException>(() => Helpers.GetFloatFromAttribute("not_a_float"));
+            Assert.Throws<FormatException>(() => AttributeHelpers.GetFloat("not_a_float"));
         }
 
         [Fact]
         public void GetBooleanFromTrueFalseAttribute_ReturnsCorrectBoolean()
         {
-            Assert.True(Helpers.GetBooleanFromTrueFalseAttribute("TRUE"));
-            Assert.False(Helpers.GetBooleanFromTrueFalseAttribute("FALSE"));
-            Assert.Null(Helpers.GetBooleanFromTrueFalseAttribute(""));
-            Assert.Null(Helpers.GetBooleanFromTrueFalseAttribute(null));
+            Assert.True(AttributeHelpers.GetBooleanFromTrueFalse("TRUE"));
+            Assert.False(AttributeHelpers.GetBooleanFromTrueFalse("FALSE"));
+            Assert.Null(AttributeHelpers.GetBooleanFromTrueFalse(""));
+            Assert.Null(AttributeHelpers.GetBooleanFromTrueFalse(null));
 
-            Assert.Throws<FormatException>(() => Helpers.GetBooleanFromTrueFalseAttribute("not_a_bool"));
+            Assert.Throws<FormatException>(() => AttributeHelpers.GetBooleanFromTrueFalse("not_a_bool"));
         }
 
         [Fact]
         public void GetBooleanFromYesNoAttribute_ReturnsCorrectBoolean()
         {
-            Assert.True(Helpers.GetBooleanFromYesNoAttribute("YES"));
-            Assert.False(Helpers.GetBooleanFromYesNoAttribute("NO"));
-            Assert.Null(Helpers.GetBooleanFromYesNoAttribute("INACTIVE"));
-            Assert.Null(Helpers.GetBooleanFromYesNoAttribute(""));
-            Assert.Null(Helpers.GetBooleanFromYesNoAttribute(null));
+            Assert.True(AttributeHelpers.GetBooleanFromYesNo("YES"));
+            Assert.False(AttributeHelpers.GetBooleanFromYesNo("NO"));
+            Assert.Null(AttributeHelpers.GetBooleanFromYesNo(""));
+            Assert.Null(AttributeHelpers.GetBooleanFromYesNo(null));
 
-            Assert.Throws<FormatException>(() => Helpers.GetBooleanFromYesNoAttribute("not_a_yes_or_no"));
+            Assert.Throws<FormatException>(() => AttributeHelpers.GetBooleanFromYesNo("not_a_yes_or_no"));
         }
 
 

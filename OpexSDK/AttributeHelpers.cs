@@ -8,9 +8,9 @@ using OpexSDK.Enumerations;
 
 namespace OpexSDK
 {
-    internal static class Helpers
+    internal static class AttributeHelpers
     {
-        internal static DateTime? GetTimeFromAttribute(string attributeValue)
+        internal static DateTime? GetDateTime(string attributeValue)
         {
             if (string.IsNullOrWhiteSpace(attributeValue))
             {
@@ -20,7 +20,7 @@ namespace OpexSDK
             return XmlConvert.ToDateTime(attributeValue, new string[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" });
         }
 
-        internal static int? GetIntFromAttribute(string attributeValue)
+        internal static int? GetInt(string attributeValue)
         {
             if (string.IsNullOrWhiteSpace(attributeValue))
             {
@@ -74,7 +74,7 @@ namespace OpexSDK
             }
         }
 
-        internal static bool? GetBooleanFromTrueFalseAttribute(string attributeValue)
+        internal static bool? GetBooleanFromTrueFalse(string attributeValue)
         {
             if (string.IsNullOrWhiteSpace(attributeValue))
             {
@@ -84,7 +84,7 @@ namespace OpexSDK
             return Convert.ToBoolean(attributeValue);
         }
 
-        internal static bool? GetBooleanFromYesNoAttribute(string attributeValue)
+        internal static bool? GetBooleanFromYesNo(string attributeValue)
         {
             if (string.IsNullOrWhiteSpace(attributeValue))
             {
@@ -99,11 +99,6 @@ namespace OpexSDK
             if (attributeValue.Equals("no", StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
-            }
-
-            if (attributeValue.Equals("inactive", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return null;
             }
 
             throw new FormatException("Value must be yes or no.");
@@ -127,7 +122,7 @@ namespace OpexSDK
             }
         }
 
-        internal static PageType? GetPageTypeFromAttribute(string attributeValue)
+        internal static PageType? GetPageType(string attributeValue)
         {
             switch (attributeValue)
             {
@@ -163,7 +158,7 @@ namespace OpexSDK
             }
         }
 
-        internal static float? GetFloatFromAttribute(string attributeValue)
+        internal static float? GetFloat(string attributeValue)
         {
             if (string.IsNullOrWhiteSpace(attributeValue))
             {
@@ -174,7 +169,7 @@ namespace OpexSDK
         }
 
 
-        public static RescanStatus? GetRescanStatusFromAttribute(string attributeValue)
+        internal static RescanStatus? GetRescanStatus(string attributeValue)
         {
             switch (attributeValue)
             {
@@ -188,6 +183,51 @@ namespace OpexSDK
                 default:
                     throw new ArgumentOutOfRangeException(nameof(attributeValue));
             }
+        }
+
+        internal static EnvelopeDetect? GetEnvelopeDetect(string attributeValue)
+        {
+            return (EnvelopeDetect?)GetYesNoInactive(attributeValue);
+        }
+
+        internal static DeskewStatus? GetDeskewStatus(string attributeValue)
+        {
+            return (DeskewStatus?)GetYesNoInactive(attributeValue);
+        }
+
+        internal static FrontStreakDetectStatus? GetFrontStreakDetectStatus(string attributeValue)
+        {
+            return (FrontStreakDetectStatus?)GetYesNoInactive(attributeValue);
+        }
+
+        internal static BackStreakDetectStatus? GetBackStreakDetectStatus(string attributeValue)
+        {
+            return (BackStreakDetectStatus?) GetYesNoInactive(attributeValue);
+        }
+
+        private static int? GetYesNoInactive(string attributeValue)
+        {
+            if (string.IsNullOrWhiteSpace(attributeValue))
+            {
+                return null;
+            }
+
+            if (attributeValue == "YES")
+            {
+                return 0;
+            }
+
+            if (attributeValue == "NO")
+            {
+                return 1;
+            }
+
+            if (attributeValue == "INACTIVE")
+            {
+                return 2;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(attributeValue));
         }
     }
 }
