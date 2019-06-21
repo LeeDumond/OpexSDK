@@ -282,21 +282,33 @@ namespace OpexSDK.Tests
             Assert.Equal(ImageResolution.ThreeHundred, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
             Assert.Equal(ImageResolution.TwoHundredForty, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionHeight);
 
-            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Images[1].Index);
-            Assert.Equal(RescanStatus.Rescan, batch.Transactions[0].Groups[0].Pages[0].Images[1].RescanStatus);
-            Assert.Equal(ScantimeFinalBlankAreaDecision.NotBlank, batch.Transactions[0].Groups[0].Pages[0].Images[1].ScantimeFinalBlankAreaDecision);
-            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Images[1].Side);
-            Assert.Equal(ImageType.Full, batch.Transactions[0].Groups[0].Pages[0].Images[1].Type);
-            Assert.Equal(ImageDepth.Grayscale, batch.Transactions[0].Groups[0].Pages[0].Images[1].Depth);
-            Assert.Equal(ImageFormat.TIFF, batch.Transactions[0].Groups[0].Pages[0].Images[1].Format);
-            Assert.Equal("12345.tif", batch.Transactions[0].Groups[0].Pages[0].Images[1].Filename);
-            Assert.Equal(1234567, batch.Transactions[0].Groups[0].Pages[0].Images[1].Filesize);
-            Assert.Equal(1700, batch.Transactions[0].Groups[0].Pages[0].Images[1].Length);
-            Assert.Equal(300, batch.Transactions[0].Groups[0].Pages[0].Images[1].Height);
-            Assert.Equal(400, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetLength);
-            Assert.Equal(60, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetHeight);
-            Assert.Equal(ImageResolution.ThreeHundred, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
-            Assert.Equal(ImageResolution.TwoHundredForty, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionHeight);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images[1].Index);
+            Assert.Equal(RescanStatus.NotRescan, batch.Transactions[0].Groups[0].Pages[0].Images[1].RescanStatus);
+            Assert.Equal(ScantimeFinalBlankAreaDecision.Undetermined, batch.Transactions[0].Groups[0].Pages[0].Images[1].ScantimeFinalBlankAreaDecision);
+            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Images[1].Side);
+            Assert.Equal(ImageType.Snippet, batch.Transactions[0].Groups[0].Pages[0].Images[1].Type);
+            Assert.Equal(ImageDepth.Color, batch.Transactions[0].Groups[0].Pages[0].Images[1].Depth);
+            Assert.Equal(ImageFormat.JPEG, batch.Transactions[0].Groups[0].Pages[0].Images[1].Format);
+            Assert.Equal("67890.jpg", batch.Transactions[0].Groups[0].Pages[0].Images[1].Filename);
+            Assert.Equal(23456789, batch.Transactions[0].Groups[0].Pages[0].Images[1].Filesize);
+            Assert.Equal(200, batch.Transactions[0].Groups[0].Pages[0].Images[1].Length);
+            Assert.Equal(1800, batch.Transactions[0].Groups[0].Pages[0].Images[1].Height);
+            Assert.Equal(0, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetLength);
+            Assert.Equal(240, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetHeight);
+            Assert.Equal(ImageResolution.TwoHundred, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
+            Assert.Equal(ImageResolution.OneHundredFifty, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionHeight);
+
+            
+        }
+
+        [Fact]
+        public async Task ReadBatchAsync_CustomDataPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
+            Assert.Equal("Hello from ScanLink", batch.Transactions[0].Groups[0].Pages[0].CustomData.Entry);
         }
 
         [Fact]

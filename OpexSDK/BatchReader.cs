@@ -187,7 +187,7 @@ namespace OpexSDK
                                                     while (await pageSubReader.ReadAsync())
                                                     {
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("IMAGE",
+                                                            pageSubReader.Name.Equals("IMAGE",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
                                                             var image = new Image
@@ -213,16 +213,19 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("CUSTOMDATA",
+                                                            pageSubReader.Name.Equals("CUSTOMDATA",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
-                                                            var customData = new CustomData();
+                                                            var customData = new CustomData
+                                                            {
+                                                                Entry = pageSubReader.GetAttribute("Entry")
+                                                            };
 
                                                             page.CustomData = customData;
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("MICR",
+                                                            pageSubReader.Name.Equals("MICR",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
                                                             var micr = new Micr();
@@ -231,7 +234,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("OCR",
+                                                            pageSubReader.Name.Equals("OCR",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
                                                             var ocr = new Ocr();
@@ -240,7 +243,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("BARCODE",
+                                                            pageSubReader.Name.Equals("BARCODE",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
                                                             var barcode = new Barcode();
@@ -249,7 +252,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("MARKDETECT",
+                                                            pageSubReader.Name.Equals("MARKDETECT",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
                                                             var markDetect = new MarkDetect();
@@ -258,7 +261,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("AUDITTRAIL",
+                                                            pageSubReader.Name.Equals("AUDITTRAIL",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
                                                             var auditTrail = new AuditTrail();
@@ -267,7 +270,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                            pageReader.Name.Equals("TAG",
+                                                            pageSubReader.Name.Equals("TAG",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
                                                             var tag = new Tag();

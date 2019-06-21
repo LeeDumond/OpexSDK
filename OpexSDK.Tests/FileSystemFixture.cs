@@ -24,9 +24,9 @@ namespace OpexSDK.Tests
                      Filesize=""1234567"" Length=""1700"" Height=""300"" OffsetLength=""400"" OffsetHeight=""60"" ResolutionLength=""300"" ResolutionHeight=""240"">
                 </IMAGE>
                 <IMAGE Index=""2"" RescanStatus=""NOT_RESCAN"" ScantimeFinalBlankAreaDecision=""UNDETERMINED"" Side=""BACK"" Type=""SNIPPET"" Depth=""24"" Format=""JPEG"" Filename=""67890.jpg""
-                     FileSize=""23456789"" Length=""200"" Height=""1800"" OffsetLength=""0"" OffsetHeight=""240"" ResolutionLength=""200"" ResolutionHeight=""150"">
+                     Filesize=""23456789"" Length=""200"" Height=""1800"" OffsetLength=""0"" OffsetHeight=""240"" ResolutionLength=""200"" ResolutionHeight=""150"">
                 </IMAGE>
-                <CUSTOMDATA Entry="""" />
+                <CUSTOMDATA Entry=""Hello from ScanLink"" />
                 <MICR Status="""" RtStatus="""" CheckType="""" Side="""" Value="""" />
                 <MICR Status="""" RtStatus="""" CheckType="""" Side="""" Value="""" />
                 <OCR Index="""" Side="""" Value="""" Name="""" />
