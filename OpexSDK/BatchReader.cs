@@ -196,7 +196,7 @@ namespace OpexSDK
                                                                 RescanStatus = Helpers.GetRescanStatusFromAttribute(pageSubReader.GetAttribute("RescanStatus"))
                                                             };
 
-                                                            page.Images.Add(image);
+                                                            page.Add(image);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
@@ -214,7 +214,7 @@ namespace OpexSDK
                                                         {
                                                             var micr = new Micr();
 
-                                                            page.Micrs.Add(micr);
+                                                            page.Add(micr);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
@@ -223,7 +223,7 @@ namespace OpexSDK
                                                         {
                                                             var ocr = new Ocr();
 
-                                                            page.Ocrs.Add(ocr);
+                                                            page.Add(ocr);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
@@ -232,7 +232,7 @@ namespace OpexSDK
                                                         {
                                                             var barcode = new Barcode();
 
-                                                            page.Barcodes.Add(barcode);
+                                                            page.Add(barcode);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
@@ -241,7 +241,7 @@ namespace OpexSDK
                                                         {
                                                             var markDetect = new MarkDetect();
 
-                                                            page.MarkDetects.Add(markDetect);
+                                                            page.Add(markDetect);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
@@ -250,7 +250,7 @@ namespace OpexSDK
                                                         {
                                                             var auditTrail = new AuditTrail();
 
-                                                            page.AuditTrails.Add(auditTrail);
+                                                            page.Add(auditTrail);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
@@ -259,7 +259,7 @@ namespace OpexSDK
                                                         {
                                                             var tag = new Tag();
 
-                                                            page.Tags.Add(tag);
+                                                            page.Add(tag);
                                                         }
                                                     }
                                                 }

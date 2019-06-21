@@ -27,7 +27,7 @@ namespace OpexSDK.Models
         /// If true, the area was determined to be blank; if false, the area was determined not to be blank; if null, the image was not tested for blank area.
         /// If true, the Filename is expected to be null.
         /// </summary>
-        public bool? ScantimeFinalBlankAreaDecision { get; internal set; }
+        public ScantimeFinalBlankAreaDecision? ScantimeFinalBlankAreaDecision { get; internal set; }
 
         /// <summary>
         /// Indicates which side of the page the image was taken from.

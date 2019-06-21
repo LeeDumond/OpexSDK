@@ -15,26 +15,26 @@ namespace OpexSDK.Models
         /// <summary>
         /// Indicates the outcome of the MICR read.
         /// </summary>
-        public MicrStatus Status { get; set; }
+        public MicrStatus? Status { get; internal set; }
 
         /// <summary>
         /// Indicates the outcome of determining the check routing and transit field.
         /// </summary>
-        public RtStatus RtStatus { get; set; }
+        public RtStatus? RtStatus { get; internal set; }
 
         /// <summary>
         /// Indicates the type of check and the country of origin.
         /// </summary>
-        public CheckType CheckType { get; set; }
+        public CheckType? CheckType { get; internal set; }
 
         /// <summary>
         /// Indicates the side on which the MICR read was performed. Normally, this will be Front.
         /// </summary>
-        public Side Side { get; set; }
+        public Side? Side { get; internal set; }
 
         /// <summary>
         /// The final result of the MICR read. Data includes numeric digits plus the following special symbol designators: 'c' – on us 'd' – routing/transit 'b' – amount '-' – dash '!' – rejected or unknown character.
         /// </summary>
-        public string Value { get; set; }
+        public string Value { get; internal set; }
     }
 }

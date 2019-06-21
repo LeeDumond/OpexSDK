@@ -8,24 +8,29 @@ namespace OpexSDK.Models
     /// </summary>
     public class MarkDetect
     {
+        internal MarkDetect()
+        {
+
+        }
+
         /// <summary>
         /// The index of the Mark read, as configured in the job. Values are 1-indexed. (i.e., "1" is the first index.)
         /// </summary>
-        public int Index { get; set; }
+        public int? Index { get; internal set; }
 
         /// <summary>
         /// Side on which the Mark Detect read was performed.
         /// </summary>
-        public Side Side { get; set; }
+        public Side? Side { get; internal set; }
 
         /// <summary>
         /// Indicates the outcome of the Mark detection. True if a mark was found; otherwise false. 
         /// </summary>
-        public bool Result { get; set; }
+        public bool? Result { get; internal set; }
 
         /// <summary>
         /// Reiterates the index of the Mark read, i.e. if Index is x, this value will be 'MARK x'.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; internal set; }
     }
 }
