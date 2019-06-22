@@ -27,8 +27,8 @@ namespace OpexSDK.Tests
                      Filesize=""23456789"" Length=""200"" Height=""1800"" OffsetLength=""0"" OffsetHeight=""240"" ResolutionLength=""200"" ResolutionHeight=""150"">
                 </IMAGE>
                 <CUSTOMDATA Entry=""Hello from ScanLink"" />
-                <MICR Status="""" RtStatus="""" CheckType="""" Side="""" Value="""" />
-                <MICR Status="""" RtStatus="""" CheckType="""" Side="""" Value="""" />
+                <MICR Status=""GOOD"" RtStatus=""GOOD"" CheckType=""US"" Side=""FRONT"" Value=""d031201360d8659741c0401"" />
+                <MICR Status=""NO_MICR"" RtStatus=""NOT_FOUND"" CheckType=""UNKNOWN"" Side=""BACK"" Value="""" />
                 <OCR Index="""" Side="""" Value="""" Name="""" />
                 <BARCODE Index="""" Type="""" Side="""" Value="""" />
                 <MARKDETECT Index="""" Side="""" Result="""" Name="""" />

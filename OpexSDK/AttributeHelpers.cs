@@ -370,5 +370,48 @@ namespace OpexSDK
                     throw new ArgumentOutOfRangeException(nameof(attributeValue));
             }
         }
+
+        internal static MicrStatus? GetMicrStatus(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "GOOD":
+                    return MicrStatus.Good;
+                case "PARTIAL":
+                    return MicrStatus.Partial;
+                case "BAD":
+                    return MicrStatus.Bad;
+                case "NO_MICR":
+                    return MicrStatus.NoMicr;
+                case "INACTIVE":
+                    return MicrStatus.Inactive;
+                case "ERROR":
+                    return MicrStatus.Error;
+
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
+
+        internal static RtStatus? GetRtStatus(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "GOOD":
+                    return RtStatus.Good;
+                case "BAD":
+                    return RtStatus.Bad;
+                case "NOT_FOUND":
+                    return RtStatus.NotFound;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
     }
 }

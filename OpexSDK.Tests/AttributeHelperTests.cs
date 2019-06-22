@@ -191,6 +191,35 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetMicrStatus_ReturnsCorrectMicrStatus()
+        {
+            Assert.Equal(MicrStatus.Good, AttributeHelpers.GetMicrStatus("GOOD"));
+            Assert.Equal(MicrStatus.Partial, AttributeHelpers.GetMicrStatus("PARTIAL"));
+            Assert.Equal(MicrStatus.Bad, AttributeHelpers.GetMicrStatus("BAD"));
+            Assert.Equal(MicrStatus.NoMicr, AttributeHelpers.GetMicrStatus("NO_MICR"));
+            Assert.Equal(MicrStatus.Inactive, AttributeHelpers.GetMicrStatus("INACTIVE"));
+            Assert.Equal(MicrStatus.Error, AttributeHelpers.GetMicrStatus("ERROR"));
+            
+            Assert.Null(AttributeHelpers.GetMicrStatus(""));
+            Assert.Null(AttributeHelpers.GetMicrStatus(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetMicrStatus("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
+        public void GetRtStatus_ReturnsCorrectRtStatus()
+        {
+            Assert.Equal(RtStatus.Good, AttributeHelpers.GetRtStatus("GOOD"));
+            Assert.Equal(RtStatus.Bad, AttributeHelpers.GetRtStatus("BAD"));
+            Assert.Equal(RtStatus.NotFound, AttributeHelpers.GetRtStatus("NOT_FOUND"));
+            
+            Assert.Null(AttributeHelpers.GetRtStatus(""));
+            Assert.Null(AttributeHelpers.GetRtStatus(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetRtStatus("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
             Assert.Equal(PageType.BatchTicket, AttributeHelpers.GetPageType("BATCH_TICKET"));

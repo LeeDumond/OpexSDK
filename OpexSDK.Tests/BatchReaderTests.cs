@@ -319,6 +319,18 @@ namespace OpexSDK.Tests
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Micrs.Count);
 
+            Assert.Equal(MicrStatus.Good, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Status);
+            Assert.Equal(RtStatus.Good, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].RtStatus);
+            Assert.Equal(CheckType.US, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].CheckType);
+            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Side);
+            Assert.Equal("d031201360d8659741c0401", batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Value);
+
+            Assert.Equal(MicrStatus.NoMicr, batch.Transactions[0].Groups[0].Pages[0].Micrs[1].Status);
+            Assert.Equal(RtStatus.NotFound, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].RtStatus);
+            Assert.Equal(CheckType.Unknown, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].CheckType);
+            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Side);
+            Assert.Equal("", batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Value);
+
         }
 
         [Fact]

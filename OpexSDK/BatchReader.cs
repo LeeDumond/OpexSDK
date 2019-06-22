@@ -228,7 +228,14 @@ namespace OpexSDK
                                                             pageSubReader.Name.Equals("MICR",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
-                                                            var micr = new Micr();
+                                                            var micr = new Micr
+                                                            {
+                                                                Status = AttributeHelpers.GetMicrStatus(
+                                                                    pageSubReader.GetAttribute("Status")),
+                                                                RtStatus = AttributeHelpers.GetRtStatus(
+                                                                    pageSubReader.GetAttribute("RtStatus")),
+
+                                                            };
 
                                                             page.Add(micr);
                                                         }
