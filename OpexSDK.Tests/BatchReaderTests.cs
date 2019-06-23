@@ -50,23 +50,6 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatchAsync_ReturnsNonNullBatch()
-        {
-            string batchFileContents = "<Batch></Batch>";
-
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\Opex\test.oxi", new MockFileData(batchFileContents)}
-            });
-
-            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
-
-            Batch batch = await reader.ReadBatchAsync();
-
-            Assert.NotNull(batch);
-        }
-
-        [Fact]
         public async Task ReadBatchAsync_CollectionsInitialized()
         {
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
