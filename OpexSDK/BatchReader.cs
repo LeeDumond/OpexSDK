@@ -39,7 +39,6 @@ namespace OpexSDK
         //todo implement sync reader
         //todo handle attribute casing
         //todo finish docs
-        //todo check coverage
 
         internal BatchReader(string batchFilePath, IFileSystem fileSystem)
         {
