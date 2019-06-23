@@ -17,14 +17,6 @@ namespace OpexSDK
 
         public BatchReader(string batchFilePath) : this(batchFilePath, new FileSystem())
         {
-        }
-
-        //todo test encodings
-        //todo implement sync reader
-        //todo handle attribute casing
-
-        internal BatchReader(string batchFilePath, IFileSystem fileSystem)
-        {
             if (batchFilePath == null)
             {
                 throw new ArgumentNullException(nameof(batchFilePath));
@@ -41,7 +33,16 @@ namespace OpexSDK
             {
                 throw new NotSupportedException("The file indicated by the supplied path must end in '.oxi'");
             }
+        }
 
+        //todo verify schema
+        //todo test encodings
+        //todo implement sync reader
+        //todo handle attribute casing
+        //todo finish docs
+
+        internal BatchReader(string batchFilePath, IFileSystem fileSystem)
+        {
             _batchFilePath = batchFilePath;
             _fileSystem = fileSystem;
         }
