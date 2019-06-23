@@ -118,7 +118,7 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatchAsync_ReferenceIdsPopulated()
+        public async Task ReadBatchAsync_BatchReferenceIdsPopulated()
         {
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
@@ -453,6 +453,23 @@ namespace OpexSDK.Tests
 
             Assert.Equal("External Camera", batch.Transactions[0].Groups[0].Pages[0].Tags[1].Source);
             Assert.Equal("Invoice", batch.Transactions[0].Groups[0].Pages[0].Tags[1].Value);
+        }
+
+        [Fact]
+        public async Task ReadBatchAsync_PageReferenceIdsPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].ReferenceIds.Count);
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].ReferenceIds[0].Index);
+            Assert.Equal("High Priority", batch.Transactions[0].Groups[0].Pages[0].ReferenceIds[0].Response);
+            Assert.Equal("Priority", batch.Transactions[0].Groups[0].Pages[0].ReferenceIds[0].Name);
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].ReferenceIds[1].Index);
+            Assert.Equal("Mint Chocolate Chip", batch.Transactions[0].Groups[0].Pages[0].ReferenceIds[1].Response);
+            Assert.Equal("Ice Cream", batch.Transactions[0].Groups[0].Pages[0].ReferenceIds[1].Name);
         }
 
         [Fact]

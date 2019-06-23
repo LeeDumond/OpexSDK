@@ -39,6 +39,8 @@ namespace OpexSDK.Tests
                 <AUDITTRAIL Type=""ELECTRONIC"" Side=""FRONT"" Apply=""FALSE"" Text=""CCCIS Inc."" />
                 <TAG Source=""MFD Override"" Value=""Medical Record"" />
                 <TAG Source=""External Camera"" Value=""Invoice"" />
+                <REFERENCEID Index=""1"" Response=""High Priority"" Name=""Priority"" />
+                <REFERENCEID Index=""2"" Response=""Mint Chocolate Chip"" Name=""Ice Cream"" />
             </PAGE>
             <PAGE DocumentLocator=""2"" TransactionSequence=""2"" GroupSequence=""2"" BatchSequence=""2"" ScanSequence=""5"" ScanTime=""2019-03-22 23:25:18""
               ItemStatus=""VOID"" IsVirtual=""YES"" PageType=""CUSTOM_PAGE1"" PageName=""Affidavit"" SubPageName=""Notarization"" OperatorSelect=""YES"" Bin=""MyBin2"" Length=""8.500 IN"" 

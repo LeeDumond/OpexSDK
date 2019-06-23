@@ -39,6 +39,7 @@ namespace OpexSDK
         //todo implement sync reader
         //todo handle attribute casing
         //todo finish docs
+        //todo check coverage
 
         internal BatchReader(string batchFilePath, IFileSystem fileSystem)
         {
@@ -307,6 +308,21 @@ namespace OpexSDK
                                                             };
 
                                                             page.Add(auditTrail);
+                                                        }
+
+                                                        if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("REFERENCEID",
+                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            var referenceId = new ReferenceId
+                                                            {
+                                                                Index = AttributeHelpers.GetInt(pageSubReader.GetAttribute("Index")),
+                                                                Response = pageSubReader.GetAttribute("Response"),
+                                                                Name = pageSubReader.GetAttribute("Name")
+
+                                                            };
+
+                                                            page.Add(referenceId);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() == XmlNodeType.Element &&
