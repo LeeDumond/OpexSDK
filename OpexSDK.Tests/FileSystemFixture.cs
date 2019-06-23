@@ -29,8 +29,10 @@ namespace OpexSDK.Tests
                 <CUSTOMDATA Entry=""Hello from ScanLink"" />
                 <MICR Status=""GOOD"" RtStatus=""GOOD"" CheckType=""US"" Side=""FRONT"" Value=""d031201360d8659741c0401"" />
                 <MICR Status=""NO_MICR"" RtStatus=""NOT_FOUND"" CheckType=""UNKNOWN"" Side=""BACK"" Value="""" />
-                <OCR Index="""" Side="""" Value="""" Name="""" />
-                <BARCODE Index="""" Type="""" Side="""" Value="""" />
+                <OCR Index=""1"" Side=""FRONT"" Value=""This is the !alue of first read"" Name=""OCR 1"" />
+                <OCR Index=""2"" Side=""BACK"" Value="""" Name=""OCR 2"" />
+                <BARCODE Index=""1"" Type=""Code 39"" Side=""FRONT"" Value=""08057423"" />
+                <BARCODE Index=""2"" Type=""EAN-8"" Side=""BACK"" Value=""10110 Jupiter Hills Drive"" />
                 <MARKDETECT Index="""" Side="""" Result="""" Name="""" />
                 <AUDITTRAIL Index="""" Side="""" Apply="""" Text="""" />
                 <TAG Source="""" Value="""" />

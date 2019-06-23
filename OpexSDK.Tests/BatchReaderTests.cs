@@ -211,7 +211,8 @@ namespace OpexSDK.Tests
             Assert.Equal(13.2f, batch.Transactions[0].Groups[0].Pages[1].SkewDegrees);
             Assert.Equal(DeskewStatus.No, batch.Transactions[0].Groups[0].Pages[1].DeskewStatus);
             Assert.Equal(FrontStreakDetectStatus.Yes, batch.Transactions[0].Groups[0].Pages[1].FrontStreakDetectStatus);
-            Assert.Equal(BackStreakDetectStatus.Inactive, batch.Transactions[0].Groups[0].Pages[1].BackStreakDetectStatus);
+            Assert.Equal(BackStreakDetectStatus.Inactive,
+                batch.Transactions[0].Groups[0].Pages[1].BackStreakDetectStatus);
             Assert.Equal("Queue 4", batch.Transactions[0].Groups[0].Pages[1].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].AuditTrails);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Barcodes);
@@ -244,7 +245,8 @@ namespace OpexSDK.Tests
             Assert.Equal(2.14f, batch.Transactions[0].Groups[1].Pages[0].AverageThickness);
             Assert.Equal(-9.5f, batch.Transactions[0].Groups[1].Pages[0].SkewDegrees);
             Assert.Equal(DeskewStatus.Inactive, batch.Transactions[0].Groups[1].Pages[0].DeskewStatus);
-            Assert.Equal(FrontStreakDetectStatus.Inactive, batch.Transactions[0].Groups[1].Pages[0].FrontStreakDetectStatus);
+            Assert.Equal(FrontStreakDetectStatus.Inactive,
+                batch.Transactions[0].Groups[1].Pages[0].FrontStreakDetectStatus);
             Assert.Equal(BackStreakDetectStatus.No, batch.Transactions[0].Groups[1].Pages[0].BackStreakDetectStatus);
             Assert.Equal("Queue 4", batch.Transactions[0].Groups[1].Pages[0].PlugInPageMessage);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].AuditTrails);
@@ -268,7 +270,8 @@ namespace OpexSDK.Tests
 
             Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Images[0].Index);
             Assert.Equal(RescanStatus.Rescan, batch.Transactions[0].Groups[0].Pages[0].Images[0].RescanStatus);
-            Assert.Equal(ScantimeFinalBlankAreaDecision.NotBlank, batch.Transactions[0].Groups[0].Pages[0].Images[0].ScantimeFinalBlankAreaDecision);
+            Assert.Equal(ScantimeFinalBlankAreaDecision.NotBlank,
+                batch.Transactions[0].Groups[0].Pages[0].Images[0].ScantimeFinalBlankAreaDecision);
             Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Images[0].Side);
             Assert.Equal(ImageType.Full, batch.Transactions[0].Groups[0].Pages[0].Images[0].Type);
             Assert.Equal(ImageDepth.Grayscale, batch.Transactions[0].Groups[0].Pages[0].Images[0].Depth);
@@ -279,12 +282,15 @@ namespace OpexSDK.Tests
             Assert.Equal(300, batch.Transactions[0].Groups[0].Pages[0].Images[0].Height);
             Assert.Equal(400, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetLength);
             Assert.Equal(60, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetHeight);
-            Assert.Equal(ImageResolution.ThreeHundred, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
-            Assert.Equal(ImageResolution.TwoHundredForty, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionHeight);
+            Assert.Equal(ImageResolution.ThreeHundred,
+                batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
+            Assert.Equal(ImageResolution.TwoHundredForty,
+                batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionHeight);
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images[1].Index);
             Assert.Equal(RescanStatus.NotRescan, batch.Transactions[0].Groups[0].Pages[0].Images[1].RescanStatus);
-            Assert.Equal(ScantimeFinalBlankAreaDecision.Undetermined, batch.Transactions[0].Groups[0].Pages[0].Images[1].ScantimeFinalBlankAreaDecision);
+            Assert.Equal(ScantimeFinalBlankAreaDecision.Undetermined,
+                batch.Transactions[0].Groups[0].Pages[0].Images[1].ScantimeFinalBlankAreaDecision);
             Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Images[1].Side);
             Assert.Equal(ImageType.Snippet, batch.Transactions[0].Groups[0].Pages[0].Images[1].Type);
             Assert.Equal(ImageDepth.Color, batch.Transactions[0].Groups[0].Pages[0].Images[1].Depth);
@@ -295,10 +301,10 @@ namespace OpexSDK.Tests
             Assert.Equal(1800, batch.Transactions[0].Groups[0].Pages[0].Images[1].Height);
             Assert.Equal(0, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetLength);
             Assert.Equal(240, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetHeight);
-            Assert.Equal(ImageResolution.TwoHundred, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
-            Assert.Equal(ImageResolution.OneHundredFifty, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionHeight);
-
-            
+            Assert.Equal(ImageResolution.TwoHundred,
+                batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
+            Assert.Equal(ImageResolution.OneHundredFifty,
+                batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionHeight);
         }
 
         [Fact]
@@ -326,11 +332,10 @@ namespace OpexSDK.Tests
             Assert.Equal("d031201360d8659741c0401", batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Value);
 
             Assert.Equal(MicrStatus.NoMicr, batch.Transactions[0].Groups[0].Pages[0].Micrs[1].Status);
-            Assert.Equal(RtStatus.NotFound, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].RtStatus);
-            Assert.Equal(CheckType.Unknown, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].CheckType);
-            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Side);
-            Assert.Equal("", batch.Transactions[0].Groups[0].Pages[0].Micrs[0].Value);
-
+            Assert.Equal(RtStatus.NotFound, batch.Transactions[0].Groups[0].Pages[0].Micrs[1].RtStatus);
+            Assert.Equal(CheckType.Unknown, batch.Transactions[0].Groups[0].Pages[0].Micrs[1].CheckType);
+            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Micrs[1].Side);
+            Assert.Equal("", batch.Transactions[0].Groups[0].Pages[0].Micrs[1].Value);
         }
 
         [Fact]
@@ -340,7 +345,6 @@ namespace OpexSDK.Tests
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
-
         }
 
         [Fact]
@@ -349,8 +353,17 @@ namespace OpexSDK.Tests
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
-            Assert.Single(batch.Transactions[0].Groups[0].Pages[0].Ocrs);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Ocrs.Count);
 
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Ocrs[0].Index);
+            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Ocrs[0].Side);
+            Assert.Equal("This is the !alue of first read", batch.Transactions[0].Groups[0].Pages[0].Ocrs[0].Value);
+            Assert.Equal("OCR 1", batch.Transactions[0].Groups[0].Pages[0].Ocrs[0].Name);
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Ocrs[1].Index);
+            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Ocrs[1].Side);
+            Assert.Equal(string.Empty, batch.Transactions[0].Groups[0].Pages[0].Ocrs[1].Value);
+            Assert.Equal("OCR 2", batch.Transactions[0].Groups[0].Pages[0].Ocrs[1].Name);
         }
 
         [Fact]
@@ -359,8 +372,17 @@ namespace OpexSDK.Tests
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
-            Assert.Single(batch.Transactions[0].Groups[0].Pages[0].Barcodes);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Barcodes.Count);
 
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].Barcodes[0].Index);
+            Assert.Equal("Code 39", batch.Transactions[0].Groups[0].Pages[0].Barcodes[0].Type);
+            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].Barcodes[0].Side);
+            Assert.Equal("08057423", batch.Transactions[0].Groups[0].Pages[0].Barcodes[0].Value);
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Index);
+            Assert.Equal("EAN-8", batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Type);
+            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Side);
+            Assert.Equal("10110 Jupiter Hills Drive", batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Value);
         }
 
         [Fact]
@@ -370,7 +392,6 @@ namespace OpexSDK.Tests
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Single(batch.Transactions[0].Groups[0].Pages[0].MarkDetects);
-
         }
 
         [Fact]
@@ -380,7 +401,6 @@ namespace OpexSDK.Tests
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Single(batch.Transactions[0].Groups[0].Pages[0].AuditTrails);
-
         }
 
         [Fact]
@@ -390,9 +410,7 @@ namespace OpexSDK.Tests
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Single(batch.Transactions[0].Groups[0].Pages[0].Tags);
-
         }
-
 
         [Fact]
         public async Task ReadBatchAsync_EndInfoPopulated()

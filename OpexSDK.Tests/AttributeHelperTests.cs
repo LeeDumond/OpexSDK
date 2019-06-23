@@ -220,6 +220,21 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public void GetCheckType_ReturnsCorrectCheckType()
+        {
+            Assert.Equal(CheckType.E13B, AttributeHelpers.GetCheckType("E13B"));
+            Assert.Equal(CheckType.US, AttributeHelpers.GetCheckType("US"));
+            Assert.Equal(CheckType.Canada, AttributeHelpers.GetCheckType("CANADA"));
+            Assert.Equal(CheckType.CMC7, AttributeHelpers.GetCheckType("CMC7"));
+            Assert.Equal(CheckType.Unknown, AttributeHelpers.GetCheckType("UNKNOWN"));
+            
+            Assert.Null(AttributeHelpers.GetCheckType(""));
+            Assert.Null(AttributeHelpers.GetCheckType(null));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => AttributeHelpers.GetCheckType("SOME_RANDOM_STRING"));
+        }
+
+        [Fact]
         public void GetPageType_ReturnsCorrectPageType()
         {
             Assert.Equal(PageType.BatchTicket, AttributeHelpers.GetPageType("BATCH_TICKET"));

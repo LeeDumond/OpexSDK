@@ -19,6 +19,10 @@ namespace OpexSDK
         {
         }
 
+        //todo test encodings
+        //todo implement sync reader
+        //todo handle attribute casing
+
         internal BatchReader(string batchFilePath, IFileSystem fileSystem)
         {
             if (batchFilePath == null)
@@ -57,7 +61,6 @@ namespace OpexSDK
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
                         reader.Name.Equals("BATCH", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        // this is the batch element
                         batch.BaseMachine = reader.GetAttribute("BaseMachine");
                         batch.FormatVersion = reader.GetAttribute("FormatVersion");
                         batch.BatchIdentifier = reader.GetAttribute("BatchIdentifier");
@@ -234,7 +237,9 @@ namespace OpexSDK
                                                                     pageSubReader.GetAttribute("Status")),
                                                                 RtStatus = AttributeHelpers.GetRtStatus(
                                                                     pageSubReader.GetAttribute("RtStatus")),
-
+                                                                CheckType = AttributeHelpers.GetCheckType(pageSubReader.GetAttribute("CheckType")),
+                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side")),
+                                                                Value = pageSubReader.GetAttribute("Value")
                                                             };
 
                                                             page.Add(micr);
@@ -244,7 +249,14 @@ namespace OpexSDK
                                                             pageSubReader.Name.Equals("OCR",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
-                                                            var ocr = new Ocr();
+                                                            var ocr = new Ocr
+                                                            {
+                                                                Index = AttributeHelpers.GetInt(
+                                                                    pageSubReader.GetAttribute("Index")),
+                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side")),
+                                                                Value = pageSubReader.GetAttribute("Value"),
+                                                                Name = pageSubReader.GetAttribute("Name")
+                                                            };
 
                                                             page.Add(ocr);
                                                         }
@@ -253,7 +265,14 @@ namespace OpexSDK
                                                             pageSubReader.Name.Equals("BARCODE",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
-                                                            var barcode = new Barcode();
+                                                            var barcode = new Barcode
+                                                            {
+                                                                Index = AttributeHelpers.GetInt(
+                                                                    pageSubReader.GetAttribute("Index")),
+                                                                Type = pageSubReader.GetAttribute("Type"),
+                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side")),
+                                                                Value = pageSubReader.GetAttribute("Value")
+                                                            };
 
                                                             page.Add(barcode);
                                                         }

@@ -413,5 +413,27 @@ namespace OpexSDK
                     throw new ArgumentOutOfRangeException(nameof(attributeValue));
             }
         }
+
+        internal static CheckType? GetCheckType(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "E13B":
+                    return CheckType.E13B;
+                case "US":
+                    return CheckType.US;
+                case "CANADA":
+                    return CheckType.Canada;
+                case "CMC7":
+                    return CheckType.CMC7;
+                case "UNKNOWN":
+                    return CheckType.Unknown;
+                case "":
+                case null:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+            }
+        }
     }
 }

@@ -15,17 +15,17 @@ namespace OpexSDK.Models
         /// <summary>
         /// The type of audit trail performed.
         /// </summary>
-        public AuditTrailType Type { get; internal set; }
+        public AuditTrailType? Type { get; internal set; }
 
         /// <summary>
         /// Side onto which the Audit Trail was added.
         /// </summary>
-        public Side Side { get; internal set; }
+        public Side? Side { get; internal set; }
 
         /// <summary>
         /// Indicates whether or not the software directed the scanner to imprint the audit trail on the paper/image. (Some operations, such as RescanNoPrint, prepare the audit trail but do not apply it.) Note that mechanical failures or ink shortages can result in physical imprinting not occurring even if Apply is true.
         /// </summary>
-        public bool Apply { get; internal set; }
+        public bool? Apply { get; internal set; }
 
         /// <summary>
         /// The actual text string that was prepared by the system. Check the "Apply" property to determine whether or not the text was actually imprinted on the document/image. //todo add more detail here
