@@ -52,7 +52,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_ReturnsNonNullBatch()
         {
-            string batchFileContents = "<BATCH></BATCH>";
+            string batchFileContents = "<Batch></Batch>";
 
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
@@ -79,7 +79,9 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_EncodingsAreDecoded()
         {
-            string batchFileContents = @"<BATCH DeveloperReserved=""1&amp;&gt;&lt;&quot;&apos;&#xE9;a""></BATCH>";
+            string batchFileContents = @"<Batch FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
+   OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
+   PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1&amp;&gt;&lt;&quot;&apos;&#xE9;a""><EndInfo EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" /></Batch>";
 
             var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {

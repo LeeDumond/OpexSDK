@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Schema;
 using OpexSDK.Models;
 
 [assembly: InternalsVisibleTo("OpexSDK.Tests")]
@@ -54,15 +56,22 @@ namespace OpexSDK
 
             var settings = new XmlReaderSettings
             {
-                Async = true
+                Async = true,
+                ValidationType = ValidationType.Schema,
+                IgnoreComments = true,
+                IgnoreWhitespace = true,
+                IgnoreProcessingInstructions = true
             };
+
+            settings.Schemas.Add(null, "oxi1_60.xsd");
+            settings.ValidationEventHandler += ValidationCallBack;
 
             using (XmlReader reader = XmlReader.Create(stream, settings))
             {
                 while (await reader.ReadAsync())
                 {
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
-                        reader.Name.Equals("BATCH", StringComparison.InvariantCultureIgnoreCase))
+                        reader.Name.Equals("Batch"))
                     {
                         batch.BaseMachine = reader.GetAttribute("BaseMachine");
                         batch.FormatVersion = reader.GetAttribute("FormatVersion");
@@ -359,6 +368,18 @@ namespace OpexSDK
             }
 
             return batch;
+        }
+
+        private void ValidationCallBack(object sender, ValidationEventArgs e)
+        {
+            if (e.Severity == XmlSeverityType.Warning)
+            {
+                Debug.WriteLine("Warning: Matching schema not found.  No validation occurred." + e.Message);
+            }
+            else
+            {
+                throw new XmlSchemaException($"{e.Message} line: {e.Exception.LineNumber} position: {e.Exception.LinePosition}", e.Exception);
+            }
         }
     }
 }
