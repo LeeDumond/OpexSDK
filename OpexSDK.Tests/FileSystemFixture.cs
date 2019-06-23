@@ -33,9 +33,12 @@ namespace OpexSDK.Tests
                 <OCR Index=""2"" Side=""BACK"" Value="""" Name=""OCR 2"" />
                 <BARCODE Index=""1"" Type=""Code 39"" Side=""FRONT"" Value=""08057423"" />
                 <BARCODE Index=""2"" Type=""EAN-8"" Side=""BACK"" Value=""10110 Jupiter Hills Drive"" />
-                <MARKDETECT Index="""" Side="""" Result="""" Name="""" />
-                <AUDITTRAIL Index="""" Side="""" Apply="""" Text="""" />
-                <TAG Source="""" Value="""" />
+                <MARKDETECT Index=""1"" Side=""BACK"" Result=""YES"" Name=""MARK 1"" />
+                <MARKDETECT Index=""2"" Side=""FRONT"" Result=""NO"" Name=""MARK 2"" />
+                <AUDITTRAIL Index=""1"" Side=""BACK"" Apply=""TRUE"" Text=""Received"" />
+                <AUDITTRAIL Index=""2"" Side=""FRONT"" Apply=""FALSE"" Text=""CCCIS Inc."" />
+                <TAG Source=""MFD Override"" Value=""Medical Record"" />
+                <TAG Source=""External Camera"" Value=""Invoice"" />
             </PAGE>
             <PAGE DocumentLocator=""2"" TransactionSequence=""2"" GroupSequence=""2"" BatchSequence=""2"" ScanSequence=""5"" ScanTime=""2019-03-22 23:25:18""
               ItemStatus=""VOID"" IsVirtual=""YES"" PageType=""CUSTOM_PAGE1"" PageName=""Affidavit"" SubPageName=""Notarization"" OperatorSelect=""YES"" Bin=""MyBin2"" Length=""8.500 IN"" 

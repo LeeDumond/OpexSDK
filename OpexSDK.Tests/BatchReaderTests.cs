@@ -391,7 +391,17 @@ namespace OpexSDK.Tests
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
-            Assert.Single(batch.Transactions[0].Groups[0].Pages[0].MarkDetects);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].MarkDetects.Count);
+
+            Assert.Equal(1, batch.Transactions[0].Groups[0].Pages[0].MarkDetects[0].Index);
+            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].MarkDetects[0].Side);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[0].MarkDetects[0].Result);
+            Assert.Equal("MARK 1", batch.Transactions[0].Groups[0].Pages[0].MarkDetects[0].Name);
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].MarkDetects[1].Index);
+            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].MarkDetects[1].Side);
+            Assert.False(batch.Transactions[0].Groups[0].Pages[0].MarkDetects[1].Result);
+            Assert.Equal("MARK 2", batch.Transactions[0].Groups[0].Pages[0].MarkDetects[1].Name);
         }
 
         [Fact]

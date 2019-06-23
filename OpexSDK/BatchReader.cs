@@ -281,7 +281,14 @@ namespace OpexSDK
                                                             pageSubReader.Name.Equals("MARKDETECT",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
-                                                            var markDetect = new MarkDetect();
+                                                            var markDetect = new MarkDetect
+                                                            {
+                                                                Index = AttributeHelpers.GetInt(
+                                                                    pageSubReader.GetAttribute("Index")),
+                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side")),
+                                                                Result = AttributeHelpers.GetBooleanFromYesNo(pageSubReader.GetAttribute("Result")),
+                                                                Name = pageSubReader.GetAttribute("Name")
+                                                            };
 
                                                             page.Add(markDetect);
                                                         }
