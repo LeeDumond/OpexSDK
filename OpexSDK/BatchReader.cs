@@ -297,7 +297,14 @@ namespace OpexSDK
                                                             pageSubReader.Name.Equals("AUDITTRAIL",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
-                                                            var auditTrail = new AuditTrail();
+                                                            var auditTrail = new AuditTrail
+                                                            {
+                                                                Type = AttributeHelpers.GetAuditTrailType(
+                                                                    pageSubReader.GetAttribute("Type")),
+                                                                Apply = AttributeHelpers.GetBooleanFromTrueFalse(pageSubReader.GetAttribute("Apply")),
+                                                                Side = AttributeHelpers.GetSide(pageSubReader.GetAttribute("Side")),
+                                                                Text = pageSubReader.GetAttribute("Text")
+                                                            };
 
                                                             page.Add(auditTrail);
                                                         }
@@ -306,7 +313,11 @@ namespace OpexSDK
                                                             pageSubReader.Name.Equals("TAG",
                                                                 StringComparison.InvariantCultureIgnoreCase))
                                                         {
-                                                            var tag = new Tag();
+                                                            var tag = new Tag
+                                                            {
+                                                                Source = pageSubReader.GetAttribute("Source"),
+                                                                Value = pageSubReader.GetAttribute("Value")
+                                                            };
 
                                                             page.Add(tag);
                                                         }

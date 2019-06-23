@@ -410,7 +410,17 @@ namespace OpexSDK.Tests
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
-            Assert.Single(batch.Transactions[0].Groups[0].Pages[0].AuditTrails);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].AuditTrails.Count);
+
+            Assert.Equal(AuditTrailType.Printed, batch.Transactions[0].Groups[0].Pages[0].AuditTrails[0].Type);
+            Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].AuditTrails[0].Side);
+            Assert.True(batch.Transactions[0].Groups[0].Pages[0].AuditTrails[0].Apply);
+            Assert.Equal("Received", batch.Transactions[0].Groups[0].Pages[0].AuditTrails[0].Text);
+
+            Assert.Equal(AuditTrailType.Electronic, batch.Transactions[0].Groups[0].Pages[0].AuditTrails[1].Type);
+            Assert.Equal(Side.Front, batch.Transactions[0].Groups[0].Pages[0].AuditTrails[1].Side);
+            Assert.False(batch.Transactions[0].Groups[0].Pages[0].AuditTrails[1].Apply);
+            Assert.Equal("CCCIS Inc.", batch.Transactions[0].Groups[0].Pages[0].AuditTrails[1].Text);
         }
 
         [Fact]
@@ -419,7 +429,13 @@ namespace OpexSDK.Tests
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
-            Assert.Single(batch.Transactions[0].Groups[0].Pages[0].Tags);
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Tags.Count);
+
+            Assert.Equal("MFD Override", batch.Transactions[0].Groups[0].Pages[0].Tags[0].Source);
+            Assert.Equal("Medical Record", batch.Transactions[0].Groups[0].Pages[0].Tags[0].Value);
+
+            Assert.Equal("External Camera", batch.Transactions[0].Groups[0].Pages[0].Tags[1].Source);
+            Assert.Equal("Invoice", batch.Transactions[0].Groups[0].Pages[0].Tags[1].Value);
         }
 
         [Fact]

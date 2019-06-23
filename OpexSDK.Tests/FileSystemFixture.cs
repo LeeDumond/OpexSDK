@@ -35,8 +35,8 @@ namespace OpexSDK.Tests
                 <BARCODE Index=""2"" Type=""EAN-8"" Side=""BACK"" Value=""10110 Jupiter Hills Drive"" />
                 <MARKDETECT Index=""1"" Side=""BACK"" Result=""YES"" Name=""MARK 1"" />
                 <MARKDETECT Index=""2"" Side=""FRONT"" Result=""NO"" Name=""MARK 2"" />
-                <AUDITTRAIL Index=""1"" Side=""BACK"" Apply=""TRUE"" Text=""Received"" />
-                <AUDITTRAIL Index=""2"" Side=""FRONT"" Apply=""FALSE"" Text=""CCCIS Inc."" />
+                <AUDITTRAIL Type=""PRINTED"" Side=""BACK"" Apply=""TRUE"" Text=""Received"" />
+                <AUDITTRAIL Type=""ELECTRONIC"" Side=""FRONT"" Apply=""FALSE"" Text=""CCCIS Inc."" />
                 <TAG Source=""MFD Override"" Value=""Medical Record"" />
                 <TAG Source=""External Camera"" Value=""Invoice"" />
             </PAGE>
