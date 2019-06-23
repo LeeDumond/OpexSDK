@@ -77,6 +77,23 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
+        public async Task ReadBatchAsync_EncodingsAreDecoded()
+        {
+            string batchFileContents = @"<BATCH DeveloperReserved=""1&amp;&gt;&lt;&quot;&apos;&#xE9;a""></BATCH>";
+
+            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
+            {
+                {@"C:\Opex\test.oxi", new MockFileData(batchFileContents)}
+            });
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(@"1&><""'éa", batch.DeveloperReserved);
+        }
+
+        [Fact]
         public async Task ReadBatchAsync_BatchPropertiesPopulated()
         {
             var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
