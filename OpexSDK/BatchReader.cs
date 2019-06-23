@@ -52,7 +52,10 @@ namespace OpexSDK
 
             Stream stream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
 
-            var settings = new XmlReaderSettings {Async = true};
+            var settings = new XmlReaderSettings
+            {
+                Async = true
+            };
 
             using (XmlReader reader = XmlReader.Create(stream, settings))
             {

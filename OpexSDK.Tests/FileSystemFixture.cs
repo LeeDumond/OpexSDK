@@ -11,8 +11,9 @@ namespace OpexSDK.Tests
 
 <BATCH FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
    OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
-   PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"">
-    <REFERENCEID Index=""1"" Response=""High Priority"" Name=""Batch 1234"" />
+   PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" 
+   xsi:noNamespaceSchemaLocation=""oxi1_60.xsd"">
+       < REFERENCEID Index=""1"" Response=""High Priority"" Name=""Batch 1234"" />
     <REFERENCEID Index=""2"" Response=""Normal Priority"" Name=""Batch 5678"" />
     <TRANSACTION TransactionID=""3141"">
         <GROUP GroupID=""98"">
