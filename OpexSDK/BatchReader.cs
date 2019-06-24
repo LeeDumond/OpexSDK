@@ -92,17 +92,13 @@ namespace OpexSDK
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("ReferenceID"))
                     {
-                        ReferenceId referenceId = GetReferenceId(reader);
-
-                        batch.Add(referenceId);
+                        batch.Add(GetReferenceId(reader));
 
                     }
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("EndInfo"))
                     {
-                        EndInfo endInfo = GetEndInfo(reader);
-
-                        batch.EndInfo = endInfo;
+                        batch.EndInfo = GetEndInfo(reader);
                     }
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Transaction"))
@@ -140,78 +136,60 @@ namespace OpexSDK
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("Image"))
                                                         {
-                                                            Image image = GetImage(pageSubReader);
-
-                                                            page.Add(image);
+                                                            page.Add(GetImage(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("CustomData"))
                                                         {
-                                                            CustomData customData = GetCustomData(pageSubReader);
-
-                                                            page.CustomData = customData;
+                                                            page.CustomData = GetCustomData(pageSubReader);
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("Micr"))
                                                         {
-                                                            Micr micr = GetMicr(pageSubReader);
-
-                                                            page.Add(micr);
+                                                            page.Add(GetMicr(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("Ocr"))
                                                         {
-                                                            Ocr ocr = GetOcr(pageSubReader);
-
-                                                            page.Add(ocr);
+                                                            page.Add(GetOcr(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("Barcode"))
                                                         {
-                                                            Barcode barcode = GetBarcode(pageSubReader);
-
-                                                            page.Add(barcode);
+                                                            page.Add(GetBarcode(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("MarkDetect"))
                                                         {
-                                                            MarkDetect markDetect = GetMarkDetect(pageSubReader);
-
-                                                            page.Add(markDetect);
+                                                            page.Add(GetMarkDetect(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("AuditTrail"))
                                                         {
-                                                            AuditTrail auditTrail = GetAuditTrail(pageSubReader);
-
-                                                            page.Add(auditTrail);
+                                                            page.Add(GetAuditTrail(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("ReferenceID"))
                                                         {
-                                                            ReferenceId referenceId = GetReferenceId(pageSubReader);
-
-                                                            page.Add(referenceId);
+                                                            page.Add(GetReferenceId(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("Tag"))
                                                         {
-                                                            Tag tag = GetTag(pageSubReader);
-
-                                                            page.Add(tag);
+                                                            page.Add(GetTag(pageSubReader));
                                                         }
                                                     }
                                                 }
 
-                                                @group.Add(page);
+                                                group.Add(page);
                                             }
                                         }
                                     }
@@ -297,77 +275,59 @@ namespace OpexSDK
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element && pageSubReader.Name.Equals("Image"))
                                                         {
-                                                            Image image = GetImage(pageSubReader);
-
-                                                            page.Add(image);
+                                                            page.Add(GetImage(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("CustomData"))
                                                         {
-                                                            CustomData customData = GetCustomData(pageSubReader);
-
-                                                            page.CustomData = customData;
+                                                            page.CustomData = GetCustomData(pageSubReader);
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element && pageSubReader.Name.Equals("Micr"))
                                                         {
-                                                            Micr micr = GetMicr(pageSubReader);
-
-                                                            page.Add(micr);
+                                                            page.Add(GetMicr(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element && pageSubReader.Name.Equals("Ocr"))
                                                         {
-                                                            Ocr ocr = GetOcr(pageSubReader);
-
-                                                            page.Add(ocr);
+                                                            page.Add(GetOcr(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element && pageSubReader.Name.Equals("Barcode"))
                                                         {
-                                                            Barcode barcode = GetBarcode(pageSubReader);
-
-                                                            page.Add(barcode);
+                                                            page.Add(GetBarcode(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("MarkDetect"))
                                                         {
-                                                            MarkDetect markDetect = GetMarkDetect(pageSubReader);
-
-                                                            page.Add(markDetect);
+                                                            page.Add(GetMarkDetect(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("AuditTrail"))
                                                         {
-                                                            AuditTrail auditTrail = GetAuditTrail(pageSubReader);
-
-                                                            page.Add(auditTrail);
+                                                            page.Add(GetAuditTrail(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("ReferenceID"))
                                                         {
-                                                            ReferenceId referenceId = GetReferenceId(pageSubReader);
-
-                                                            page.Add(referenceId);
+                                                            page.Add(GetReferenceId(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element && pageSubReader.Name.Equals("Tag"))
                                                         {
-                                                            Tag tag = GetTag(pageSubReader);
-
-                                                            page.Add(tag);
+                                                            page.Add(GetTag(pageSubReader));
                                                         }
                                                     }
                                                 }
