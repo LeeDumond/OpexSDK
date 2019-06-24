@@ -37,9 +37,7 @@ namespace OpexSDK
             }
         }
 
-        //todo verify schema
         //todo implement sync reader
-        //todo handle element casing
         //todo finish docs
         //todo validate against multiple schemas
 
