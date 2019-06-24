@@ -14,6 +14,9 @@ using OpexSDK.Models;
 
 namespace OpexSDK
 {
+    /// <summary>
+    /// A utility that facilitates the reading of data contained in batch information files (*.oxi) created by OPEX scanning devices, along with optional validation against an XSD schema file supplied by the user.
+    /// </summary>
     public class BatchReader
     {
         private readonly string _batchFilePath;
@@ -21,6 +24,11 @@ namespace OpexSDK
         private readonly IList<ValidationEventArgs> _validationErrors;
         private readonly IFileSystem _fileSystem;
 
+        /// <summary>
+        /// Returns an instance of a BatchReader.
+        /// </summary>
+        /// <param name="batchFilePath">The path to the batch information file.</param>
+        /// <param name="schemaFilePath">The path to an XSD schema definition file to validate against. By default, this argument is null, which means no validation is performed.</param>
         public BatchReader(string batchFilePath, string schemaFilePath = null) : this(batchFilePath, schemaFilePath, new FileSystem())
         {
             if (batchFilePath == null)
@@ -42,7 +50,6 @@ namespace OpexSDK
         }
 
         //todo implement sync reader
-        //todo finish docs
 
         internal BatchReader(string batchFilePath, string schemaFilePath, IFileSystem fileSystem)
         {
@@ -52,6 +59,10 @@ namespace OpexSDK
             _validationErrors = new List<ValidationEventArgs>();
         }
 
+        /// <summary>
+        /// A method that reads the data contained in the batch information file supplied to the reader. If a schema definition file (*.xsd) is also supplied, this method will confirm the validity of the schema, and if it is valid, will validate the data file against it.
+        /// </summary>
+        /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
         public async Task<Batch> ReadBatchAsync()
         {
             var batch = new Batch();
@@ -427,6 +438,10 @@ namespace OpexSDK
             return batch;
         }
 
+        /// <summary>
+        /// The collection of errors, if any, encountered during the validation process.
+        /// NOTE: If this collection is empty, it does not automatically mean that the batch information file is valid. If no schema is supplied, data validation will not be performed and this collection will be empty. If the schema is supplied but in itself is not valid, those errors will be contained in this collection, though data validation will not be performed.
+        /// </summary>
         public ReadOnlyCollection<ValidationEventArgs> ValidationErrors => new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
 
         private void ValidationCallBack(object sender, ValidationEventArgs e)
