@@ -18,8 +18,8 @@ namespace OpexSDK
     {
         private readonly string _batchFilePath;
         private readonly string _schemaFilePath;
-        private readonly IFileSystem _fileSystem;
         private readonly IList<ValidationEventArgs> _validationErrors;
+        private readonly IFileSystem _fileSystem;
 
         public BatchReader(string batchFilePath, string schemaFilePath = null) : this(batchFilePath, schemaFilePath, new FileSystem())
         {
@@ -43,7 +43,6 @@ namespace OpexSDK
 
         //todo implement sync reader
         //todo finish docs
-        //todo validate against multiple schemas
 
         internal BatchReader(string batchFilePath, string schemaFilePath, IFileSystem fileSystem)
         {
@@ -52,8 +51,6 @@ namespace OpexSDK
             _fileSystem = fileSystem;
             _validationErrors = new List<ValidationEventArgs>();
         }
-
-        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors => new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
 
         public async Task<Batch> ReadBatchAsync()
         {
@@ -429,6 +426,8 @@ namespace OpexSDK
 
             return batch;
         }
+
+        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors => new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
 
         private void ValidationCallBack(object sender, ValidationEventArgs e)
         {
