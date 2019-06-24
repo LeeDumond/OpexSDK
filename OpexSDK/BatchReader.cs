@@ -77,28 +77,371 @@ namespace OpexSDK
         ///     is valid, will validate the data file against it.
         /// </summary>
         /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
+        public Batch ReadBatch()
+        {
+            var batch = new Batch();
+
+            Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
+
+            XmlReaderSettings settings = GetXmlReaderSettings();
+
+            using (XmlReader reader = XmlReader.Create(batchStream, settings))
+            {
+                while (reader.Read())
+                {
+                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Batch"))
+                    {
+                        batch.BaseMachine = reader.GetAttribute("BaseMachine");
+                        batch.FormatVersion = reader.GetAttribute("FormatVersion");
+                        batch.BatchIdentifier = reader.GetAttribute("BatchIdentifier");
+                        batch.DeveloperReserved = reader.GetAttribute("DeveloperReserved");
+                        batch.ImageFilePath = reader.GetAttribute("ImageFilePath");
+                        batch.JobName = reader.GetAttribute("JobName");
+                        batch.JobType = AttributeHelpers.GetJobType(reader.GetAttribute("JobType"));
+                        batch.OperatorName = reader.GetAttribute("OperatorName");
+                        batch.OperatingMode = AttributeHelpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
+                        batch.StartTime = AttributeHelpers.GetDateTime(reader.GetAttribute("StartTime"));
+                        batch.PluginMessage = reader.GetAttribute("PluginMessage");
+                        batch.ProcessDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ProcessDate"))?.Date;
+                        batch.ReceiveDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ReceiveDate"))?.Date;
+                        batch.ScanDevice = reader.GetAttribute("ScanDevice");
+                        batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
+                        batch.TransportId = reader.GetAttribute("TransportId");
+                    }
+
+                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("ReferenceID"))
+                    {
+                        var referenceId = new ReferenceId
+                        {
+                            Index = AttributeHelpers.GetInt(reader.GetAttribute("Index")),
+                            Response = reader.GetAttribute("Response"),
+                            Name = reader.GetAttribute("Name")
+                        };
+
+                        batch.Add(referenceId);
+                    }
+
+                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("EndInfo"))
+                    {
+                        var endInfo = new EndInfo
+                        {
+                            EndTime = AttributeHelpers.GetDateTime(reader.GetAttribute("EndTime")),
+                            NumPages = AttributeHelpers.GetInt(reader.GetAttribute("NumPages")),
+                            NumGroups = AttributeHelpers.GetInt(reader.GetAttribute("NumGroups")),
+                            NumTransactions = AttributeHelpers.GetInt(reader.GetAttribute("NumTransactions")),
+                            IsModified = AttributeHelpers.GetBooleanFromTrueFalse(reader.GetAttribute("IsModified"))
+                        };
+
+                        batch.EndInfo = endInfo;
+                    }
+
+                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Transaction"))
+                    {
+                        var transaction = new Transaction
+                        {
+                            TransactionId = AttributeHelpers.GetInt(reader.GetAttribute("TransactionID"))
+                        };
+
+                        using (XmlReader groupReader = reader.ReadSubtree())
+                        {
+                            while (groupReader.Read())
+                            {
+                                if (groupReader.MoveToContent() == XmlNodeType.Element &&
+                                    groupReader.Name.Equals("Group"))
+                                {
+                                    var group = new Group
+                                    {
+                                        GroupId = AttributeHelpers.GetInt(groupReader.GetAttribute("GroupID"))
+                                    };
+
+                                    using (XmlReader pageReader = groupReader.ReadSubtree())
+                                    {
+                                        while (pageReader.Read())
+                                        {
+                                            if (pageReader.MoveToContent() == XmlNodeType.Element &&
+                                                pageReader.Name.Equals("Page"))
+                                            {
+                                                var page = new Page
+                                                {
+                                                    DocumentLocator =
+                                                        AttributeHelpers.GetInt(
+                                                            pageReader.GetAttribute("DocumentLocator")),
+                                                    BatchSequence =
+                                                        AttributeHelpers.GetInt(
+                                                            pageReader.GetAttribute("BatchSequence")),
+                                                    TransactionSequence =
+                                                        AttributeHelpers.GetInt(
+                                                            pageReader.GetAttribute("TransactionSequence")),
+                                                    GroupSequence =
+                                                        AttributeHelpers.GetInt(
+                                                            pageReader.GetAttribute("GroupSequence")),
+                                                    ScanSequence =
+                                                        AttributeHelpers.GetInt(
+                                                            pageReader.GetAttribute("ScanSequence")),
+                                                    ScanTime =
+                                                        AttributeHelpers.GetDateTime(
+                                                            pageReader.GetAttribute("ScanTime")),
+                                                    ItemStatus =
+                                                        AttributeHelpers.GetItemStatus(
+                                                            pageReader.GetAttribute("ItemStatus")),
+                                                    IsVirtual =
+                                                        AttributeHelpers.GetBooleanFromYesNo(
+                                                            pageReader.GetAttribute("IsVirtual")),
+                                                    PageType =
+                                                        AttributeHelpers.GetPageType(
+                                                            pageReader.GetAttribute("PageType")),
+                                                    PageName = pageReader.GetAttribute("PageName"),
+                                                    SubPageName = pageReader.GetAttribute("SubPageName"),
+                                                    OperatorSelect =
+                                                        AttributeHelpers.GetBooleanFromYesNo(
+                                                            pageReader.GetAttribute("OperatorSelect")),
+                                                    Bin = pageReader.GetAttribute("Bin"),
+                                                    AverageThickness =
+                                                        AttributeHelpers.GetFloat(
+                                                            pageReader.GetAttribute("AverageThickness")),
+                                                    EnvelopeDetect =
+                                                        AttributeHelpers.GetEnvelopeDetect(
+                                                            pageReader.GetAttribute("EnvelopeDetect")),
+                                                    SkewDegrees =
+                                                        AttributeHelpers.GetFloat(
+                                                            pageReader.GetAttribute("SkewDegrees")),
+                                                    DeskewStatus =
+                                                        AttributeHelpers.GetDeskewStatus(
+                                                            pageReader.GetAttribute("DeskewStatus")),
+                                                    FrontStreakDetectStatus =
+                                                        AttributeHelpers.GetFrontStreakDetectStatus(
+                                                            pageReader.GetAttribute("FrontStreakDetectStatus")),
+                                                    BackStreakDetectStatus =
+                                                        AttributeHelpers.GetBackStreakDetectStatus(
+                                                            pageReader.GetAttribute("BackStreakDetectStatus")),
+                                                    PlugInPageMessage =
+                                                        pageReader.GetAttribute("PlugInPageMessage"),
+                                                    Length = pageReader.GetAttribute("Length"),
+                                                    Height = pageReader.GetAttribute("Height")
+                                                };
+
+                                                using (XmlReader pageSubReader = pageReader.ReadSubtree())
+                                                {
+                                                    while (pageSubReader.Read())
+                                                    {
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("Image"))
+                                                        {
+                                                            var image = new Image
+                                                            {
+                                                                Index =
+                                                                    AttributeHelpers.GetInt(
+                                                                        pageSubReader.GetAttribute("Index")),
+                                                                RescanStatus =
+                                                                    AttributeHelpers.GetRescanStatus(
+                                                                        pageSubReader.GetAttribute("RescanStatus")),
+                                                                ScantimeFinalBlankAreaDecision =
+                                                                    AttributeHelpers
+                                                                        .GetScantimeFinalBlankAreaDecision(
+                                                                            pageSubReader.GetAttribute(
+                                                                                "ScantimeFinalBlankAreaDecision")),
+                                                                Side =
+                                                                    AttributeHelpers.GetSide(
+                                                                        pageSubReader.GetAttribute("Side")),
+                                                                Type =
+                                                                    AttributeHelpers.GetImageType(
+                                                                        pageSubReader.GetAttribute("Type")),
+                                                                Depth =
+                                                                    AttributeHelpers.GetImageDepth(
+                                                                        pageSubReader.GetAttribute("Depth")),
+                                                                Format =
+                                                                    AttributeHelpers.GetImageFormat(
+                                                                        pageSubReader.GetAttribute("Format")),
+                                                                Filename = pageSubReader.GetAttribute("Filename"),
+                                                                Filesize =
+                                                                    AttributeHelpers.GetLong(
+                                                                        pageSubReader.GetAttribute("Filesize")),
+                                                                Length =
+                                                                    AttributeHelpers.GetInt(
+                                                                        pageSubReader.GetAttribute("Length")),
+                                                                Height =
+                                                                    AttributeHelpers.GetInt(
+                                                                        pageSubReader.GetAttribute("Height")),
+                                                                OffsetLength =
+                                                                    AttributeHelpers.GetInt(
+                                                                        pageSubReader.GetAttribute("OffsetLength")),
+                                                                OffsetHeight =
+                                                                    AttributeHelpers.GetInt(
+                                                                        pageSubReader.GetAttribute("OffsetHeight")),
+                                                                ResolutionLength =
+                                                                    AttributeHelpers.GetImageResolution(
+                                                                        pageSubReader.GetAttribute(
+                                                                            "ResolutionLength")),
+                                                                ResolutionHeight =
+                                                                    AttributeHelpers.GetImageResolution(
+                                                                        pageSubReader.GetAttribute(
+                                                                            "ResolutionHeight"))
+                                                            };
+
+                                                            page.Add(image);
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("CustomData"))
+                                                        {
+                                                            var customData = new CustomData
+                                                            {
+                                                                Entry = pageSubReader.GetAttribute("Entry")
+                                                            };
+
+                                                            page.CustomData = customData;
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("Micr"))
+                                                        {
+                                                            var micr = new Micr
+                                                            {
+                                                                Status =
+                                                                    AttributeHelpers.GetMicrStatus(
+                                                                        pageSubReader.GetAttribute("Status")),
+                                                                RtStatus =
+                                                                    AttributeHelpers.GetRtStatus(
+                                                                        pageSubReader.GetAttribute("RtStatus")),
+                                                                CheckType =
+                                                                    AttributeHelpers.GetCheckType(
+                                                                        pageSubReader.GetAttribute("CheckType")),
+                                                                Side = AttributeHelpers.GetSide(
+                                                                    pageSubReader.GetAttribute("Side")),
+                                                                Value = pageSubReader.GetAttribute("Value")
+                                                            };
+
+                                                            page.Add(micr);
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("Ocr"))
+                                                        {
+                                                            var ocr = new Ocr
+                                                            {
+                                                                Index = AttributeHelpers.GetInt(
+                                                                    pageSubReader.GetAttribute("Index")),
+                                                                Side = AttributeHelpers.GetSide(
+                                                                    pageSubReader.GetAttribute("Side")),
+                                                                Value = pageSubReader.GetAttribute("Value"),
+                                                                Name = pageSubReader.GetAttribute("Name")
+                                                            };
+
+                                                            page.Add(ocr);
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("Barcode"))
+                                                        {
+                                                            var barcode = new Barcode
+                                                            {
+                                                                Index = AttributeHelpers.GetInt(
+                                                                    pageSubReader.GetAttribute("Index")),
+                                                                Type = pageSubReader.GetAttribute("Type"),
+                                                                Side = AttributeHelpers.GetSide(
+                                                                    pageSubReader.GetAttribute("Side")),
+                                                                Value = pageSubReader.GetAttribute("Value")
+                                                            };
+
+                                                            page.Add(barcode);
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("MarkDetect"))
+                                                        {
+                                                            var markDetect = new MarkDetect
+                                                            {
+                                                                Index = AttributeHelpers.GetInt(
+                                                                    pageSubReader.GetAttribute("Index")),
+                                                                Side =
+                                                                    AttributeHelpers.GetSide(
+                                                                        pageSubReader.GetAttribute("Side")),
+                                                                Result = AttributeHelpers.GetBooleanFromYesNo(
+                                                                    pageSubReader.GetAttribute("Result")),
+                                                                Name = pageSubReader.GetAttribute("Name")
+                                                            };
+
+                                                            page.Add(markDetect);
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("AuditTrail"))
+                                                        {
+                                                            var auditTrail = new AuditTrail
+                                                            {
+                                                                Type = AttributeHelpers.GetAuditTrailType(
+                                                                    pageSubReader.GetAttribute("Type")),
+                                                                Apply =
+                                                                    AttributeHelpers.GetBooleanFromTrueFalse(
+                                                                        pageSubReader.GetAttribute("Apply")),
+                                                                Side = AttributeHelpers.GetSide(
+                                                                    pageSubReader.GetAttribute("Side")),
+                                                                Text = pageSubReader.GetAttribute("Text")
+                                                            };
+
+                                                            page.Add(auditTrail);
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("ReferenceID"))
+                                                        {
+                                                            var referenceId = new ReferenceId
+                                                            {
+                                                                Index =
+                                                                    AttributeHelpers.GetInt(
+                                                                        pageSubReader.GetAttribute("Index")),
+                                                                Response = pageSubReader.GetAttribute("Response"),
+                                                                Name = pageSubReader.GetAttribute("Name")
+                                                            };
+
+                                                            page.Add(referenceId);
+                                                        }
+
+                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
+                                                            pageSubReader.Name.Equals("Tag"))
+                                                        {
+                                                            var tag = new Tag
+                                                            {
+                                                                Source = pageSubReader.GetAttribute("Source"),
+                                                                Value = pageSubReader.GetAttribute("Value")
+                                                            };
+
+                                                            page.Add(tag);
+                                                        }
+                                                    }
+                                                }
+
+                                                @group.Add(page);
+                                            }
+                                        }
+                                    }
+
+                                    transaction.Add(@group);
+                                }
+                            }
+                        }
+
+                        batch.Add(transaction);
+                    }
+                }
+            }
+
+            return batch;
+        }
+
+        /// <summary>
+        ///     A method that asynchronously that reads the data contained in the batch information file supplied to the reader. If
+        ///     a schema definition file (*.xsd) is also supplied, this method will confirm the validity of the schema, and if it
+        ///     is valid, will validate the data file against it.
+        /// </summary>
+        /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
         public async Task<Batch> ReadBatchAsync()
         {
             var batch = new Batch();
 
             Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
 
-            var settings = new XmlReaderSettings
-            {
-                Async = true, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
-            };
-
-            if (_schemaFilePath != null)
-            {
-                Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read);
-                XmlSchema schema = XmlSchema.Read(schemaStream, ValidationCallBack);
-                if (schema != null)
-                {
-                    settings.Schemas.Add(schema);
-                    settings.ValidationType = ValidationType.Schema;
-                    settings.ValidationEventHandler += ValidationCallBack;
-                }
-            }
+            XmlReaderSettings settings = GetXmlReaderSettings(true);
 
             using (XmlReader reader = XmlReader.Create(batchStream, settings))
             {
@@ -448,21 +791,11 @@ namespace OpexSDK
             return batch;
         }
 
-        /// <summary>
-        ///     A method that asynchronously that reads the data contained in the batch information file supplied to the reader. If
-        ///     a schema definition file (*.xsd) is also supplied, this method will confirm the validity of the schema, and if it
-        ///     is valid, will validate the data file against it.
-        /// </summary>
-        /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
-        public Batch ReadBatch()
+        private XmlReaderSettings GetXmlReaderSettings(bool async = false)
         {
-            var batch = new Batch();
-
-            Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
-
             var settings = new XmlReaderSettings
             {
-                Async = false, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
+                Async = async, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
             };
 
             if (_schemaFilePath != null)
@@ -477,348 +810,7 @@ namespace OpexSDK
                 }
             }
 
-            using (XmlReader reader = XmlReader.Create(batchStream, settings))
-            {
-                while (reader.Read())
-                {
-                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Batch"))
-                    {
-                        batch.BaseMachine = reader.GetAttribute("BaseMachine");
-                        batch.FormatVersion = reader.GetAttribute("FormatVersion");
-                        batch.BatchIdentifier = reader.GetAttribute("BatchIdentifier");
-                        batch.DeveloperReserved = reader.GetAttribute("DeveloperReserved");
-                        batch.ImageFilePath = reader.GetAttribute("ImageFilePath");
-                        batch.JobName = reader.GetAttribute("JobName");
-                        batch.JobType = AttributeHelpers.GetJobType(reader.GetAttribute("JobType"));
-                        batch.OperatorName = reader.GetAttribute("OperatorName");
-                        batch.OperatingMode = AttributeHelpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
-                        batch.StartTime = AttributeHelpers.GetDateTime(reader.GetAttribute("StartTime"));
-                        batch.PluginMessage = reader.GetAttribute("PluginMessage");
-                        batch.ProcessDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ProcessDate"))?.Date;
-                        batch.ReceiveDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ReceiveDate"))?.Date;
-                        batch.ScanDevice = reader.GetAttribute("ScanDevice");
-                        batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
-                        batch.TransportId = reader.GetAttribute("TransportId");
-                    }
-
-                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("ReferenceID"))
-                    {
-                        var referenceId = new ReferenceId
-                        {
-                            Index = AttributeHelpers.GetInt(reader.GetAttribute("Index")),
-                            Response = reader.GetAttribute("Response"),
-                            Name = reader.GetAttribute("Name")
-                        };
-
-                        batch.Add(referenceId);
-                    }
-
-                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("EndInfo"))
-                    {
-                        var endInfo = new EndInfo
-                        {
-                            EndTime = AttributeHelpers.GetDateTime(reader.GetAttribute("EndTime")),
-                            NumPages = AttributeHelpers.GetInt(reader.GetAttribute("NumPages")),
-                            NumGroups = AttributeHelpers.GetInt(reader.GetAttribute("NumGroups")),
-                            NumTransactions = AttributeHelpers.GetInt(reader.GetAttribute("NumTransactions")),
-                            IsModified = AttributeHelpers.GetBooleanFromTrueFalse(reader.GetAttribute("IsModified"))
-                        };
-
-                        batch.EndInfo = endInfo;
-                    }
-
-                    if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Transaction"))
-                    {
-                        var transaction = new Transaction
-                        {
-                            TransactionId = AttributeHelpers.GetInt(reader.GetAttribute("TransactionID"))
-                        };
-
-                        using (XmlReader groupReader = reader.ReadSubtree())
-                        {
-                            while (groupReader.Read())
-                            {
-                                if (groupReader.MoveToContent() == XmlNodeType.Element &&
-                                    groupReader.Name.Equals("Group"))
-                                {
-                                    var group = new Group
-                                    {
-                                        GroupId = AttributeHelpers.GetInt(groupReader.GetAttribute("GroupID"))
-                                    };
-
-                                    using (XmlReader pageReader = groupReader.ReadSubtree())
-                                    {
-                                        while (pageReader.Read())
-                                        {
-                                            if (pageReader.MoveToContent() == XmlNodeType.Element &&
-                                                pageReader.Name.Equals("Page"))
-                                            {
-                                                var page = new Page
-                                                {
-                                                    DocumentLocator =
-                                                        AttributeHelpers.GetInt(
-                                                            pageReader.GetAttribute("DocumentLocator")),
-                                                    BatchSequence =
-                                                        AttributeHelpers.GetInt(
-                                                            pageReader.GetAttribute("BatchSequence")),
-                                                    TransactionSequence =
-                                                        AttributeHelpers.GetInt(
-                                                            pageReader.GetAttribute("TransactionSequence")),
-                                                    GroupSequence =
-                                                        AttributeHelpers.GetInt(
-                                                            pageReader.GetAttribute("GroupSequence")),
-                                                    ScanSequence =
-                                                        AttributeHelpers.GetInt(
-                                                            pageReader.GetAttribute("ScanSequence")),
-                                                    ScanTime =
-                                                        AttributeHelpers.GetDateTime(
-                                                            pageReader.GetAttribute("ScanTime")),
-                                                    ItemStatus =
-                                                        AttributeHelpers.GetItemStatus(
-                                                            pageReader.GetAttribute("ItemStatus")),
-                                                    IsVirtual =
-                                                        AttributeHelpers.GetBooleanFromYesNo(
-                                                            pageReader.GetAttribute("IsVirtual")),
-                                                    PageType =
-                                                        AttributeHelpers.GetPageType(
-                                                            pageReader.GetAttribute("PageType")),
-                                                    PageName = pageReader.GetAttribute("PageName"),
-                                                    SubPageName = pageReader.GetAttribute("SubPageName"),
-                                                    OperatorSelect =
-                                                        AttributeHelpers.GetBooleanFromYesNo(
-                                                            pageReader.GetAttribute("OperatorSelect")),
-                                                    Bin = pageReader.GetAttribute("Bin"),
-                                                    AverageThickness =
-                                                        AttributeHelpers.GetFloat(
-                                                            pageReader.GetAttribute("AverageThickness")),
-                                                    EnvelopeDetect =
-                                                        AttributeHelpers.GetEnvelopeDetect(
-                                                            pageReader.GetAttribute("EnvelopeDetect")),
-                                                    SkewDegrees =
-                                                        AttributeHelpers.GetFloat(
-                                                            pageReader.GetAttribute("SkewDegrees")),
-                                                    DeskewStatus =
-                                                        AttributeHelpers.GetDeskewStatus(
-                                                            pageReader.GetAttribute("DeskewStatus")),
-                                                    FrontStreakDetectStatus =
-                                                        AttributeHelpers.GetFrontStreakDetectStatus(
-                                                            pageReader.GetAttribute("FrontStreakDetectStatus")),
-                                                    BackStreakDetectStatus =
-                                                        AttributeHelpers.GetBackStreakDetectStatus(
-                                                            pageReader.GetAttribute("BackStreakDetectStatus")),
-                                                    PlugInPageMessage =
-                                                        pageReader.GetAttribute("PlugInPageMessage"),
-                                                    Length = pageReader.GetAttribute("Length"),
-                                                    Height = pageReader.GetAttribute("Height")
-                                                };
-
-                                                using (XmlReader pageSubReader = pageReader.ReadSubtree())
-                                                {
-                                                    while (pageSubReader.Read())
-                                                    {
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("Image"))
-                                                        {
-                                                            var image = new Image
-                                                            {
-                                                                Index =
-                                                                    AttributeHelpers.GetInt(
-                                                                        pageSubReader.GetAttribute("Index")),
-                                                                RescanStatus =
-                                                                    AttributeHelpers.GetRescanStatus(
-                                                                        pageSubReader.GetAttribute("RescanStatus")),
-                                                                ScantimeFinalBlankAreaDecision =
-                                                                    AttributeHelpers
-                                                                        .GetScantimeFinalBlankAreaDecision(
-                                                                            pageSubReader.GetAttribute(
-                                                                                "ScantimeFinalBlankAreaDecision")),
-                                                                Side =
-                                                                    AttributeHelpers.GetSide(
-                                                                        pageSubReader.GetAttribute("Side")),
-                                                                Type =
-                                                                    AttributeHelpers.GetImageType(
-                                                                        pageSubReader.GetAttribute("Type")),
-                                                                Depth =
-                                                                    AttributeHelpers.GetImageDepth(
-                                                                        pageSubReader.GetAttribute("Depth")),
-                                                                Format =
-                                                                    AttributeHelpers.GetImageFormat(
-                                                                        pageSubReader.GetAttribute("Format")),
-                                                                Filename = pageSubReader.GetAttribute("Filename"),
-                                                                Filesize =
-                                                                    AttributeHelpers.GetLong(
-                                                                        pageSubReader.GetAttribute("Filesize")),
-                                                                Length =
-                                                                    AttributeHelpers.GetInt(
-                                                                        pageSubReader.GetAttribute("Length")),
-                                                                Height =
-                                                                    AttributeHelpers.GetInt(
-                                                                        pageSubReader.GetAttribute("Height")),
-                                                                OffsetLength =
-                                                                    AttributeHelpers.GetInt(
-                                                                        pageSubReader.GetAttribute("OffsetLength")),
-                                                                OffsetHeight =
-                                                                    AttributeHelpers.GetInt(
-                                                                        pageSubReader.GetAttribute("OffsetHeight")),
-                                                                ResolutionLength =
-                                                                    AttributeHelpers.GetImageResolution(
-                                                                        pageSubReader.GetAttribute(
-                                                                            "ResolutionLength")),
-                                                                ResolutionHeight =
-                                                                    AttributeHelpers.GetImageResolution(
-                                                                        pageSubReader.GetAttribute(
-                                                                            "ResolutionHeight"))
-                                                            };
-
-                                                            page.Add(image);
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("CustomData"))
-                                                        {
-                                                            var customData = new CustomData
-                                                            {
-                                                                Entry = pageSubReader.GetAttribute("Entry")
-                                                            };
-
-                                                            page.CustomData = customData;
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("Micr"))
-                                                        {
-                                                            var micr = new Micr
-                                                            {
-                                                                Status =
-                                                                    AttributeHelpers.GetMicrStatus(
-                                                                        pageSubReader.GetAttribute("Status")),
-                                                                RtStatus =
-                                                                    AttributeHelpers.GetRtStatus(
-                                                                        pageSubReader.GetAttribute("RtStatus")),
-                                                                CheckType =
-                                                                    AttributeHelpers.GetCheckType(
-                                                                        pageSubReader.GetAttribute("CheckType")),
-                                                                Side = AttributeHelpers.GetSide(
-                                                                    pageSubReader.GetAttribute("Side")),
-                                                                Value = pageSubReader.GetAttribute("Value")
-                                                            };
-
-                                                            page.Add(micr);
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("Ocr"))
-                                                        {
-                                                            var ocr = new Ocr
-                                                            {
-                                                                Index = AttributeHelpers.GetInt(
-                                                                    pageSubReader.GetAttribute("Index")),
-                                                                Side = AttributeHelpers.GetSide(
-                                                                    pageSubReader.GetAttribute("Side")),
-                                                                Value = pageSubReader.GetAttribute("Value"),
-                                                                Name = pageSubReader.GetAttribute("Name")
-                                                            };
-
-                                                            page.Add(ocr);
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("Barcode"))
-                                                        {
-                                                            var barcode = new Barcode
-                                                            {
-                                                                Index = AttributeHelpers.GetInt(
-                                                                    pageSubReader.GetAttribute("Index")),
-                                                                Type = pageSubReader.GetAttribute("Type"),
-                                                                Side = AttributeHelpers.GetSide(
-                                                                    pageSubReader.GetAttribute("Side")),
-                                                                Value = pageSubReader.GetAttribute("Value")
-                                                            };
-
-                                                            page.Add(barcode);
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("MarkDetect"))
-                                                        {
-                                                            var markDetect = new MarkDetect
-                                                            {
-                                                                Index = AttributeHelpers.GetInt(
-                                                                    pageSubReader.GetAttribute("Index")),
-                                                                Side =
-                                                                    AttributeHelpers.GetSide(
-                                                                        pageSubReader.GetAttribute("Side")),
-                                                                Result = AttributeHelpers.GetBooleanFromYesNo(
-                                                                    pageSubReader.GetAttribute("Result")),
-                                                                Name = pageSubReader.GetAttribute("Name")
-                                                            };
-
-                                                            page.Add(markDetect);
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("AuditTrail"))
-                                                        {
-                                                            var auditTrail = new AuditTrail
-                                                            {
-                                                                Type = AttributeHelpers.GetAuditTrailType(
-                                                                    pageSubReader.GetAttribute("Type")),
-                                                                Apply =
-                                                                    AttributeHelpers.GetBooleanFromTrueFalse(
-                                                                        pageSubReader.GetAttribute("Apply")),
-                                                                Side = AttributeHelpers.GetSide(
-                                                                    pageSubReader.GetAttribute("Side")),
-                                                                Text = pageSubReader.GetAttribute("Text")
-                                                            };
-
-                                                            page.Add(auditTrail);
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("ReferenceID"))
-                                                        {
-                                                            var referenceId = new ReferenceId
-                                                            {
-                                                                Index =
-                                                                    AttributeHelpers.GetInt(
-                                                                        pageSubReader.GetAttribute("Index")),
-                                                                Response = pageSubReader.GetAttribute("Response"),
-                                                                Name = pageSubReader.GetAttribute("Name")
-                                                            };
-
-                                                            page.Add(referenceId);
-                                                        }
-
-                                                        if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("Tag"))
-                                                        {
-                                                            var tag = new Tag
-                                                            {
-                                                                Source = pageSubReader.GetAttribute("Source"),
-                                                                Value = pageSubReader.GetAttribute("Value")
-                                                            };
-
-                                                            page.Add(tag);
-                                                        }
-                                                    }
-                                                }
-
-                                                group.Add(page);
-                                            }
-                                        }
-                                    }
-
-                                    transaction.Add(group);
-                                }
-                            }
-                        }
-
-                        batch.Add(transaction);
-                    }
-                }
-            }
-
-            return batch;
+            return settings;
         }
 
         private void ValidationCallBack(object sender, ValidationEventArgs e)
