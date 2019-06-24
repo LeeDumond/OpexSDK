@@ -52,7 +52,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_CollectionsInitialized()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null,_fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.NotNull(batch.ReferenceIds);
@@ -71,7 +71,7 @@ namespace OpexSDK.Tests
                 {@"C:\Opex\test.oxi", new MockFileData(batchFileContents)}
             });
 
-            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+            var reader = new BatchReader(@"C:\Opex\test.oxi", null, fileSystem);
 
             Batch batch = await reader.ReadBatchAsync();
 
@@ -81,7 +81,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_BatchPropertiesPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal("MODEL_51", batch.BaseMachine);
@@ -105,7 +105,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_BatchReferenceIdsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.ReferenceIds.Count);
@@ -122,7 +122,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_TransactionsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions.Count);
@@ -137,7 +137,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_GroupsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups.Count);
@@ -156,7 +156,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_PagesPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages.Count);
@@ -265,7 +265,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_ImagesPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images.Count);
@@ -312,7 +312,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_CustomDataPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
@@ -322,7 +322,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_MicrsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Micrs.Count);
@@ -343,7 +343,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_CustomDataPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
@@ -352,7 +352,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_OcrsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Ocrs.Count);
@@ -371,7 +371,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_BarcodesPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Barcodes.Count);
@@ -390,7 +390,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_MarkDetectsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].MarkDetects.Count);
@@ -409,7 +409,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_AuditTrailsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].AuditTrails.Count);
@@ -428,7 +428,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchesAsync_TagsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Tags.Count);
@@ -443,7 +443,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_PageReferenceIdsPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].ReferenceIds.Count);
@@ -460,7 +460,7 @@ namespace OpexSDK.Tests
         [Fact]
         public async Task ReadBatchAsync_EndInfoPopulated()
         {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
             Batch batch = await reader.ReadBatchAsync();
 
             Assert.Equal(new DateTime(2019, 3, 22, 23, 32, 45), batch.EndInfo.EndTime);
@@ -477,12 +477,23 @@ namespace OpexSDK.Tests
                   <UnexpectedElement></UnexpectedElement>
             </Batch>";
 
-            var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-            {
-                {@"C:\Opex\test.oxi", new MockFileData(batchFileContents)}
-            });
+            _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
 
-            var reader = new BatchReader(@"C:\Opex\test.oxi", fileSystem);
+            var reader = new BatchReader(@"C:\Opex\test.oxi", null, _fileSystemFixture.FileSystem);
+
+            await reader.ReadBatchAsync();
+        }
+
+        [Fact]
+        public async Task ReadBatchAsync_UnexpectedAttributeAndElementIgnoredWithValidation()
+        {
+            string batchFileContents = @"<Batch FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE"" OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid"" PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"" UnexpectedAttribute=""Hello"">
+                  <UnexpectedElement></UnexpectedElement>
+            </Batch>";
+
+            _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
+
+            var reader = new BatchReader(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", _fileSystemFixture.FileSystem);
 
             await reader.ReadBatchAsync();
         }

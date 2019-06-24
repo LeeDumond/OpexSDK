@@ -15,10 +15,10 @@ namespace OpexSDK
     public class BatchReader
     {
         private readonly string _batchFilePath;
-        private readonly string _schemaUri;
+        private readonly string _schemaFilePath;
         private readonly IFileSystem _fileSystem;
 
-        public BatchReader(string batchFilePath) : this(batchFilePath, new FileSystem())
+        public BatchReader(string batchFilePath, string schemaFilePath = null) : this(batchFilePath, schemaFilePath, new FileSystem())
         {
             if (batchFilePath == null)
             {
@@ -42,10 +42,10 @@ namespace OpexSDK
         //todo finish docs
         //todo validate against multiple schemas
 
-        internal BatchReader(string batchFilePath, IFileSystem fileSystem)
+        internal BatchReader(string batchFilePath, string schemaFilePath, IFileSystem fileSystem)
         {
             _batchFilePath = batchFilePath;
-            //_schemaUri = schemaUri;
+            _schemaFilePath = schemaFilePath;
             _fileSystem = fileSystem;
         }
 
@@ -53,21 +53,26 @@ namespace OpexSDK
         {
             var batch = new Batch();
 
-            Stream stream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
+            Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
 
             var settings = new XmlReaderSettings
             {
                 Async = true,
-                ValidationType = ValidationType.Schema,
                 IgnoreComments = true,
                 IgnoreWhitespace = true,
                 IgnoreProcessingInstructions = true
             };
 
-            settings.Schemas.Add(null, "oxi1_60.xsd");
-            settings.ValidationEventHandler += ValidationCallBack;
+            if (_schemaFilePath != null)
+            {
+                Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read);
+                XmlSchema schema = XmlSchema.Read(schemaStream, ValidationCallBack);
+                settings.Schemas.Add(schema);
+                settings.ValidationType = ValidationType.Schema;
+                settings.ValidationEventHandler += ValidationCallBack;
+            }
 
-            using (XmlReader reader = XmlReader.Create(stream, settings))
+            using (XmlReader reader = XmlReader.Create(batchStream, settings))
             {
                 while (await reader.ReadAsync())
                 {
