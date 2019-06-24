@@ -62,17 +62,7 @@ namespace OpexSDK
         private readonly IList<ValidationEventArgs> _validationErrors;
 
         /// <summary>
-        ///     The collection of errors, if any, encountered during the validation process.
-        ///     NOTE: If this collection is empty, it does not automatically mean that the batch information file is valid. If no
-        ///     schema is supplied, data validation will not be performed and this collection will be empty. If the schema is
-        ///     supplied but in itself is not valid, those errors will be contained in this collection, though data validation will
-        ///     not be performed.
-        /// </summary>
-        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors =>
-            new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
-
-        /// <summary>
-        ///     A method that asynchronously that reads the data contained in the batch information file supplied to the reader. If
+        ///     A method that asynchronously reads the data contained in the batch information file supplied to the reader. If
         ///     a schema definition file (*.xsd) is also supplied, this method will confirm the validity of the schema, and if it
         ///     is valid, will validate the data file against it.
         /// </summary>
@@ -93,7 +83,6 @@ namespace OpexSDK
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("ReferenceID"))
                     {
                         batch.Add(GetReferenceId(reader));
-
                     }
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("EndInfo"))
@@ -103,10 +92,7 @@ namespace OpexSDK
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Transaction"))
                     {
-                        var transaction = new Transaction
-                        {
-                            TransactionId = AttributeHelpers.GetInt(reader.GetAttribute("TransactionID"))
-                        };
+                        Transaction transaction = GetTransaction(reader);
 
                         using (XmlReader groupReader = reader.ReadSubtree())
                         {
@@ -115,10 +101,7 @@ namespace OpexSDK
                                 if (groupReader.MoveToContent() == XmlNodeType.Element &&
                                     groupReader.Name.Equals("Group"))
                                 {
-                                    var group = new Group
-                                    {
-                                        GroupId = AttributeHelpers.GetInt(groupReader.GetAttribute("GroupID"))
-                                    };
+                                    Group group = GetGroup(groupReader);
 
                                     using (XmlReader pageReader = groupReader.ReadSubtree())
                                     {
@@ -194,7 +177,7 @@ namespace OpexSDK
                                         }
                                     }
 
-                                    transaction.Add(@group);
+                                    transaction.Add(group);
                                 }
                             }
                         }
@@ -228,24 +211,17 @@ namespace OpexSDK
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("ReferenceID"))
                     {
-                        ReferenceId referenceId = GetReferenceId(reader);
-
-                        batch.Add(referenceId);
+                        batch.Add(GetReferenceId(reader));
                     }
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("EndInfo"))
                     {
-                        EndInfo endInfo = GetEndInfo(reader);
-
-                        batch.EndInfo = endInfo;
+                        batch.EndInfo = GetEndInfo(reader);
                     }
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("Transaction"))
                     {
-                        var transaction = new Transaction
-                        {
-                            TransactionId = AttributeHelpers.GetInt(reader.GetAttribute("TransactionID"))
-                        };
+                        Transaction transaction = GetTransaction(reader);
 
                         using (XmlReader groupReader = reader.ReadSubtree())
                         {
@@ -254,10 +230,7 @@ namespace OpexSDK
                                 if (await groupReader.MoveToContentAsync() == XmlNodeType.Element &&
                                     groupReader.Name.Equals("Group"))
                                 {
-                                    var group = new Group
-                                    {
-                                        GroupId = AttributeHelpers.GetInt(groupReader.GetAttribute("GroupID"))
-                                    };
+                                    Group group = GetGroup(groupReader);
 
                                     using (XmlReader pageReader = groupReader.ReadSubtree())
                                     {
@@ -350,6 +323,16 @@ namespace OpexSDK
             return batch;
         }
 
+        /// <summary>
+        ///     The collection of errors, if any, encountered during the validation process.
+        ///     NOTE: If this collection is empty, it does not automatically mean that the batch information file is valid. If no
+        ///     schema is supplied, data validation will not be performed and this collection will be empty. If the schema is
+        ///     supplied but in itself is not valid, those errors will be contained in this collection, though data validation will
+        ///     not be performed.
+        /// </summary>
+        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors =>
+            new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
+
         private static void PopulateBatch(Batch batch, XmlReader reader)
         {
             batch.BaseMachine = reader.GetAttribute("BaseMachine");
@@ -368,6 +351,16 @@ namespace OpexSDK
             batch.ScanDevice = reader.GetAttribute("ScanDevice");
             batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
             batch.TransportId = reader.GetAttribute("TransportId");
+        }
+
+        private static Group GetGroup(XmlReader reader)
+        {
+            return new Group {GroupId = AttributeHelpers.GetInt(reader.GetAttribute("GroupID"))};
+        }
+
+        private static Transaction GetTransaction(XmlReader reader)
+        {
+            return new Transaction {TransactionId = AttributeHelpers.GetInt(reader.GetAttribute("TransactionID"))};
         }
 
         private static CustomData GetCustomData(XmlReader reader)
@@ -519,10 +512,7 @@ namespace OpexSDK
 
             var settings = new XmlReaderSettings
             {
-                Async = async,
-                IgnoreComments = true,
-                IgnoreWhitespace = true,
-                IgnoreProcessingInstructions = true
+                Async = async, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
             };
 
             if (_schemaFilePath != null)
