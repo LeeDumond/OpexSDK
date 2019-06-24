@@ -87,48 +87,17 @@ namespace OpexSDK
                 {
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Batch"))
                     {
-                        batch.BaseMachine = reader.GetAttribute("BaseMachine");
-                        batch.FormatVersion = reader.GetAttribute("FormatVersion");
-                        batch.BatchIdentifier = reader.GetAttribute("BatchIdentifier");
-                        batch.DeveloperReserved = reader.GetAttribute("DeveloperReserved");
-                        batch.ImageFilePath = reader.GetAttribute("ImageFilePath");
-                        batch.JobName = reader.GetAttribute("JobName");
-                        batch.JobType = AttributeHelpers.GetJobType(reader.GetAttribute("JobType"));
-                        batch.OperatorName = reader.GetAttribute("OperatorName");
-                        batch.OperatingMode = AttributeHelpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
-                        batch.StartTime = AttributeHelpers.GetDateTime(reader.GetAttribute("StartTime"));
-                        batch.PluginMessage = reader.GetAttribute("PluginMessage");
-                        batch.ProcessDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ProcessDate"))?.Date;
-                        batch.ReceiveDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ReceiveDate"))?.Date;
-                        batch.ScanDevice = reader.GetAttribute("ScanDevice");
-                        batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
-                        batch.TransportId = reader.GetAttribute("TransportId");
+                        PopulateBatch(batch, reader);
                     }
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("ReferenceID"))
                     {
-                        var referenceId = new ReferenceId
-                        {
-                            Index = AttributeHelpers.GetInt(reader.GetAttribute("Index")),
-                            Response = reader.GetAttribute("Response"),
-                            Name = reader.GetAttribute("Name")
-                        };
-
-                        batch.Add(referenceId);
+                        PopulateReferenceId(batch, reader);
                     }
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("EndInfo"))
                     {
-                        var endInfo = new EndInfo
-                        {
-                            EndTime = AttributeHelpers.GetDateTime(reader.GetAttribute("EndTime")),
-                            NumPages = AttributeHelpers.GetInt(reader.GetAttribute("NumPages")),
-                            NumGroups = AttributeHelpers.GetInt(reader.GetAttribute("NumGroups")),
-                            NumTransactions = AttributeHelpers.GetInt(reader.GetAttribute("NumTransactions")),
-                            IsModified = AttributeHelpers.GetBooleanFromTrueFalse(reader.GetAttribute("IsModified"))
-                        };
-
-                        batch.EndInfo = endInfo;
+                        PopulateEndInfo(batch, reader);
                     }
 
                     if (reader.MoveToContent() == XmlNodeType.Element && reader.Name.Equals("Transaction"))
@@ -441,48 +410,17 @@ namespace OpexSDK
                 {
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("Batch"))
                     {
-                        batch.BaseMachine = reader.GetAttribute("BaseMachine");
-                        batch.FormatVersion = reader.GetAttribute("FormatVersion");
-                        batch.BatchIdentifier = reader.GetAttribute("BatchIdentifier");
-                        batch.DeveloperReserved = reader.GetAttribute("DeveloperReserved");
-                        batch.ImageFilePath = reader.GetAttribute("ImageFilePath");
-                        batch.JobName = reader.GetAttribute("JobName");
-                        batch.JobType = AttributeHelpers.GetJobType(reader.GetAttribute("JobType"));
-                        batch.OperatorName = reader.GetAttribute("OperatorName");
-                        batch.OperatingMode = AttributeHelpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
-                        batch.StartTime = AttributeHelpers.GetDateTime(reader.GetAttribute("StartTime"));
-                        batch.PluginMessage = reader.GetAttribute("PluginMessage");
-                        batch.ProcessDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ProcessDate"))?.Date;
-                        batch.ReceiveDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ReceiveDate"))?.Date;
-                        batch.ScanDevice = reader.GetAttribute("ScanDevice");
-                        batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
-                        batch.TransportId = reader.GetAttribute("TransportId");
+                        PopulateBatch(batch, reader);
                     }
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("ReferenceID"))
                     {
-                        var referenceId = new ReferenceId
-                        {
-                            Index = AttributeHelpers.GetInt(reader.GetAttribute("Index")),
-                            Response = reader.GetAttribute("Response"),
-                            Name = reader.GetAttribute("Name")
-                        };
-
-                        batch.Add(referenceId);
+                        PopulateReferenceId(batch, reader);
                     }
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("EndInfo"))
                     {
-                        var endInfo = new EndInfo
-                        {
-                            EndTime = AttributeHelpers.GetDateTime(reader.GetAttribute("EndTime")),
-                            NumPages = AttributeHelpers.GetInt(reader.GetAttribute("NumPages")),
-                            NumGroups = AttributeHelpers.GetInt(reader.GetAttribute("NumGroups")),
-                            NumTransactions = AttributeHelpers.GetInt(reader.GetAttribute("NumTransactions")),
-                            IsModified = AttributeHelpers.GetBooleanFromTrueFalse(reader.GetAttribute("IsModified"))
-                        };
-
-                        batch.EndInfo = endInfo;
+                        PopulateEndInfo(batch, reader);
                     }
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name.Equals("Transaction"))
@@ -783,6 +721,20 @@ namespace OpexSDK
             return batch;
         }
 
+        private static void PopulateEndInfo(Batch batch, XmlReader reader)
+        {
+            var endInfo = new EndInfo
+            {
+                EndTime = AttributeHelpers.GetDateTime(reader.GetAttribute("EndTime")),
+                NumPages = AttributeHelpers.GetInt(reader.GetAttribute("NumPages")),
+                NumGroups = AttributeHelpers.GetInt(reader.GetAttribute("NumGroups")),
+                NumTransactions = AttributeHelpers.GetInt(reader.GetAttribute("NumTransactions")),
+                IsModified = AttributeHelpers.GetBooleanFromTrueFalse(reader.GetAttribute("IsModified"))
+            };
+
+            batch.EndInfo = endInfo;
+        }
+
         private XmlReader GetXmlReader(bool async = false)
         {
             Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
@@ -808,6 +760,38 @@ namespace OpexSDK
             }
 
             return XmlReader.Create(batchStream, settings);
+        }
+
+        private static void PopulateBatch(Batch batch, XmlReader reader)
+        {
+            batch.BaseMachine = reader.GetAttribute("BaseMachine");
+            batch.FormatVersion = reader.GetAttribute("FormatVersion");
+            batch.BatchIdentifier = reader.GetAttribute("BatchIdentifier");
+            batch.DeveloperReserved = reader.GetAttribute("DeveloperReserved");
+            batch.ImageFilePath = reader.GetAttribute("ImageFilePath");
+            batch.JobName = reader.GetAttribute("JobName");
+            batch.JobType = AttributeHelpers.GetJobType(reader.GetAttribute("JobType"));
+            batch.OperatorName = reader.GetAttribute("OperatorName");
+            batch.OperatingMode = AttributeHelpers.GetOperatingMode(reader.GetAttribute("OperatingMode"));
+            batch.StartTime = AttributeHelpers.GetDateTime(reader.GetAttribute("StartTime"));
+            batch.PluginMessage = reader.GetAttribute("PluginMessage");
+            batch.ProcessDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ProcessDate"))?.Date;
+            batch.ReceiveDate = AttributeHelpers.GetDateTime(reader.GetAttribute("ReceiveDate"))?.Date;
+            batch.ScanDevice = reader.GetAttribute("ScanDevice");
+            batch.SoftwareVersion = reader.GetAttribute("SoftwareVersion");
+            batch.TransportId = reader.GetAttribute("TransportId");
+        }
+
+        private static void PopulateReferenceId(Batch batch, XmlReader reader)
+        {
+            var referenceId = new ReferenceId
+            {
+                Index = AttributeHelpers.GetInt(reader.GetAttribute("Index")),
+                Response = reader.GetAttribute("Response"),
+                Name = reader.GetAttribute("Name")
+            };
+
+            batch.Add(referenceId);
         }
 
         private void ValidationCallBack(object sender, ValidationEventArgs e)
