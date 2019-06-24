@@ -39,8 +39,9 @@ namespace OpexSDK
 
         //todo verify schema
         //todo implement sync reader
-        //todo handle attribute casing
+        //todo handle element casing
         //todo finish docs
+        //todo validate against multiple schemas
 
         internal BatchReader(string batchFilePath, IFileSystem fileSystem)
         {
@@ -117,7 +118,7 @@ namespace OpexSDK
                     }
 
                     if (await reader.MoveToContentAsync() == XmlNodeType.Element &&
-                        reader.Name.Equals("TRANSACTION", StringComparison.InvariantCultureIgnoreCase))
+                        reader.Name.Equals("Transaction"))
                     {
                         var transaction = new Transaction
                         {
@@ -129,7 +130,7 @@ namespace OpexSDK
                             while (await groupReader.ReadAsync())
                             {
                                 if (await groupReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                    groupReader.Name.Equals("GROUP", StringComparison.InvariantCultureIgnoreCase))
+                                    groupReader.Name.Equals("Group"))
                                 {
                                     var group = new Group
                                     {
@@ -141,8 +142,7 @@ namespace OpexSDK
                                         while (await pageReader.ReadAsync())
                                         {
                                             if (await pageReader.MoveToContentAsync() == XmlNodeType.Element &&
-                                                pageReader.Name.Equals("PAGE",
-                                                    StringComparison.InvariantCultureIgnoreCase))
+                                                pageReader.Name.Equals("Page"))
                                             {
                                                 var page = new Page
                                                 {
@@ -208,8 +208,7 @@ namespace OpexSDK
                                                     while (await pageSubReader.ReadAsync())
                                                     {
                                                         if (await pageSubReader.MoveToContentAsync() ==
-                                                            XmlNodeType.Element && pageSubReader.Name.Equals("IMAGE",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            XmlNodeType.Element && pageSubReader.Name.Equals("Image"))
                                                         {
                                                             var image = new Image
                                                             {
@@ -267,8 +266,7 @@ namespace OpexSDK
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("CUSTOMDATA",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            pageSubReader.Name.Equals("CustomData"))
                                                         {
                                                             var customData = new CustomData
                                                             {
@@ -279,8 +277,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
-                                                            XmlNodeType.Element && pageSubReader.Name.Equals("MICR",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            XmlNodeType.Element && pageSubReader.Name.Equals("Micr"))
                                                         {
                                                             var micr = new Micr
                                                             {
@@ -302,8 +299,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
-                                                            XmlNodeType.Element && pageSubReader.Name.Equals("OCR",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            XmlNodeType.Element && pageSubReader.Name.Equals("Ocr"))
                                                         {
                                                             var ocr = new Ocr
                                                             {
@@ -319,8 +315,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
-                                                            XmlNodeType.Element && pageSubReader.Name.Equals("BARCODE",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            XmlNodeType.Element && pageSubReader.Name.Equals("Barcode"))
                                                         {
                                                             var barcode = new Barcode
                                                             {
@@ -337,8 +332,7 @@ namespace OpexSDK
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("MARKDETECT",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            pageSubReader.Name.Equals("MarkDetect"))
                                                         {
                                                             var markDetect = new MarkDetect
                                                             {
@@ -357,8 +351,7 @@ namespace OpexSDK
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("AUDITTRAIL",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            pageSubReader.Name.Equals("AuditTrail"))
                                                         {
                                                             var auditTrail = new AuditTrail
                                                             {
@@ -377,8 +370,7 @@ namespace OpexSDK
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
                                                             XmlNodeType.Element &&
-                                                            pageSubReader.Name.Equals("REFERENCEID",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            pageSubReader.Name.Equals("ReferenceID"))
                                                         {
                                                             var referenceId = new ReferenceId
                                                             {
@@ -393,8 +385,7 @@ namespace OpexSDK
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==
-                                                            XmlNodeType.Element && pageSubReader.Name.Equals("TAG",
-                                                                StringComparison.InvariantCultureIgnoreCase))
+                                                            XmlNodeType.Element && pageSubReader.Name.Equals("Tag"))
                                                         {
                                                             var tag = new Tag
                                                             {
@@ -434,7 +425,7 @@ namespace OpexSDK
             else
             {
                 throw new XmlSchemaException(
-                    $"{e.Message} line: {e.Exception.LineNumber} position: {e.Exception.LinePosition}", e.Exception);
+                    $"{e.Message} Line: {e.Exception.LineNumber}, Position: {e.Exception.LinePosition}", e.Exception);
             }
         }
     }
