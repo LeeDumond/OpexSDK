@@ -35,10 +35,11 @@ namespace OpexSDK.Tests
                 <MarkDetect Index=""1"" Side=""BACK"" Result=""YES"" Name=""MARK 1"" />
                 <MarkDetect Index=""2"" Side=""FRONT"" Result=""NO"" Name=""MARK 2"" />
                 <AuditTrail Type=""PRINTED"" Side=""BACK"" Apply=""TRUE"" Text=""Received"" />
-                <AuditTrail Type=""ELECTRONIC"" Side=""FRONT"" Apply=""FALSE"" Text=""CCCIS Inc."" />             
+                <AuditTrail Type=""ELECTRONIC"" Side=""FRONT"" Apply=""FALSE"" Text=""CCCIS Inc."" />                     
                 <ReferenceID Index=""1"" Response=""High Priority"" Name=""Priority"" />
                 <ReferenceID Index=""2"" Response=""Mint Chocolate Chip"" Name=""Ice Cream"" />
-                
+                <Tag Source=""MFD Override"" Value=""Medical Record"" />
+                <Tag Source=""External Camera"" Value=""Invoice"" />
             </Page>
             <Page DocumentLocator=""2"" TransactionSequence=""2"" GroupSequence=""2"" BatchSequence=""2"" ScanSequence=""5"" ScanTime=""2019-03-22 23:25:18""
               ItemStatus=""VOID"" IsVirtual=""YES"" PageType=""CUSTOM_PAGE1"" PageName=""Affidavit"" SubPageName=""Notarization"" OperatorSelect=""YES"" Bin=""MyBin2"" Length=""8.500 IN"" 

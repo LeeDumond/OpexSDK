@@ -422,8 +422,7 @@ namespace OpexSDK
             }
             else
             {
-                throw new XmlSchemaException(
-                    $"{e.Message} Line: {e.Exception.LineNumber}, Position: {e.Exception.LinePosition}", e.Exception);
+                Debug.WriteLine($"{e.Message} Line: {e.Exception.LineNumber}, Position: {e.Exception.LinePosition}");
             }
         }
     }
