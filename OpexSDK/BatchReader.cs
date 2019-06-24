@@ -81,11 +81,7 @@ namespace OpexSDK
         {
             var batch = new Batch();
 
-            Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
-
-            XmlReaderSettings settings = GetXmlReaderSettings();
-
-            using (XmlReader reader = XmlReader.Create(batchStream, settings))
+            using (XmlReader reader = GetXmlReader())
             {
                 while (reader.Read())
                 {
@@ -439,11 +435,7 @@ namespace OpexSDK
         {
             var batch = new Batch();
 
-            Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
-
-            XmlReaderSettings settings = GetXmlReaderSettings(true);
-
-            using (XmlReader reader = XmlReader.Create(batchStream, settings))
+            using (XmlReader reader = GetXmlReader(true))
             {
                 while (await reader.ReadAsync())
                 {
@@ -791,11 +783,16 @@ namespace OpexSDK
             return batch;
         }
 
-        private XmlReaderSettings GetXmlReaderSettings(bool async = false)
+        private XmlReader GetXmlReader(bool async = false)
         {
+            Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
+
             var settings = new XmlReaderSettings
             {
-                Async = async, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
+                Async = async,
+                IgnoreComments = true,
+                IgnoreWhitespace = true,
+                IgnoreProcessingInstructions = true
             };
 
             if (_schemaFilePath != null)
@@ -810,7 +807,7 @@ namespace OpexSDK
                 }
             }
 
-            return settings;
+            return XmlReader.Create(batchStream, settings);
         }
 
         private void ValidationCallBack(object sender, ValidationEventArgs e)
