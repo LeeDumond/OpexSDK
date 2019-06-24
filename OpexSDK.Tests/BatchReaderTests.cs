@@ -484,18 +484,6 @@ namespace OpexSDK.Tests
             await reader.ReadBatchAsync();
         }
 
-        [Fact]
-        public async Task ReadBatchAsync_UnexpectedAttributeAndElementIgnoredWithValidation()
-        {
-            string batchFileContents = @"<Batch FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE"" OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid"" PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"" UnexpectedAttribute=""Hello"">
-                  <UnexpectedElement></UnexpectedElement>
-            </Batch>";
-
-            _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
-
-            var reader = new BatchReader(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", _fileSystemFixture.FileSystem);
-
-            await reader.ReadBatchAsync();
-        }
+        
     }
 }

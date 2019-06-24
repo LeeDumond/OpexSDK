@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
@@ -17,6 +19,7 @@ namespace OpexSDK
         private readonly string _batchFilePath;
         private readonly string _schemaFilePath;
         private readonly IFileSystem _fileSystem;
+        private readonly IList<ValidationEventArgs> _validationErrors;
 
         public BatchReader(string batchFilePath, string schemaFilePath = null) : this(batchFilePath, schemaFilePath, new FileSystem())
         {
@@ -47,7 +50,10 @@ namespace OpexSDK
             _batchFilePath = batchFilePath;
             _schemaFilePath = schemaFilePath;
             _fileSystem = fileSystem;
+            _validationErrors = new List<ValidationEventArgs>();
         }
+
+        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors => new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
 
         public async Task<Batch> ReadBatchAsync()
         {
@@ -67,9 +73,12 @@ namespace OpexSDK
             {
                 Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read);
                 XmlSchema schema = XmlSchema.Read(schemaStream, ValidationCallBack);
-                settings.Schemas.Add(schema);
-                settings.ValidationType = ValidationType.Schema;
-                settings.ValidationEventHandler += ValidationCallBack;
+                if (schema != null)
+                {
+                    settings.Schemas.Add(schema);
+                    settings.ValidationType = ValidationType.Schema;
+                    settings.ValidationEventHandler += ValidationCallBack;
+                }
             }
 
             using (XmlReader reader = XmlReader.Create(batchStream, settings))
@@ -423,14 +432,7 @@ namespace OpexSDK
 
         private void ValidationCallBack(object sender, ValidationEventArgs e)
         {
-            if (e.Severity == XmlSeverityType.Warning)
-            {
-                Debug.WriteLine("Warning: Matching schema not found.  No validation occurred." + e.Message);
-            }
-            else
-            {
-                Debug.WriteLine($"{e.Message} Line: {e.Exception.LineNumber}, Position: {e.Exception.LinePosition}");
-            }
+            _validationErrors.Add(e);
         }
     }
 }
