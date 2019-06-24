@@ -15,6 +15,7 @@ namespace OpexSDK
     public class BatchReader
     {
         private readonly string _batchFilePath;
+        private readonly string _schemaUri;
         private readonly IFileSystem _fileSystem;
 
         public BatchReader(string batchFilePath) : this(batchFilePath, new FileSystem())
@@ -44,6 +45,7 @@ namespace OpexSDK
         internal BatchReader(string batchFilePath, IFileSystem fileSystem)
         {
             _batchFilePath = batchFilePath;
+            //_schemaUri = schemaUri;
             _fileSystem = fileSystem;
         }
 

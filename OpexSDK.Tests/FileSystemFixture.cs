@@ -64,18 +64,168 @@ namespace OpexSDK.Tests
     <EndInfo EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" />
 </Batch>";
 
-            string test2Contents = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            string schemaContents = @"<?xml version=""1.0"" encoding=""utf-8""?>
 
-<Batch FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
-   OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
-   PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1234-56a"" UnexpectedAttribute=""Hello"">
-    <UNEXPCTEDELEMENT></UNEXPCTEDELEMENT>
-</Batch>";
+<xs:schema attributeFormDefault=""unqualified"" elementFormDefault=""qualified"" xmlns:xs=""http://www.w3.org/2001/XMLSchema"">
+  <xs:element name=""Batch"">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""Transaction"">
+          <xs:complexType>
+			  <xs:sequence>
+				<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""Group"">
+				  <xs:complexType>
+					<xs:sequence>
+					  <xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""Page"">
+						<xs:complexType>
+						  <xs:sequence>
+							<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""Image"">
+							  <xs:complexType>
+								<xs:attribute name=""Index"" type=""xs:unsignedShort"" use=""required"" />					  
+								<xs:attribute name=""RescanStatus"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""ScantimeFinalBlankAreaDecision"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Side"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Type"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Depth"" type=""xs:unsignedByte"" use=""required"" />
+								<xs:attribute name=""Format"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Filename"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Filesize"" type=""xs:unsignedInt"" use=""required"" />
+								<xs:attribute name=""Length"" type=""xs:unsignedShort"" use=""required"" />
+								<xs:attribute name=""Height"" type=""xs:unsignedShort"" use=""required"" />
+								<xs:attribute name=""OffsetLength"" type=""xs:unsignedShort"" use=""required"" />
+								<xs:attribute name=""OffsetHeight"" type=""xs:unsignedShort"" use=""required"" />
+								<xs:attribute name=""ResolutionLength"" type=""xs:unsignedShort"" use=""required"" />
+								<xs:attribute name=""ResolutionHeight"" type=""xs:unsignedShort"" use=""required"" />
+							  </xs:complexType>
+							</xs:element>
+							<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""CustomData"">
+							  <xs:complexType>
+								<xs:attribute name=""Entry"" type=""xs:string"" use=""required"" />					  
+							  </xs:complexType>
+							</xs:element>
+							<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""Micr"">
+							  <xs:complexType>
+								<xs:attribute name=""Status"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""RtStatus"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""CheckType"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Side"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Value"" type=""xs:string"" use=""required"" />
+							  </xs:complexType>
+							</xs:element>
+							<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""Ocr"">
+							  <xs:complexType>
+								<xs:attribute name=""Index"" type=""xs:unsignedByte"" use=""required"" />
+								<xs:attribute name=""Side"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Value"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Name"" type=""xs:string"" use=""required"" />                        
+							  </xs:complexType>
+							</xs:element>
+							<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""Barcode"">
+							  <xs:complexType>
+								<xs:attribute name=""Index"" type=""xs:unsignedByte"" use=""required"" />
+								<xs:attribute name=""Type"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Side"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Value"" type=""xs:string"" use=""required"" />
+							  </xs:complexType>
+							</xs:element>
+							<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""MarkDetect"">
+							  <xs:complexType>
+								<xs:attribute name=""Index"" type=""xs:unsignedByte"" use=""required"" />
+								<xs:attribute name=""Side"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Result"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Name"" type=""xs:string"" use=""required"" />                                             
+							  </xs:complexType>
+							</xs:element>
+							<xs:element minOccurs=""0"" maxOccurs=""unbounded"" name=""AuditTrail"">
+							  <xs:complexType>
+								<xs:attribute name=""Type"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Side"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Text"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Apply"" type=""xs:string"" use=""required"" />
+							  </xs:complexType>
+							</xs:element>
+							<xs:element minOccurs=""0"" maxOccurs=""3"" name=""ReferenceID"">
+							  <xs:complexType>
+								<xs:attribute name=""Index"" type=""xs:unsignedByte"" use=""required"" />
+								<xs:attribute name=""Response"" type=""xs:string"" use=""required"" />
+								<xs:attribute name=""Name"" type=""xs:string"" use=""required"" />                        
+							  </xs:complexType>
+							</xs:element>
+						  </xs:sequence>
+							<xs:attribute name=""DocumentLocator"" type=""xs:unsignedInt"" use=""required"" />				  
+							<xs:attribute name=""BatchSequence"" type=""xs:unsignedInt"" use=""required"" />
+							<xs:attribute name=""TransactionSequence"" type=""xs:unsignedInt"" use=""required"" />
+							<xs:attribute name=""ScanSequence"" type=""xs:unsignedInt"" use=""required"" />
+							<xs:attribute name=""GroupSequence"" type=""xs:unsignedInt"" use=""required"" />
+							<xs:attribute name=""ItemStatus"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""IsVirtual"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""PageType"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""PageName"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""SubPageName"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""OperatorSelect"" type=""xs:string"" use=""required"" />				  
+							<xs:attribute name=""Bin"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""Length"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""Height"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""EnvelopeDetect"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""AverageThickness"" type=""xs:decimal"" use=""required"" />
+							<xs:attribute name=""SkewDegrees"" type=""xs:decimal"" use=""required"" />
+							<xs:attribute name=""DeskewStatus"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""FrontStreakDetectStatus"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""BackStreakDetectStatus"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""PlugInPageMessage"" type=""xs:string"" use=""required"" />
+							<xs:attribute name=""ScanTime"" type=""xs:string"" use=""required"" />					
+						</xs:complexType>
+					  </xs:element>
+					</xs:sequence>
+					<xs:attribute name=""GroupID"" type=""xs:unsignedInt"" use=""required"" />
+				  </xs:complexType>
+				</xs:element>			  
+			  </xs:sequence>
+            <xs:attribute name=""TransactionID"" type=""xs:unsignedInt"" use=""required"" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element minOccurs=""0"" maxOccurs=""3"" name=""ReferenceID"">
+          <xs:complexType>
+            <xs:attribute name=""Index"" type=""xs:unsignedByte"" use=""required"" />
+            <xs:attribute name=""Response"" type=""xs:string"" use=""required"" />
+            <xs:attribute name=""Name"" type=""xs:string"" use=""required"" />              
+          </xs:complexType>
+        </xs:element>		
+        <xs:element minOccurs=""1"" maxOccurs=""1"" name=""EndInfo"">
+          <xs:complexType>
+				<xs:attribute name=""EndTime"" type=""xs:string"" use=""required"" />
+				<xs:attribute name=""NumPages"" type=""xs:unsignedInt"" use=""required"" />
+				<xs:attribute name=""NumGroups"" type=""xs:unsignedInt"" use=""required"" />
+				<xs:attribute name=""NumTransactions"" type=""xs:unsignedInt"" use=""required"" />
+				<xs:attribute name=""IsModified"" type=""xs:string"" use=""required"" />			
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name=""FormatVersion"" type=""xs:decimal"" use=""required"" />
+      <xs:attribute name=""BaseMachine"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""ScanDevice"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""SoftwareVersion"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""TransportId"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""BatchIdentifier"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""JobType"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""OperatingMode"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""JobName"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""OperatorName"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""StartTime"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""ReceiveDate"" type=""xs:date"" use=""required"" />
+      <xs:attribute name=""ProcessDate"" type=""xs:date"" use=""required"" />
+      <xs:attribute name=""ImageFilePath"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""PluginMessage"" type=""xs:string"" use=""required"" />
+      <xs:attribute name=""DeveloperReserved"" type=""xs:string"" use=""required"" />  
+    </xs:complexType>
+  </xs:element>
+</xs:schema>";
+
 
             FileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
                 { @"C:\Opex\test1.oxi", new MockFileData(test1Contents) },
-                { @"C:\Opex\test2.oxi", new MockFileData(test2Contents) }
+                { @"C:\Opex\schema.xsd", new MockFileData(schemaContents) }
             });
 
         }
