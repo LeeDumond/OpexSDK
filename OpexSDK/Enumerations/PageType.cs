@@ -1,7 +1,7 @@
 ﻿namespace OpexSDK.Enumerations
 {
     /// <summary>
-    /// Describes the type of a page.
+    ///     Describes the type of a page.
     /// </summary>
     public enum PageType
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Xml;
 using OpexSDK.Enumerations;
 
@@ -17,7 +16,7 @@ namespace OpexSDK
                 return null;
             }
 
-            return XmlConvert.ToDateTime(attributeValue, new string[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" });
+            return XmlConvert.ToDateTime(attributeValue, new[] {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"});
         }
 
         internal static int? GetInt(string attributeValue)
@@ -178,7 +177,6 @@ namespace OpexSDK
             return Convert.ToSingle(attributeValue);
         }
 
-
         internal static RescanStatus? GetRescanStatus(string attributeValue)
         {
             switch (attributeValue)
@@ -197,17 +195,17 @@ namespace OpexSDK
 
         internal static EnvelopeDetect? GetEnvelopeDetect(string attributeValue)
         {
-            return (EnvelopeDetect?)GetYesNoInactive(attributeValue);
+            return (EnvelopeDetect?) GetYesNoInactive(attributeValue);
         }
 
         internal static DeskewStatus? GetDeskewStatus(string attributeValue)
         {
-            return (DeskewStatus?)GetYesNoInactive(attributeValue);
+            return (DeskewStatus?) GetYesNoInactive(attributeValue);
         }
 
         internal static FrontStreakDetectStatus? GetFrontStreakDetectStatus(string attributeValue)
         {
-            return (FrontStreakDetectStatus?)GetYesNoInactive(attributeValue);
+            return (FrontStreakDetectStatus?) GetYesNoInactive(attributeValue);
         }
 
         internal static BackStreakDetectStatus? GetBackStreakDetectStatus(string attributeValue)

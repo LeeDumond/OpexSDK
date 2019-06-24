@@ -7,7 +7,7 @@ namespace OpexSDK.Tests
     {
         public FileSystemFixture()
         {
-            string test1Contents = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            var test1Contents = @"<?xml version=""1.0"" encoding=""utf-8""?>
 
 <Batch FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
    OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
@@ -64,7 +64,7 @@ namespace OpexSDK.Tests
     <EndInfo EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" />
 </Batch>";
 
-            string schemaContents = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            var schemaContents = @"<?xml version=""1.0"" encoding=""utf-8""?>
 
 <xs:schema attributeFormDefault=""unqualified"" elementFormDefault=""qualified"" xmlns:xs=""http://www.w3.org/2001/XMLSchema"">
   <xs:element name=""Batch"">
@@ -221,13 +221,11 @@ namespace OpexSDK.Tests
   </xs:element>
 </xs:schema>";
 
-
             FileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                { @"C:\Opex\test1.oxi", new MockFileData(test1Contents) },
-                { @"C:\Opex\schema.xsd", new MockFileData(schemaContents) }
+                {@"C:\Opex\test1.oxi", new MockFileData(test1Contents)},
+                {@"C:\Opex\schema.xsd", new MockFileData(schemaContents)}
             });
-
         }
 
         public MockFileSystem FileSystem { get; }

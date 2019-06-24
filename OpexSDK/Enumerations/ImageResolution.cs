@@ -1,7 +1,7 @@
 ﻿namespace OpexSDK.Enumerations
 {
     /// <summary>
-    /// Describes the resolution of an image in dots per inch (DPI).
+    ///     Describes the resolution of an image in dots per inch (DPI).
     /// </summary>
     public enum ImageResolution
     {
