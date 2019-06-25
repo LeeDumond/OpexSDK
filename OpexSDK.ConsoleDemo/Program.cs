@@ -49,6 +49,13 @@ namespace OpexSDK.ConsoleDemo
                         Console.WriteLine($"\t\t\t\tDocument Locator: {page.DocumentLocator}");
                         Console.WriteLine($"\t\t\t\tBatch Sequence: {page.BatchSequence}");
                         Console.WriteLine($"\t\t\t\tTransaction Sequence: {page.TransactionSequence}");
+
+                        foreach (Image image in page.Images)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tImage:");
+                            Console.WriteLine($"\t\t\t\t\tIndex: {image.Index}");
+                        }
                     }
                 }
             }
