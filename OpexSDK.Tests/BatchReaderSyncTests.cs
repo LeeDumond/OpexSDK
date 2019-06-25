@@ -221,9 +221,9 @@ namespace OpexSDK.Tests
             Assert.Equal(300, batch.Transactions[0].Groups[0].Pages[0].Images[0].Height);
             Assert.Equal(400, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetLength);
             Assert.Equal(60, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetHeight);
-            Assert.Equal(ImageResolution.ThreeHundred,
+            Assert.Equal(ImageResolution.High,
                 batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
-            Assert.Equal(ImageResolution.TwoHundredForty,
+            Assert.Equal(ImageResolution.MediumHigh,
                 batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionHeight);
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images[1].Index);
@@ -240,9 +240,9 @@ namespace OpexSDK.Tests
             Assert.Equal(1800, batch.Transactions[0].Groups[0].Pages[0].Images[1].Height);
             Assert.Equal(0, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetLength);
             Assert.Equal(240, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetHeight);
-            Assert.Equal(ImageResolution.TwoHundred,
+            Assert.Equal(ImageResolution.Medium,
                 batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
-            Assert.Equal(ImageResolution.OneHundredFifty,
+            Assert.Equal(ImageResolution.MediumLow,
                 batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionHeight);
         }
 

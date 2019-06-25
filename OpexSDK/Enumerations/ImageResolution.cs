@@ -5,10 +5,10 @@
     /// </summary>
     public enum ImageResolution
     {
-        OneHundred = 100,
-        OneHundredFifty = 150,
-        TwoHundred = 200,
-        TwoHundredForty = 240,
-        ThreeHundred = 300
+        Low = 100,
+        MediumLow = 150,
+        Medium = 200,
+        MediumHigh = 240,
+        High = 300
     }
 }

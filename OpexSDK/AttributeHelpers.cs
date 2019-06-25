@@ -352,15 +352,15 @@ namespace OpexSDK
             switch (attributeValue)
             {
                 case "100":
-                    return ImageResolution.OneHundred;
+                    return ImageResolution.Low;
                 case "150":
-                    return ImageResolution.OneHundredFifty;
+                    return ImageResolution.MediumLow;
                 case "200":
-                    return ImageResolution.TwoHundred;
+                    return ImageResolution.Medium;
                 case "240":
-                    return ImageResolution.TwoHundredForty;
+                    return ImageResolution.MediumHigh;
                 case "300":
-                    return ImageResolution.ThreeHundred;
+                    return ImageResolution.High;
                 case "":
                 case null:
                     return null;

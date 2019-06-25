@@ -158,11 +158,11 @@ namespace OpexSDK.Tests
         [Fact]
         public void GetImageResolution_ReturnsCorrectImageResolution()
         {
-            Assert.Equal(ImageResolution.OneHundred, AttributeHelpers.GetImageResolution("100"));
-            Assert.Equal(ImageResolution.OneHundredFifty, AttributeHelpers.GetImageResolution("150"));
-            Assert.Equal(ImageResolution.TwoHundred, AttributeHelpers.GetImageResolution("200"));
-            Assert.Equal(ImageResolution.TwoHundredForty, AttributeHelpers.GetImageResolution("240"));
-            Assert.Equal(ImageResolution.ThreeHundred, AttributeHelpers.GetImageResolution("300"));
+            Assert.Equal(ImageResolution.Low, AttributeHelpers.GetImageResolution("100"));
+            Assert.Equal(ImageResolution.MediumLow, AttributeHelpers.GetImageResolution("150"));
+            Assert.Equal(ImageResolution.Medium, AttributeHelpers.GetImageResolution("200"));
+            Assert.Equal(ImageResolution.MediumHigh, AttributeHelpers.GetImageResolution("240"));
+            Assert.Equal(ImageResolution.High, AttributeHelpers.GetImageResolution("300"));
 
             Assert.Null(AttributeHelpers.GetImageResolution(""));
             Assert.Null(AttributeHelpers.GetImageResolution(null));
