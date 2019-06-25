@@ -27,8 +27,11 @@ namespace OpexSDK
         ///     The path to an XSD schema definition file to validate against. By default, this argument
         ///     is null, which means no validation is performed.
         /// </param>
-        public BatchReader(string batchFilePath, string schemaFilePath = null) : this(batchFilePath, schemaFilePath,
-            new FileSystem())
+        /// <param name="throwOnValidationError">If true, an exception will be thrown if any validation errors are encountered.
+        /// If false, validation errors will be added to the ValidationErrors collection, but no exception will be thrown. The default is false.
+        /// NOTE: If no schema is supplied, this parameter has no effect.</param>
+        public BatchReader(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false) :
+            this(batchFilePath, schemaFilePath, throwOnValidationError, new FileSystem())
         {
             if (batchFilePath == null)
             {
@@ -48,10 +51,12 @@ namespace OpexSDK
             }
         }
 
-        internal BatchReader(string batchFilePath, string schemaFilePath, IFileSystem fileSystem)
+        internal BatchReader(string batchFilePath, string schemaFilePath, bool throwOnValidationError,
+            IFileSystem fileSystem)
         {
             _batchFilePath = batchFilePath;
             _schemaFilePath = schemaFilePath;
+            _throwOnValidationError = throwOnValidationError;
             _fileSystem = fileSystem;
             _validationErrors = new List<ValidationEventArgs>();
         }
@@ -59,6 +64,7 @@ namespace OpexSDK
         private readonly string _batchFilePath;
         private readonly IFileSystem _fileSystem;
         private readonly string _schemaFilePath;
+        private readonly bool _throwOnValidationError;
         private readonly IList<ValidationEventArgs> _validationErrors;
 
         /// <summary>
@@ -532,6 +538,11 @@ namespace OpexSDK
 
         private void ValidationCallBack(object sender, ValidationEventArgs e)
         {
+            if (_throwOnValidationError)
+            {
+                throw e.Exception;
+            }
+
             _validationErrors.Add(e);
         }
     }
