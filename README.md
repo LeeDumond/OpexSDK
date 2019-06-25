@@ -1,5 +1,5 @@
 # OpexSDK
-A simple .NET Standard 2.0 library that facilitates the reading of data contained in batch information files (\*.oxi) created by OPEX scanning devices, along with optional validation against an XSD schema definition file supplied by the user.
+A simple .NET Standard 2.0 library that facilitates the reading of data contained in batch information files conforming to the OPEX XML Interface format (\*.oxi) created by OPEX scanning devices, along with optional validation against an XSD schema definition file supplied by the user at runtime.
 
 **DISCLAIMER: This software is not authored, supported, maintained, or endorsed by OPEX Corporation or any of its employees. OPEX Corporation assumes no liability from the use of this software.**
 
@@ -31,11 +31,19 @@ The structure of a `Batch` mirrors how a typical batch information file is struc
 All of the objects are designed to be immutable; meaning their content cannot be programatically changed. Properties have no accessible setters, and all collections are read-only. If your requirements are such that you need to modify properties or collections post-read, you can derive your own subclasses from those in the library which implement this functionality.
 
 By default, the read algorithm is forgiving in that unexpected or missing attibutes or elements, or attributes with empty values, will not stop the reader, even if they are marked "required" by the schema (assuming `throwOnValidationError` is set to `false`, which is the default behavior): 
-- Any unexpected attributes or elements will be ignored. 
+- The order of attibutes is ignored.
+- General formatting such as whitespace, indentation, and the like is ignored.
+- Any comments or processing instructions are ignored.
+- Any unexpected attributes or elements are ignored. 
 - The properties corresponding to missing attributes will be set to `null`. 
 - Properties corresponding to attributes with empty values will be set to `null` (or `string.Empty` in the case of string properties).
 
 If you provided a schema definition file to validate against, you should check the `ValidationErrors` collection and decide whether any anomalies that are logged there are important to you.
+
+## How Attributes are Mapped to Properties
+In most cases, if an attribute is defined as a string in the schema, it is mapped to a string property, the same holds for integers and floating point values. However, in other cases, properties with a limited range of valid values are mapped to enumerations, which makes working with the data a bit easier.
+
+For example, because the `"TransportId"` attribute can be any string, the correspondng `Batch.TransportId` property is of type `string`.
 
 ## Contributions
 
