@@ -55,6 +55,20 @@ namespace OpexSDK.ConsoleDemo
                             Console.WriteLine();
                             Console.WriteLine($"\t\t\t\tImage:");
                             Console.WriteLine($"\t\t\t\t\tIndex: {image.Index}");
+                            Console.WriteLine($"\t\t\t\t\tRescan Status: {image.RescanStatus}");
+                            Console.WriteLine($"\t\t\t\t\tScantime Final Blank Area Decision: {image.ScantimeFinalBlankAreaDecision}");
+                            Console.WriteLine($"\t\t\t\t\tSide: {image.Side}");
+                            Console.WriteLine($"\t\t\t\t\tType: {image.Type}");
+                            Console.WriteLine($"\t\t\t\t\tDepth: {image.Depth}");
+                            Console.WriteLine($"\t\t\t\t\tFormat: {image.Format}");
+                            Console.WriteLine($"\t\t\t\t\tFile Name: {image.Filename}");
+                            Console.WriteLine($"\t\t\t\t\tFile Size: {image.Filesize}");
+                            Console.WriteLine($"\t\t\t\t\tLength: {image.Length}");
+                            Console.WriteLine($"\t\t\t\t\tHeight: {image.Height}");
+                            Console.WriteLine($"\t\t\t\t\tOffsetLength: {image.OffsetLength}");
+                            Console.WriteLine($"\t\t\t\t\tOffsetHeight: {image.OffsetHeight}");
+                            Console.WriteLine($"\t\t\t\t\tResolutionLength: {image.ResolutionLength}");
+                            Console.WriteLine($"\t\t\t\t\tResolutionHeight: {image.ResolutionHeight}");
                         }
                     }
                 }
