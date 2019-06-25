@@ -52,7 +52,7 @@ namespace OpexSDK.Tests
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Index);
             Assert.Equal("EAN-8", batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Type);
             Assert.Equal(Side.Back, batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Side);
-            Assert.Equal("10110 Jupiter Hills Drive", batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Value);
+            Assert.Equal("123 Main Street", batch.Transactions[0].Groups[0].Pages[0].Barcodes[1].Value);
         }
 
         [Fact]

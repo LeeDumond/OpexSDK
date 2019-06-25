@@ -31,7 +31,7 @@ namespace OpexSDK.Tests
                 <Ocr Index=""1"" Side=""FRONT"" Value=""This is the !alue of first read"" Name=""OCR 1"" />
                 <Ocr Index=""2"" Side=""BACK"" Value="""" Name=""OCR 2"" />
                 <Barcode Index=""1"" Type=""Code 39"" Side=""FRONT"" Value=""08057423"" />
-                <Barcode Index=""2"" Type=""EAN-8"" Side=""BACK"" Value=""10110 Jupiter Hills Drive"" />
+                <Barcode Index=""2"" Type=""EAN-8"" Side=""BACK"" Value=""123 Main Street"" />
                 <MarkDetect Index=""1"" Side=""BACK"" Result=""YES"" Name=""MARK 1"" />
                 <MarkDetect Index=""2"" Side=""FRONT"" Result=""NO"" Name=""MARK 2"" />
                 <AuditTrail Type=""PRINTED"" Side=""BACK"" Apply=""TRUE"" Text=""Received"" />

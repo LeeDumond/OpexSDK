@@ -70,6 +70,81 @@ namespace OpexSDK.ConsoleDemo
                             Console.WriteLine($"\t\t\t\t\tResolutionLength: {image.ResolutionLength}");
                             Console.WriteLine($"\t\t\t\t\tResolutionHeight: {image.ResolutionHeight}");
                         }
+
+                        if (page.CustomData != null)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tCustomData:");
+                            Console.WriteLine($"\t\t\t\t\tEntry: {page.CustomData.Entry}");
+                        }
+
+                        foreach (Micr micr in page.Micrs)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tMicr:");
+                            Console.WriteLine($"\t\t\t\t\tStatus: {micr.Status}");
+                            Console.WriteLine($"\t\t\t\t\tRtStatus: {micr.RtStatus}");
+                            Console.WriteLine($"\t\t\t\t\tCheckType: {micr.CheckType}");
+                            Console.WriteLine($"\t\t\t\t\tSide: {micr.Side}");
+                            Console.WriteLine($"\t\t\t\t\tValue: {micr.Value}");
+                        }
+
+                        foreach (Ocr ocr in page.Ocrs)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tOcr:");
+                            Console.WriteLine($"\t\t\t\t\tIndex: {ocr.Index}");
+                            Console.WriteLine($"\t\t\t\t\tSide: {ocr.Side}");
+                            Console.WriteLine($"\t\t\t\t\tValue: {ocr.Value}");
+                            Console.WriteLine($"\t\t\t\t\tName: {ocr.Name}");
+                        }
+
+                        foreach (Barcode barcode in page.Barcodes)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tBarcode:");
+                            Console.WriteLine($"\t\t\t\t\tIndex: {barcode.Index}");
+                            Console.WriteLine($"\t\t\t\t\tType: {barcode.Type}");
+                            Console.WriteLine($"\t\t\t\t\tSide: {barcode.Side}");
+                            Console.WriteLine($"\t\t\t\t\tValue: {barcode.Value}");
+                        }
+
+                        foreach (MarkDetect markDetect in page.MarkDetects)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tMarkDetect:");
+                            Console.WriteLine($"\t\t\t\t\tIndex: {markDetect.Index}");
+                            Console.WriteLine($"\t\t\t\t\tSide: {markDetect.Side}");
+                            Console.WriteLine($"\t\t\t\t\tResult: {markDetect.Result}");
+                            Console.WriteLine($"\t\t\t\t\tName: {markDetect.Name}");
+                        }
+
+                        foreach (AuditTrail auditTrail in page.AuditTrails)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tAuditTrail:");
+                            Console.WriteLine($"\t\t\t\t\tType: {auditTrail.Type}");
+                            Console.WriteLine($"\t\t\t\t\tSide: {auditTrail.Side}");
+                            Console.WriteLine($"\t\t\t\t\tText: {auditTrail.Text}");
+                            Console.WriteLine($"\t\t\t\t\tApply: {auditTrail.Apply}");
+                        }
+
+                        foreach (ReferenceId referenceId in page.ReferenceIds)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tReference ID:");
+                            Console.WriteLine($"\t\t\t\t\tIndex: {referenceId.Index}");
+                            Console.WriteLine($"\t\t\t\t\tResponse: {referenceId.Response}");
+                            Console.WriteLine($"\t\t\t\t\tName: {referenceId.Name}");
+                        }
+
+                        foreach (Tag tag in page.Tags)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"\t\t\t\tTag:");
+                            Console.WriteLine($"\t\t\t\t\tSource: {tag.Source}");
+                            Console.WriteLine($"\t\t\t\t\tValue: {tag.Value}");
+                        }
                     }
                 }
             }
