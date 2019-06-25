@@ -19,33 +19,33 @@ namespace OpexSDK.Tests
         [Fact]
         public void BatchReader_EmptyPath_Throws()
         {
-            Func<BatchReader> func = () => new BatchReader("");
+            BatchReader Func() => new BatchReader("");
 
-            Assert.Throws<ArgumentException>(func);
+            Assert.Throws<ArgumentException>(Func);
         }
 
         [Fact]
         public void BatchReader_NoFileExtension_Throws()
         {
-            Func<BatchReader> func = () => new BatchReader(@"C:\Opex\");
+            BatchReader Func() => new BatchReader(@"C:\Opex\");
 
-            Assert.Throws<NotSupportedException>(func);
+            Assert.Throws<NotSupportedException>((Func<BatchReader>) Func);
         }
 
         [Fact]
         public void BatchReader_NullPath_Throws()
         {
-            Func<BatchReader> func = () => new BatchReader(null);
+            BatchReader Func() => new BatchReader(null);
 
-            Assert.Throws<ArgumentNullException>(func);
+            Assert.Throws<ArgumentNullException>((Func<BatchReader>) Func);
         }
 
         [Fact]
         public void BatchReader_WrongFileExtension_Throws()
         {
-            Func<BatchReader> func = () => new BatchReader(@"C:\Opex\test.xml");
+            BatchReader Func() => new BatchReader(@"C:\Opex\test.xml");
 
-            Assert.Throws<NotSupportedException>(func);
+            Assert.Throws<NotSupportedException>((Func<BatchReader>) Func);
         }
 
         [Fact]

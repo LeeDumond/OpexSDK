@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Schema;
 using OpexSDK.Models;
 
 namespace OpexSDK.ConsoleDemo
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            BatchReader reader = new BatchReader("sample.oxi", "oxi1_60.xsd");
+            var reader = new BatchReader("sample.oxi", "oxi1_60.xsd");
 
             Batch batch = reader.ReadBatch();
 
@@ -33,19 +34,19 @@ namespace OpexSDK.ConsoleDemo
             foreach (Transaction transaction in batch.Transactions)
             {
                 Console.WriteLine();
-                Console.WriteLine($"\tTransaction:");
+                Console.WriteLine("\tTransaction:");
                 Console.WriteLine($"\t\tTransaction ID: {transaction.TransactionId}");
 
                 foreach (Group group in transaction.Groups)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"\t\tGroup:");
+                    Console.WriteLine("\t\tGroup:");
                     Console.WriteLine($"\t\t\tGroup ID: {group.GroupId}");
 
                     foreach (Page page in group.Pages)
                     {
                         Console.WriteLine();
-                        Console.WriteLine($"\t\t\tPage:");
+                        Console.WriteLine("\t\t\tPage:");
                         Console.WriteLine($"\t\t\t\tDocument Locator: {page.DocumentLocator}");
                         Console.WriteLine($"\t\t\t\tBatch Sequence: {page.BatchSequence}");
                         Console.WriteLine($"\t\t\t\tTransaction Sequence: {page.TransactionSequence}");
@@ -53,10 +54,11 @@ namespace OpexSDK.ConsoleDemo
                         foreach (Image image in page.Images)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tImage:");
+                            Console.WriteLine("\t\t\t\tImage:");
                             Console.WriteLine($"\t\t\t\t\tIndex: {image.Index}");
                             Console.WriteLine($"\t\t\t\t\tRescan Status: {image.RescanStatus}");
-                            Console.WriteLine($"\t\t\t\t\tScantime Final Blank Area Decision: {image.ScantimeFinalBlankAreaDecision}");
+                            Console.WriteLine(
+                                $"\t\t\t\t\tScantime Final Blank Area Decision: {image.ScantimeFinalBlankAreaDecision}");
                             Console.WriteLine($"\t\t\t\t\tSide: {image.Side}");
                             Console.WriteLine($"\t\t\t\t\tType: {image.Type}");
                             Console.WriteLine($"\t\t\t\t\tDepth: {image.Depth}");
@@ -74,14 +76,14 @@ namespace OpexSDK.ConsoleDemo
                         foreach (CustomData customData in page.CustomDatas)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tCustomData:");
+                            Console.WriteLine("\t\t\t\tCustomData:");
                             Console.WriteLine($"\t\t\t\t\tEntry: {customData.Entry}");
                         }
 
                         foreach (Micr micr in page.Micrs)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tMicr:");
+                            Console.WriteLine("\t\t\t\tMicr:");
                             Console.WriteLine($"\t\t\t\t\tStatus: {micr.Status}");
                             Console.WriteLine($"\t\t\t\t\tRtStatus: {micr.RtStatus}");
                             Console.WriteLine($"\t\t\t\t\tCheckType: {micr.CheckType}");
@@ -92,7 +94,7 @@ namespace OpexSDK.ConsoleDemo
                         foreach (Ocr ocr in page.Ocrs)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tOcr:");
+                            Console.WriteLine("\t\t\t\tOcr:");
                             Console.WriteLine($"\t\t\t\t\tIndex: {ocr.Index}");
                             Console.WriteLine($"\t\t\t\t\tSide: {ocr.Side}");
                             Console.WriteLine($"\t\t\t\t\tValue: {ocr.Value}");
@@ -102,7 +104,7 @@ namespace OpexSDK.ConsoleDemo
                         foreach (Barcode barcode in page.Barcodes)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tBarcode:");
+                            Console.WriteLine("\t\t\t\tBarcode:");
                             Console.WriteLine($"\t\t\t\t\tIndex: {barcode.Index}");
                             Console.WriteLine($"\t\t\t\t\tType: {barcode.Type}");
                             Console.WriteLine($"\t\t\t\t\tSide: {barcode.Side}");
@@ -112,7 +114,7 @@ namespace OpexSDK.ConsoleDemo
                         foreach (MarkDetect markDetect in page.MarkDetects)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tMarkDetect:");
+                            Console.WriteLine("\t\t\t\tMarkDetect:");
                             Console.WriteLine($"\t\t\t\t\tIndex: {markDetect.Index}");
                             Console.WriteLine($"\t\t\t\t\tSide: {markDetect.Side}");
                             Console.WriteLine($"\t\t\t\t\tResult: {markDetect.Result}");
@@ -122,7 +124,7 @@ namespace OpexSDK.ConsoleDemo
                         foreach (AuditTrail auditTrail in page.AuditTrails)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tAuditTrail:");
+                            Console.WriteLine("\t\t\t\tAuditTrail:");
                             Console.WriteLine($"\t\t\t\t\tType: {auditTrail.Type}");
                             Console.WriteLine($"\t\t\t\t\tSide: {auditTrail.Side}");
                             Console.WriteLine($"\t\t\t\t\tText: {auditTrail.Text}");
@@ -132,7 +134,7 @@ namespace OpexSDK.ConsoleDemo
                         foreach (ReferenceId referenceId in page.ReferenceIds)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tReference ID:");
+                            Console.WriteLine("\t\t\t\tReference ID:");
                             Console.WriteLine($"\t\t\t\t\tIndex: {referenceId.Index}");
                             Console.WriteLine($"\t\t\t\t\tResponse: {referenceId.Response}");
                             Console.WriteLine($"\t\t\t\t\tName: {referenceId.Name}");
@@ -141,7 +143,7 @@ namespace OpexSDK.ConsoleDemo
                         foreach (Tag tag in page.Tags)
                         {
                             Console.WriteLine();
-                            Console.WriteLine($"\t\t\t\tTag:");
+                            Console.WriteLine("\t\t\t\tTag:");
                             Console.WriteLine($"\t\t\t\t\tSource: {tag.Source}");
                             Console.WriteLine($"\t\t\t\t\tValue: {tag.Value}");
                         }
@@ -155,15 +157,13 @@ namespace OpexSDK.ConsoleDemo
                 Console.WriteLine();
                 Console.WriteLine($"{errorCount} validation {(errorCount == 1 ? "error" : "errors")} found:");
 
-                int counter = 1;
-                foreach (var error in reader.ValidationErrors)
+                var counter = 1;
+                foreach (ValidationEventArgs error in reader.ValidationErrors)
                 {
                     Console.WriteLine($"\t{counter}. {error.Message}");
                     counter++;
                 }
             }
-
-            
         }
     }
 }

@@ -19,6 +19,12 @@ namespace OpexSDK
     /// </summary>
     public class BatchReader
     {
+        private readonly string _batchFilePath;
+        private readonly IFileSystem _fileSystem;
+        private readonly string _schemaFilePath;
+        private readonly bool _throwOnValidationError;
+        private readonly IList<ValidationEventArgs> _validationErrors;
+
         /// <summary>
         ///     Returns an instance of a BatchReader.
         /// </summary>
@@ -27,9 +33,12 @@ namespace OpexSDK
         ///     The path to an XSD schema definition file to validate against. By default, this argument
         ///     is null, which means no validation is performed.
         /// </param>
-        /// <param name="throwOnValidationError">If true, an exception will be thrown if any validation errors are encountered.
-        /// If false, validation errors will be added to the ValidationErrors collection, but no exception will be thrown. The default is false.
-        /// NOTE: If no schema is supplied, this parameter has no effect.</param>
+        /// <param name="throwOnValidationError">
+        ///     If true, an exception will be thrown if any validation errors are encountered.
+        ///     If false, validation errors will be added to the ValidationErrors collection, but no exception will be thrown. The
+        ///     default is false.
+        ///     NOTE: If no schema is supplied, this parameter has no effect.
+        /// </param>
         public BatchReader(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false) :
             this(batchFilePath, schemaFilePath, throwOnValidationError, new FileSystem())
         {
@@ -61,11 +70,15 @@ namespace OpexSDK
             _validationErrors = new List<ValidationEventArgs>();
         }
 
-        private readonly string _batchFilePath;
-        private readonly IFileSystem _fileSystem;
-        private readonly string _schemaFilePath;
-        private readonly bool _throwOnValidationError;
-        private readonly IList<ValidationEventArgs> _validationErrors;
+        /// <summary>
+        ///     The collection of errors, if any, encountered during the validation process.
+        ///     NOTE: If this collection is empty, it does not automatically mean that the batch information file is valid. If no
+        ///     schema is supplied, data validation will not be performed and this collection will be empty. If the schema is
+        ///     supplied but in itself is not valid, those errors will be contained in this collection, though data validation will
+        ///     not be performed.
+        /// </summary>
+        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors =>
+            new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
 
         /// <summary>
         ///     A method that asynchronously reads the data contained in the batch information file supplied to the reader. If
@@ -311,12 +324,12 @@ namespace OpexSDK
                                                     }
                                                 }
 
-                                                @group.Add(page);
+                                                group.Add(page);
                                             }
                                         }
                                     }
 
-                                    transaction.Add(@group);
+                                    transaction.Add(group);
                                 }
                             }
                         }
@@ -328,16 +341,6 @@ namespace OpexSDK
 
             return batch;
         }
-
-        /// <summary>
-        ///     The collection of errors, if any, encountered during the validation process.
-        ///     NOTE: If this collection is empty, it does not automatically mean that the batch information file is valid. If no
-        ///     schema is supplied, data validation will not be performed and this collection will be empty. If the schema is
-        ///     supplied but in itself is not valid, those errors will be contained in this collection, though data validation will
-        ///     not be performed.
-        /// </summary>
-        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors =>
-            new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
 
         private static void PopulateBatch(Batch batch, XmlReader reader)
         {
