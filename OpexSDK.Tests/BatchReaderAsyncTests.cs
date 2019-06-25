@@ -107,16 +107,6 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public async Task ReadBatchAsync_CustomDataPopulated()
-        {
-            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
-            Batch batch = await reader.ReadBatchAsync();
-
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
-            Assert.Equal("Hello from ScanLink", batch.Transactions[0].Groups[0].Pages[0].CustomData.Entry);
-        }
-
-        [Fact]
         public async Task ReadBatchAsync_EncodingsAreDecoded()
         {
             var batchFileContents =
@@ -329,7 +319,7 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Ocrs);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].Tags);
-            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomData);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[0].CustomDatas);
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].DocumentLocator);
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[1].BatchSequence);
@@ -362,7 +352,7 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Ocrs);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].Tags);
-            Assert.Null(batch.Transactions[0].Groups[0].Pages[1].CustomData);
+            Assert.NotNull(batch.Transactions[0].Groups[0].Pages[1].CustomDatas);
 
             Assert.Single(batch.Transactions[0].Groups[1].Pages);
 
@@ -397,7 +387,7 @@ namespace OpexSDK.Tests
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Ocrs);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].ReferenceIds);
             Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].Tags);
-            Assert.Null(batch.Transactions[0].Groups[1].Pages[0].CustomData);
+            Assert.NotNull(batch.Transactions[0].Groups[1].Pages[0].CustomDatas);
         }
 
         [Fact]
@@ -413,6 +403,17 @@ namespace OpexSDK.Tests
 
             Assert.Equal("External Camera", batch.Transactions[0].Groups[0].Pages[0].Tags[1].Source);
             Assert.Equal("Invoice", batch.Transactions[0].Groups[0].Pages[0].Tags[1].Value);
+        }
+
+        [Fact]
+        public async Task ReadBatchAsync_CustomDatasPopulated()
+        {
+            var reader = new BatchReader(@"C:\Opex\test1.oxi", null, _fileSystemFixture.FileSystem);
+            Batch batch = await reader.ReadBatchAsync();
+
+            Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].CustomDatas.Count);
+            Assert.Equal("Hello from ScanLink", batch.Transactions[0].Groups[0].Pages[0].CustomDatas[0].Entry);
+            Assert.Equal("Hello from a plugin", batch.Transactions[0].Groups[0].Pages[0].CustomDatas[1].Entry);
         }
 
         [Fact]

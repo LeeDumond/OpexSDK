@@ -71,11 +71,11 @@ namespace OpexSDK.ConsoleDemo
                             Console.WriteLine($"\t\t\t\t\tResolutionHeight: {image.ResolutionHeight}");
                         }
 
-                        if (page.CustomData != null)
+                        foreach (CustomData customData in page.CustomDatas)
                         {
                             Console.WriteLine();
                             Console.WriteLine($"\t\t\t\tCustomData:");
-                            Console.WriteLine($"\t\t\t\t\tEntry: {page.CustomData.Entry}");
+                            Console.WriteLine($"\t\t\t\t\tEntry: {customData.Entry}");
                         }
 
                         foreach (Micr micr in page.Micrs)

@@ -125,7 +125,7 @@ namespace OpexSDK
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("CustomData"))
                                                         {
-                                                            page.CustomData = GetCustomData(pageSubReader);
+                                                            page.Add(GetCustomData(pageSubReader));
                                                         }
 
                                                         if (pageSubReader.MoveToContent() == XmlNodeType.Element &&
@@ -255,7 +255,7 @@ namespace OpexSDK
                                                             XmlNodeType.Element &&
                                                             pageSubReader.Name.Equals("CustomData"))
                                                         {
-                                                            page.CustomData = GetCustomData(pageSubReader);
+                                                            page.Add(GetCustomData(pageSubReader));
                                                         }
 
                                                         if (await pageSubReader.MoveToContentAsync() ==

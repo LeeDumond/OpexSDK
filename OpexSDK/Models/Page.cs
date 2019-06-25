@@ -20,6 +20,7 @@ namespace OpexSDK.Models
             _ocrs = new List<Ocr>();
             _referenceIds = new List<ReferenceId>();
             _tags = new List<Tag>();
+            _customDatas = new List<CustomData>();
         }
 
         private readonly IList<AuditTrail> _auditTrails;
@@ -30,6 +31,7 @@ namespace OpexSDK.Models
         private readonly IList<Ocr> _ocrs;
         private readonly IList<ReferenceId> _referenceIds;
         private readonly IList<Tag> _tags;
+        private readonly IList<CustomData> _customDatas;
 
         /// <summary>
         ///     A 1-based number that records each and every item’s place in the batch at scan time. If an item is rescanned, the
@@ -158,11 +160,6 @@ namespace OpexSDK.Models
         public string PlugInPageMessage { get; internal set; }
 
         /// <summary>
-        ///     One if using ScanLink and the plug-in sets custom data.
-        /// </summary>
-        public CustomData CustomData { get; internal set; }
-
-        /// <summary>
         ///     One for each image for the page.
         /// </summary>
         public ReadOnlyCollection<Image> Images => new ReadOnlyCollection<Image>(_images);
@@ -202,6 +199,11 @@ namespace OpexSDK.Models
         /// </summary>
         public ReadOnlyCollection<Tag> Tags => new ReadOnlyCollection<Tag>(_tags);
 
+        /// <summary>
+        ///     One for each plugin that sends custom data.
+        /// </summary>
+        public ReadOnlyCollection<CustomData> CustomDatas => new ReadOnlyCollection<CustomData>(_customDatas);
+
         internal void Add(Image image)
         {
             _images.Add(image);
@@ -240,6 +242,11 @@ namespace OpexSDK.Models
         internal void Add(Tag tag)
         {
             _tags.Add(tag);
+        }
+
+        internal void Add(CustomData customData)
+        {
+            _customDatas.Add(customData);
         }
     }
 }

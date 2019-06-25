@@ -26,6 +26,7 @@ namespace OpexSDK.Tests
                      Filesize=""23456789"" Length=""200"" Height=""1800"" OffsetLength=""0"" OffsetHeight=""240"" ResolutionLength=""200"" ResolutionHeight=""150"">
                 </Image>
                 <CustomData Entry=""Hello from ScanLink"" />
+                <CustomData Entry=""Hello from a plugin"" />
                 <Micr Status=""GOOD"" RtStatus=""GOOD"" CheckType=""US"" Side=""FRONT"" Value=""d031201360d8659741c0401"" />
                 <Micr Status=""NO_MICR"" RtStatus=""NOT_FOUND"" CheckType=""UNKNOWN"" Side=""BACK"" Value="""" />
                 <Ocr Index=""1"" Side=""FRONT"" Value=""This is the !alue of first read"" Name=""OCR 1"" />
