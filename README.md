@@ -25,6 +25,18 @@ From there, you may use the properties and collections contained in the `Batch` 
 ```C#
 var errors = reader.ValidationErrors;
 ```
+## Navigating a Batch
+The structure of a `Batch` mirrors how a typical batch information file is structured. Each element in the file maps to a class in the `OpexSDK` library; e.g. the `<Batch>` element maps to a `Batch` object; each `<Transaction>` matches to a `Transaction` object, which is represented by the collection property `Batch.Transactions`; each `<Group>` maps to a `Group` object, which is represented by the collection property `Transition.Groups`, and so on. The attributes of each element is represented as a property on its corresponding object; e.g. the `"FormatVersion"` attribute of `<Batch>` maps to the `Batch.FormatVersion` property, and so on.
+
+All of the objects are designed to be immutable; meaning their content cannot be programatically changed. Properties have no accessible setters, and all collections are read-only. If your requirements are such that you need to modify properties or collections post-read, you can derive your own subclasses from those in the library which implement this functionality.
+
+By default, the read algorithm is forgiving in that unexpected or missing attibutes or elements, or attributes with empty values, will not stop the reader, even if they are marked "required" by the schema (assuming `throwOnValidationError` is set to `false`, which is the default behavior): 
+- Any unexpected attributes or elements will be ignored. 
+- The properties corresponding to missing attributes will be set to `null`. 
+- Properties corresponding to attributes with empty values will be set to `null` (or `string.Empty` in the case of string properties).
+
+If you provided a schema definition file to validate against, you should check the `ValidationErrors` collection and decide whether any anomalies that are logged there are important to you.
+
 ## Contributions
 
 Issues and contributions are most welcome. *Please target all pull requests to the* `development` *branch only*.
