@@ -526,8 +526,13 @@ namespace OpexSDK
 
             if (_schemaFilePath != null)
             {
-                Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read);
-                XmlSchema schema = XmlSchema.Read(schemaStream, ValidationCallBack);
+                XmlSchema schema;
+
+                using (Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read))
+                {
+                    schema = XmlSchema.Read(schemaStream, ValidationCallBack);
+                }
+
                 if (schema != null)
                 {
                     settings.Schemas.Add(schema);
