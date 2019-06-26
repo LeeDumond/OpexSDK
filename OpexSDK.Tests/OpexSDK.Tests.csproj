@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Compile Remove="BatchReaderAsyncTests.cs" />
-    <Compile Remove="BatchReaderSyncTests.cs" />
     <Compile Remove="SchemaValidationTests.cs" />
   </ItemGroup>
 

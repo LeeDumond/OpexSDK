@@ -65,26 +65,9 @@ namespace OpexSDK
         /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
         public Batch ReadBatch(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false)
         {
-            if (batchFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(batchFilePath));
-            }
-
-            if (string.IsNullOrWhiteSpace(batchFilePath))
-            {
-                throw new ArgumentException("Value cannot be empty", nameof(batchFilePath));
-            }
-
-            string ext = Path.GetExtension(batchFilePath);
-
-            if (string.IsNullOrEmpty(ext) || !ext.Equals(".oxi", StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new NotSupportedException("The file indicated by the supplied path must end in '.oxi'");
-            }
-
+            VerifyBatchFilePath(batchFilePath);
             _throwOnValidationError = throwOnValidationError;
             var batch = new Batch();
-
 
             using (XmlReader reader = GetXmlReader(batchFilePath, schemaFilePath))
             {
@@ -224,23 +207,7 @@ namespace OpexSDK
         /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
         public async Task<Batch> ReadBatchAsync(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false)
         {
-            if (batchFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(batchFilePath));
-            }
-
-            if (string.IsNullOrWhiteSpace(batchFilePath))
-            {
-                throw new ArgumentException("Value cannot be empty", nameof(batchFilePath));
-            }
-
-            string ext = Path.GetExtension(batchFilePath);
-
-            if (string.IsNullOrEmpty(ext) || !ext.Equals(".oxi", StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new NotSupportedException("The file indicated by the supplied path must end in '.oxi'");
-            }
-
+            VerifyBatchFilePath(batchFilePath);
             _throwOnValidationError = throwOnValidationError;
             var batch = new Batch();
 
@@ -365,6 +332,26 @@ namespace OpexSDK
             }
 
             return batch;
+        }
+
+        private static void VerifyBatchFilePath(string batchFilePath)
+        {
+            if (batchFilePath == null)
+            {
+                throw new ArgumentNullException(nameof(batchFilePath));
+            }
+
+            if (string.IsNullOrWhiteSpace(batchFilePath))
+            {
+                throw new ArgumentException("Value cannot be empty", nameof(batchFilePath));
+            }
+
+            string ext = Path.GetExtension(batchFilePath);
+
+            if (string.IsNullOrEmpty(ext) || !ext.Equals(".oxi", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new InvalidOperationException("The file indicated by the supplied path must end in '.oxi'");
+            }
         }
 
         private static void PopulateBatch(Batch batch, XmlReader reader)
