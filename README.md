@@ -41,9 +41,11 @@ By default, the read algorithm is forgiving in that unexpected or missing attibu
 If you provided a schema definition file to validate against, you should check the `ValidationErrors` collection and decide whether any anomalies that are logged there are important to you.
 
 ## How Attributes are Mapped to Properties
-In most cases, if an attribute is defined as a string in the schema, it is mapped to a string property, the same holds for integers and floating point values. However, in other cases, properties with a limited range of valid values are mapped to enumerations, which makes working with the data a bit easier.
+In most cases, if an attribute is defined as a string in the schema, it is mapped to a property of type `string`. The same holds for integers (which are mapped to `int`), floating point values (`float`), date/time strings (`DateTime`) and so on. 
 
-For example, because the `"TransportId"` attribute can be any string, the correspondng `Batch.TransportId` property is of type `string`.
+However, in other cases, properties *with a limited range of valid values* are mapped to enumerations, which makes working with the data a bit easier.
+
+For example, because the `"TransportId"` attribute can be any string, the correspondng `Batch.TransportId` property is of type `string`. But the `"OperatingMode"` attribute (although defined as a string) is restricted to two only possible values: `MANUAL_SCAN` or `MODIFIED`. Therefore, it is mapped to a nullable `OperatingMode` enumeration whose members are `OperatingMode.ManualScan` and `OperatingMode.Modified`. In this case, if for any reason the attribute value in the file is empty or falls outside the range of expected values, `OperatingMode` would be set to `null`.
 
 ## Contributions
 
