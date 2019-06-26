@@ -527,35 +527,6 @@ namespace OpexSDK
             };
         }
 
-        //private XmlReader GetXmlReader(bool async = false)
-        //{
-        //    Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
-
-        //    var settings = new XmlReaderSettings
-        //    {
-        //        Async = async, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
-        //    };
-
-        //    if (_schemaFilePath != null)
-        //    {
-        //        XmlSchema schema;
-
-        //        using (Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read))
-        //        {
-        //            schema = XmlSchema.Read(schemaStream, ValidationCallBack);
-        //        }
-
-        //        if (schema != null)
-        //        {
-        //            settings.Schemas.Add(schema);
-        //            settings.ValidationType = ValidationType.Schema;
-        //            settings.ValidationEventHandler += ValidationCallBack;
-        //        }
-        //    }
-
-        //    return XmlReader.Create(batchStream, settings);
-        //}
-
         private XmlReader GetXmlReader(string batchFilePath, string schemaFilePath, bool async)
         {
             Stream batchStream = _fileSystem.FileStream.Create(batchFilePath, FileMode.Open, FileAccess.Read);
