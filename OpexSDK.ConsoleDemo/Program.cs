@@ -9,7 +9,7 @@ namespace OpexSDK.ConsoleDemo
     {
         private static void Main(string[] args)
         {
-            var reader = new BatchReader("sample.oxi", "oxi1_60.xsd");
+            var reader = new BatchReader("sample.oxi", "oxi1_60.xsd", false);
 
             Batch batch = reader.ReadBatch();
 

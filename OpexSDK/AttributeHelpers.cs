@@ -11,32 +11,75 @@ namespace OpexSDK
     {
         internal static DateTime? GetDateTime(string attributeValue)
         {
-            if (string.IsNullOrWhiteSpace(attributeValue))
+            if (attributeValue == null)
             {
                 return null;
             }
 
-            return XmlConvert.ToDateTime(attributeValue, new[] {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"});
+            try
+            {
+                return XmlConvert.ToDateTime(attributeValue, new[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" });
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
         }
 
         internal static int? GetInt(string attributeValue)
         {
-            if (string.IsNullOrWhiteSpace(attributeValue))
+            if (int.TryParse(attributeValue, out int result))
             {
-                return null;
+                return result;
             }
 
-            return Convert.ToInt32(attributeValue);
+            return null;
         }
 
         public static long? GetLong(string attributeValue)
         {
-            if (string.IsNullOrWhiteSpace(attributeValue))
+            if (long.TryParse(attributeValue, out long result))
             {
-                return null;
+                return result;
             }
 
-            return Convert.ToInt64(attributeValue);
+            return null;
+        }
+
+        internal static float? GetFloat(string attributeValue)
+        {
+            if (float.TryParse(attributeValue, out float result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        internal static bool? GetBooleanFromTrueFalse(string attributeValue)
+        {
+            if (bool.TryParse(attributeValue, out bool result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        internal static bool? GetBooleanFromYesNo(string attributeValue)
+        {
+
+
+            switch (attributeValue)
+            {
+                case "YES":
+                    return true;
+                case "NO":
+                    return false;
+                default:
+                    return null;
+            }
+
         }
 
         internal static OperatingMode? GetOperatingMode(string attributeValue)
@@ -47,11 +90,8 @@ namespace OpexSDK
                     return OperatingMode.ManualScan;
                 case "MODIFIED":
                     return OperatingMode.Modified;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -75,42 +115,9 @@ namespace OpexSDK
                     return JobType.Unstructured;
                 case "STRUCTURED":
                     return JobType.Structured;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
-        }
-
-        internal static bool? GetBooleanFromTrueFalse(string attributeValue)
-        {
-            if (string.IsNullOrWhiteSpace(attributeValue))
-            {
-                return null;
-            }
-
-            return Convert.ToBoolean(attributeValue);
-        }
-
-        internal static bool? GetBooleanFromYesNo(string attributeValue)
-        {
-            if (string.IsNullOrWhiteSpace(attributeValue))
-            {
-                return null;
-            }
-
-            if (attributeValue.Equals("yes", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            if (attributeValue.Equals("no", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return false;
-            }
-
-            throw new FormatException("Value must be yes or no.");
         }
 
         internal static ItemStatus? GetItemStatus(string attributeValue)
@@ -123,11 +130,8 @@ namespace OpexSDK
                     return ItemStatus.Void;
                 case "VOID MARKED":
                     return ItemStatus.VoidMarked;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -159,22 +163,8 @@ namespace OpexSDK
                     return PageType.CustomPage2;
                 case "CUSTOM_PAGE3":
                     return PageType.CustomPage3;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
-            }
-        }
-
-        internal static float? GetFloat(string attributeValue)
-        {
-            if (string.IsNullOrWhiteSpace(attributeValue))
-            {
-                return null;
-            }
-
-            return Convert.ToSingle(attributeValue);
+                    return null;            }
         }
 
         internal static RescanStatus? GetRescanStatus(string attributeValue)
@@ -185,11 +175,8 @@ namespace OpexSDK
                     return RescanStatus.Rescan;
                 case "NOT_RESCAN":
                     return RescanStatus.NotRescan;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -213,54 +200,20 @@ namespace OpexSDK
             return (BackStreakDetectStatus?) GetYesNoInactive(attributeValue);
         }
 
-        private static int? GetYesNoInactive(string attributeValue)
-        {
-            if (string.IsNullOrWhiteSpace(attributeValue))
-            {
-                return null;
-            }
-
-            if (attributeValue == "YES")
-            {
-                return 0;
-            }
-
-            if (attributeValue == "NO")
-            {
-                return 1;
-            }
-
-            if (attributeValue == "INACTIVE")
-            {
-                return 2;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(attributeValue));
-        }
-
         internal static ScantimeFinalBlankAreaDecision? GetScantimeFinalBlankAreaDecision(string attributeValue)
         {
-            if (string.IsNullOrWhiteSpace(attributeValue))
+            
+            switch (attributeValue)
             {
-                return null;
+                case "BLANK":
+                    return ScantimeFinalBlankAreaDecision.Blank;
+                case "NOT_BLANK":
+                    return ScantimeFinalBlankAreaDecision.NotBlank;
+                case "UNDETERMINED":
+                    return ScantimeFinalBlankAreaDecision.Undetermined;
+                default:
+                    return null;
             }
-
-            if (attributeValue == "BLANK")
-            {
-                return ScantimeFinalBlankAreaDecision.Blank;
-            }
-
-            if (attributeValue == "NOT_BLANK")
-            {
-                return ScantimeFinalBlankAreaDecision.NotBlank;
-            }
-
-            if (attributeValue == "UNDETERMINED")
-            {
-                return ScantimeFinalBlankAreaDecision.Undetermined;
-            }
-
-            throw new ArgumentOutOfRangeException(nameof(attributeValue));
         }
 
         internal static AuditTrailType? GetAuditTrailType(string attributeValue)
@@ -271,11 +224,8 @@ namespace OpexSDK
                     return AuditTrailType.Electronic;
                 case "PRINTED":
                     return AuditTrailType.Printed;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -287,11 +237,8 @@ namespace OpexSDK
                     return Side.Front;
                 case "BACK":
                     return Side.Back;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -303,11 +250,8 @@ namespace OpexSDK
                     return ImageType.Full;
                 case "SNIPPET":
                     return ImageType.Snippet;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -321,11 +265,8 @@ namespace OpexSDK
                     return ImageDepth.Grayscale;
                 case "24":
                     return ImageDepth.Color;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -339,11 +280,8 @@ namespace OpexSDK
                     return ImageFormat.RAW;
                 case "TIFF":
                     return ImageFormat.TIFF;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -361,11 +299,8 @@ namespace OpexSDK
                     return ImageResolution.MediumHigh;
                 case "300":
                     return ImageResolution.High;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -385,12 +320,8 @@ namespace OpexSDK
                     return MicrStatus.Inactive;
                 case "ERROR":
                     return MicrStatus.Error;
-
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -404,11 +335,8 @@ namespace OpexSDK
                     return RtStatus.Bad;
                 case "NOT_FOUND":
                     return RtStatus.NotFound;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
             }
         }
 
@@ -426,11 +354,23 @@ namespace OpexSDK
                     return CheckType.CMC7;
                 case "UNKNOWN":
                     return CheckType.Unknown;
-                case "":
-                case null:
-                    return null;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(attributeValue));
+                    return null;
+            }
+        }
+
+        private static int? GetYesNoInactive(string attributeValue)
+        {
+            switch (attributeValue)
+            {
+                case "YES":
+                    return 0;
+                case "NO":
+                    return 1;
+                case "INACTIVE":
+                    return 2;
+                default:
+                    return null;
             }
         }
     }
