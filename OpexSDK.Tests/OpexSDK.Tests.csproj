@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="BatchReaderAsyncTests.cs" />
     <Compile Remove="SchemaValidationTests.cs" />
   </ItemGroup>
 

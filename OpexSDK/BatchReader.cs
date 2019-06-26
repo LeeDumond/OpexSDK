@@ -69,7 +69,7 @@ namespace OpexSDK
             _throwOnValidationError = throwOnValidationError;
             var batch = new Batch();
 
-            using (XmlReader reader = GetXmlReader(batchFilePath, schemaFilePath))
+            using (XmlReader reader = GetXmlReader(batchFilePath, schemaFilePath, false))
             {
                 while (reader.Read())
                 {
@@ -211,7 +211,7 @@ namespace OpexSDK
             _throwOnValidationError = throwOnValidationError;
             var batch = new Batch();
 
-            using (XmlReader reader = GetXmlReader(batchFilePath, schemaFilePath))
+            using (XmlReader reader = GetXmlReader(batchFilePath, schemaFilePath, true))
             {
                 while (await reader.ReadAsync())
                 {
@@ -556,7 +556,7 @@ namespace OpexSDK
         //    return XmlReader.Create(batchStream, settings);
         //}
 
-        private XmlReader GetXmlReader(string batchFilePath, string schemaFilePath, bool async = false)
+        private XmlReader GetXmlReader(string batchFilePath, string schemaFilePath, bool async)
         {
             Stream batchStream = _fileSystem.FileStream.Create(batchFilePath, FileMode.Open, FileAccess.Read);
 
