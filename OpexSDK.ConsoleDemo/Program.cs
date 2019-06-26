@@ -9,9 +9,9 @@ namespace OpexSDK.ConsoleDemo
     {
         private static void Main(string[] args)
         {
-            var reader = new BatchReader("sample.oxi", "oxi1_60.xsd", false);
+            var reader = new BatchReader();
 
-            Batch batch = reader.ReadBatch();
+            Batch batch = reader.ReadBatch("sample.oxi", "oxi1_60.xsd", false);
 
             Console.WriteLine("Batch:");
             Console.WriteLine($"\tFormat Version: {batch.FormatVersion}");

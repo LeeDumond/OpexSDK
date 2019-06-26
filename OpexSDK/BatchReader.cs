@@ -19,53 +19,19 @@ namespace OpexSDK
     /// </summary>
     public class BatchReader
     {
-        private readonly string _batchFilePath;
         private readonly IFileSystem _fileSystem;
-        private readonly string _schemaFilePath;
-        private readonly bool _throwOnValidationError;
+        private bool _throwOnValidationError;
         private readonly IList<ValidationEventArgs> _validationErrors;
 
         /// <summary>
         ///     Returns an instance of a BatchReader.
         /// </summary>
-        /// <param name="batchFilePath">The path to the batch information file.</param>
-        /// <param name="schemaFilePath">
-        ///     The path to an XSD schema definition file to validate against. By default, this argument
-        ///     is null, which means no validation is performed.
-        /// </param>
-        /// <param name="throwOnValidationError">
-        ///     If true, an exception will be thrown if any validation errors are encountered.
-        ///     If false, validation errors will be added to the ValidationErrors collection, but no exception will be thrown. The
-        ///     default is false.
-        ///     NOTE: If no schema is supplied, this parameter has no effect.
-        /// </param>
-        public BatchReader(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false) :
-            this(batchFilePath, schemaFilePath, throwOnValidationError, new FileSystem())
+        public BatchReader() : this(new FileSystem())
         {
-            if (batchFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(batchFilePath));
-            }
-
-            if (string.IsNullOrWhiteSpace(batchFilePath))
-            {
-                throw new ArgumentException("Value cannot be empty", nameof(batchFilePath));
-            }
-
-            string ext = Path.GetExtension(batchFilePath);
-
-            if (string.IsNullOrEmpty(ext) || !ext.Equals(".oxi", StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new NotSupportedException("The file indicated by the supplied path must end in '.oxi'");
-            }
         }
 
-        internal BatchReader(string batchFilePath, string schemaFilePath, bool throwOnValidationError,
-            IFileSystem fileSystem)
+        internal BatchReader(IFileSystem fileSystem)
         {
-            _batchFilePath = batchFilePath;
-            _schemaFilePath = schemaFilePath;
-            _throwOnValidationError = throwOnValidationError;
             _fileSystem = fileSystem;
             _validationErrors = new List<ValidationEventArgs>();
         }
@@ -85,12 +51,42 @@ namespace OpexSDK
         ///     a schema definition file (*.xsd) is also supplied, this method will confirm the validity of the schema, and if it
         ///     is valid, will validate the data file against it.
         /// </summary>
+        /// <param name="batchFilePath">The path to the batch information file.</param>
+        /// <param name="schemaFilePath">
+        ///     The path to an XSD schema definition file to validate against. By default, this argument
+        ///     is null, which means no validation is performed.
+        /// </param>
+        /// <param name="throwOnValidationError">
+        ///     If true, an exception will be thrown if any validation errors are encountered.
+        ///     If false, validation errors will be added to the ValidationErrors collection, but no exception will be thrown. The
+        ///     default is false.
+        ///     NOTE: If no schema is supplied, this parameter has no effect.
+        /// </param>
         /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
-        public Batch ReadBatch()
+        public Batch ReadBatch(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false)
         {
+            if (batchFilePath == null)
+            {
+                throw new ArgumentNullException(nameof(batchFilePath));
+            }
+
+            if (string.IsNullOrWhiteSpace(batchFilePath))
+            {
+                throw new ArgumentException("Value cannot be empty", nameof(batchFilePath));
+            }
+
+            string ext = Path.GetExtension(batchFilePath);
+
+            if (string.IsNullOrEmpty(ext) || !ext.Equals(".oxi", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new NotSupportedException("The file indicated by the supplied path must end in '.oxi'");
+            }
+
+            _throwOnValidationError = throwOnValidationError;
             var batch = new Batch();
 
-            using (XmlReader reader = GetXmlReader())
+
+            using (XmlReader reader = GetXmlReader(batchFilePath, schemaFilePath))
             {
                 while (reader.Read())
                 {
@@ -214,12 +210,41 @@ namespace OpexSDK
         ///     a schema definition file (*.xsd) is also supplied, this method will confirm the validity of the schema, and if it
         ///     is valid, will validate the data file against it.
         /// </summary>
+        /// <param name="batchFilePath">The path to the batch information file.</param>
+        /// <param name="schemaFilePath">
+        ///     The path to an XSD schema definition file to validate against. By default, this argument
+        ///     is null, which means no validation is performed.
+        /// </param>
+        /// <param name="throwOnValidationError">
+        ///     If true, an exception will be thrown if any validation errors are encountered.
+        ///     If false, validation errors will be added to the ValidationErrors collection, but no exception will be thrown. The
+        ///     default is false.
+        ///     NOTE: If no schema is supplied, this parameter has no effect.
+        /// </param>
         /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
-        public async Task<Batch> ReadBatchAsync()
+        public async Task<Batch> ReadBatchAsync(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false)
         {
+            if (batchFilePath == null)
+            {
+                throw new ArgumentNullException(nameof(batchFilePath));
+            }
+
+            if (string.IsNullOrWhiteSpace(batchFilePath))
+            {
+                throw new ArgumentException("Value cannot be empty", nameof(batchFilePath));
+            }
+
+            string ext = Path.GetExtension(batchFilePath);
+
+            if (string.IsNullOrEmpty(ext) || !ext.Equals(".oxi", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new NotSupportedException("The file indicated by the supplied path must end in '.oxi'");
+            }
+
+            _throwOnValidationError = throwOnValidationError;
             var batch = new Batch();
 
-            using (XmlReader reader = GetXmlReader(true))
+            using (XmlReader reader = GetXmlReader(batchFilePath, schemaFilePath))
             {
                 while (await reader.ReadAsync())
                 {
@@ -515,20 +540,52 @@ namespace OpexSDK
             };
         }
 
-        private XmlReader GetXmlReader(bool async = false)
+        //private XmlReader GetXmlReader(bool async = false)
+        //{
+        //    Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
+
+        //    var settings = new XmlReaderSettings
+        //    {
+        //        Async = async, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
+        //    };
+
+        //    if (_schemaFilePath != null)
+        //    {
+        //        XmlSchema schema;
+
+        //        using (Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read))
+        //        {
+        //            schema = XmlSchema.Read(schemaStream, ValidationCallBack);
+        //        }
+
+        //        if (schema != null)
+        //        {
+        //            settings.Schemas.Add(schema);
+        //            settings.ValidationType = ValidationType.Schema;
+        //            settings.ValidationEventHandler += ValidationCallBack;
+        //        }
+        //    }
+
+        //    return XmlReader.Create(batchStream, settings);
+        //}
+
+        private XmlReader GetXmlReader(string batchFilePath, string schemaFilePath, bool async = false)
         {
-            Stream batchStream = _fileSystem.FileStream.Create(_batchFilePath, FileMode.Open, FileAccess.Read);
+            Stream batchStream = _fileSystem.FileStream.Create(batchFilePath, FileMode.Open, FileAccess.Read);
 
             var settings = new XmlReaderSettings
             {
-                Async = async, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
+                Async = async,
+                IgnoreComments = true,
+                IgnoreWhitespace = true,
+                IgnoreProcessingInstructions = true
             };
 
-            if (_schemaFilePath != null)
+            if (schemaFilePath != null)
             {
                 XmlSchema schema;
 
-                using (Stream schemaStream = _fileSystem.FileStream.Create(_schemaFilePath, FileMode.Open, FileAccess.Read))
+                using (Stream schemaStream = _fileSystem.FileStream.Create(schemaFilePath, FileMode.Open, FileAccess.Read))
                 {
                     schema = XmlSchema.Read(schemaStream, ValidationCallBack);
                 }
