@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
 using OpexSDK.Enumerations;
 using OpexSDK.Models;
@@ -69,26 +68,9 @@ namespace OpexSDK.Tests
         }
 
         [Fact]
-        public void ReadBatch_EncodingsAreDecoded()
-        {
-            var batchFileContents =
-                @"<Batch FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
-        OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
-        PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1&amp;&gt;&lt;&quot;&apos;&#xE9;a""><EndInfo EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" /></Batch>";
-
-            _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
-
-            var reader = new BatchReader(_fileSystemFixture.FileSystem);
-
-            Batch batch = reader.ReadBatch(@"C:\Opex\test.oxi");
-
-            Assert.Equal(@"1&><""'éa", batch.DeveloperReserved);
-        }
-
-        [Fact]
         public void ReadBatch_AuditTrailsPopulated()
         {
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
             Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi");
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].AuditTrails.Count);
@@ -107,7 +89,7 @@ namespace OpexSDK.Tests
         [Fact]
         public void ReadBatch_BarcodesPopulated()
         {
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
             Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi");
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Barcodes.Count);
@@ -126,7 +108,7 @@ namespace OpexSDK.Tests
         [Fact]
         public void ReadBatch_BatchPropertiesPopulated()
         {
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
             Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi");
 
             Assert.Equal("MODEL_51", batch.BaseMachine);
@@ -177,12 +159,29 @@ namespace OpexSDK.Tests
         [Fact]
         public void ReadBatch_CustomDatasPopulated()
         {
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
             Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi");
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].CustomDatas.Count);
             Assert.Equal("Hello from ScanLink", batch.Transactions[0].Groups[0].Pages[0].CustomDatas[0].Entry);
             Assert.Equal("Hello from a plugin", batch.Transactions[0].Groups[0].Pages[0].CustomDatas[1].Entry);
+        }
+
+        [Fact]
+        public void ReadBatch_EncodingsAreDecoded()
+        {
+            var batchFileContents =
+                @"<Batch FormatVersion=""03.14"" BaseMachine=""MODEL_51"" ScanDevice=""AS3600i"" SoftwareVersion=""02.23.00.05"" TransportId=""MyTransport"" BatchIdentifier=""thisisbatch45"" JobType=""MULTI_WITH_PAGE""
+        OperatingMode=""MODIFIED"" JobName=""Lockbox 25"" OperatorName=""Lee Dumond"" StartTime=""2019-03-22 23:24:07"" ReceiveDate=""2019-03-21"" ProcessDate=""2019-03-22"" ImageFilePath=""X:\Images\OPEX\somebatchid""
+        PluginMessage=""XYZ Plug-in"" DeveloperReserved=""1&amp;&gt;&lt;&quot;&apos;&#xE9;a""><EndInfo EndTime=""2019-03-22 23:32:45"" NumPages=""4"" NumGroups=""2"" NumTransactions=""2"" IsModified=""FALSE"" /></Batch>";
+
+            _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
+
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
+
+            Batch batch = reader.ReadBatch(@"C:\Opex\test.oxi");
+
+            Assert.Equal(@"1&><""'éa", batch.DeveloperReserved);
         }
 
         [Fact]
@@ -220,7 +219,7 @@ namespace OpexSDK.Tests
         [Fact]
         public void ReadBatch_ImagesPopulated()
         {
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
             Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi");
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].Images.Count);
@@ -239,8 +238,7 @@ namespace OpexSDK.Tests
             Assert.Equal(300, batch.Transactions[0].Groups[0].Pages[0].Images[0].Height);
             Assert.Equal(400, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetLength);
             Assert.Equal(60, batch.Transactions[0].Groups[0].Pages[0].Images[0].OffsetHeight);
-            Assert.Equal(ImageResolution.High,
-                batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
+            Assert.Equal(ImageResolution.High, batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionLength);
             Assert.Equal(ImageResolution.MediumHigh,
                 batch.Transactions[0].Groups[0].Pages[0].Images[0].ResolutionHeight);
 
@@ -258,8 +256,7 @@ namespace OpexSDK.Tests
             Assert.Equal(1800, batch.Transactions[0].Groups[0].Pages[0].Images[1].Height);
             Assert.Equal(0, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetLength);
             Assert.Equal(240, batch.Transactions[0].Groups[0].Pages[0].Images[1].OffsetHeight);
-            Assert.Equal(ImageResolution.Medium,
-                batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
+            Assert.Equal(ImageResolution.Medium, batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionLength);
             Assert.Equal(ImageResolution.MediumLow,
                 batch.Transactions[0].Groups[0].Pages[0].Images[1].ResolutionHeight);
         }
@@ -326,7 +323,7 @@ namespace OpexSDK.Tests
         [Fact]
         public void ReadBatch_PageReferenceIdsPopulated()
         {
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
             Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi");
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages[0].ReferenceIds.Count);
@@ -343,7 +340,7 @@ namespace OpexSDK.Tests
         [Fact]
         public void ReadBatch_PagesPopulated()
         {
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
             Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi");
 
             Assert.Equal(2, batch.Transactions[0].Groups[0].Pages.Count);
@@ -489,7 +486,7 @@ namespace OpexSDK.Tests
 
             _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
 
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
             reader.ReadBatch(@"C:\Opex\test.oxi");
         }

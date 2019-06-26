@@ -19,10 +19,6 @@ namespace OpexSDK
     /// </summary>
     public class BatchReader
     {
-        private readonly IFileSystem _fileSystem;
-        private bool _throwOnValidationError;
-        private readonly IList<ValidationEventArgs> _validationErrors;
-
         /// <summary>
         ///     Returns an instance of a BatchReader.
         /// </summary>
@@ -35,6 +31,10 @@ namespace OpexSDK
             _fileSystem = fileSystem;
             _validationErrors = new List<ValidationEventArgs>();
         }
+
+        private readonly IFileSystem _fileSystem;
+        private readonly IList<ValidationEventArgs> _validationErrors;
+        private bool _throwOnValidationError;
 
         /// <summary>
         ///     The collection of errors, if any, encountered during the validation process.
@@ -205,7 +205,8 @@ namespace OpexSDK
         ///     NOTE: If no schema is supplied, this parameter has no effect.
         /// </param>
         /// <returns>An instance of Batch containing all the data in the batch information file that was supplied to the reader.</returns>
-        public async Task<Batch> ReadBatchAsync(string batchFilePath, string schemaFilePath = null, bool throwOnValidationError = false)
+        public async Task<Batch> ReadBatchAsync(string batchFilePath, string schemaFilePath = null,
+            bool throwOnValidationError = false)
         {
             VerifyBatchFilePath(batchFilePath);
             _throwOnValidationError = throwOnValidationError;
@@ -533,17 +534,15 @@ namespace OpexSDK
 
             var settings = new XmlReaderSettings
             {
-                Async = async,
-                IgnoreComments = true,
-                IgnoreWhitespace = true,
-                IgnoreProcessingInstructions = true
+                Async = async, IgnoreComments = true, IgnoreWhitespace = true, IgnoreProcessingInstructions = true
             };
 
             if (schemaFilePath != null)
             {
                 XmlSchema schema;
 
-                using (Stream schemaStream = _fileSystem.FileStream.Create(schemaFilePath, FileMode.Open, FileAccess.Read))
+                using (Stream schemaStream =
+                    _fileSystem.FileStream.Create(schemaFilePath, FileMode.Open, FileAccess.Read))
                 {
                     schema = XmlSchema.Read(schemaStream, ValidationCallBack);
                 }

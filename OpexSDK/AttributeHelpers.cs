@@ -18,7 +18,7 @@ namespace OpexSDK
 
             try
             {
-                return XmlConvert.ToDateTime(attributeValue, new[] { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd" });
+                return XmlConvert.ToDateTime(attributeValue, new[] {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"});
             }
             catch (FormatException)
             {
@@ -68,8 +68,6 @@ namespace OpexSDK
 
         internal static bool? GetBooleanFromYesNo(string attributeValue)
         {
-
-
             switch (attributeValue)
             {
                 case "YES":
@@ -79,7 +77,6 @@ namespace OpexSDK
                 default:
                     return null;
             }
-
         }
 
         internal static OperatingMode? GetOperatingMode(string attributeValue)
@@ -164,7 +161,8 @@ namespace OpexSDK
                 case "CUSTOM_PAGE3":
                     return PageType.CustomPage3;
                 default:
-                    return null;            }
+                    return null;
+            }
         }
 
         internal static RescanStatus? GetRescanStatus(string attributeValue)
@@ -202,7 +200,6 @@ namespace OpexSDK
 
         internal static ScantimeFinalBlankAreaDecision? GetScantimeFinalBlankAreaDecision(string attributeValue)
         {
-            
             switch (attributeValue)
             {
                 case "BLANK":

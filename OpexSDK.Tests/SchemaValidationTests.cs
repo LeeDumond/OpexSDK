@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO.Abstractions.TestingHelpers;
+﻿using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using OpexSDK.Models;
@@ -24,7 +23,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd", false);
+            Batch batch = reader.ReadBatch(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd");
 
             Assert.Single(reader.ValidationErrors);
             Assert.Equal(
@@ -41,7 +40,10 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            void Action() => reader.ReadBatch(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd", true);
+            void Action()
+            {
+                reader.ReadBatch(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd", true);
+            }
 
             Assert.Throws<XmlSchemaException>(Action);
         }
@@ -58,7 +60,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            reader.ReadBatch(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", false);
+            reader.ReadBatch(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd");
 
             Assert.Equal(2, reader.ValidationErrors.Count);
             Assert.Equal("The 'UnexpectedAttribute' attribute is not declared.", reader.ValidationErrors[0].Message);
@@ -78,7 +80,10 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            void Action() => reader.ReadBatch(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", true);
+            void Action()
+            {
+                reader.ReadBatch(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", true);
+            }
 
             Assert.Throws<XmlSchemaValidationException>(Action);
         }
@@ -93,9 +98,9 @@ namespace OpexSDK.Tests
 
             _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
 
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            reader.ReadBatch(@"C:\Opex\test.oxi", null, false);
+            reader.ReadBatch(@"C:\Opex\test.oxi");
 
             Assert.Empty(reader.ValidationErrors);
         }
@@ -108,7 +113,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            Batch batch = await reader.ReadBatchAsync(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd", false);
+            Batch batch = await reader.ReadBatchAsync(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd");
 
             Assert.Single(reader.ValidationErrors);
             Assert.Equal(
@@ -129,7 +134,7 @@ namespace OpexSDK.Tests
 
             var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            await reader.ReadBatchAsync(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", false);
+            await reader.ReadBatchAsync(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd");
 
             Assert.Equal(2, reader.ValidationErrors.Count);
             Assert.Equal("The 'UnexpectedAttribute' attribute is not declared.", reader.ValidationErrors[0].Message);
@@ -147,9 +152,9 @@ namespace OpexSDK.Tests
 
             _fileSystemFixture.FileSystem.AddFile(@"C:\Opex\test.oxi", new MockFileData(batchFileContents));
 
-            var reader = new BatchReader( _fileSystemFixture.FileSystem);
+            var reader = new BatchReader(_fileSystemFixture.FileSystem);
 
-            await reader.ReadBatchAsync(@"C:\Opex\test.oxi", null, false);
+            await reader.ReadBatchAsync(@"C:\Opex\test.oxi");
 
             Assert.Empty(reader.ValidationErrors);
         }

@@ -25,13 +25,13 @@ namespace OpexSDK.Models
 
         private readonly IList<AuditTrail> _auditTrails;
         private readonly IList<Barcode> _barcodes;
+        private readonly IList<CustomData> _customDatas;
         private readonly IList<Image> _images;
         private readonly IList<MarkDetect> _markDetects;
         private readonly IList<Micr> _micrs;
         private readonly IList<Ocr> _ocrs;
         private readonly IList<ReferenceId> _referenceIds;
         private readonly IList<Tag> _tags;
-        private readonly IList<CustomData> _customDatas;
 
         /// <summary>
         ///     A 1-based number that records each and every item’s place in the batch at scan time. If an item is rescanned, the
