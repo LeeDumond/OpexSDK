@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions.TestingHelpers;
+﻿using System;
+using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using System.Xml.Schema;
 using OpexSDK.Models;
@@ -42,12 +43,9 @@ namespace OpexSDK.Tests
             var reader = new BatchReader(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd", true,
                 _fileSystemFixture.FileSystem);
 
-            Batch ReadBatch()
-            {
-                return reader.ReadBatch();
-            }
+            void Action() => reader.ReadBatch();
 
-            Assert.Throws<XmlSchemaException>(ReadBatch);
+            Assert.Throws<XmlSchemaException>(Action);
         }
 
         [Fact]
@@ -84,12 +82,9 @@ namespace OpexSDK.Tests
             var reader = new BatchReader(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", true,
                 _fileSystemFixture.FileSystem);
 
-            Batch ReadBatch()
-            {
-                return reader.ReadBatch();
-            }
+            void Action() => reader.ReadBatch();
 
-            Assert.Throws<XmlSchemaValidationException>(ReadBatch);
+            Assert.Throws<XmlSchemaValidationException>(Action);
         }
 
         [Fact]
