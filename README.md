@@ -42,6 +42,8 @@ If you provide a schema definition file to validate against, an exception will b
 - If `throwOnValidationError` is `false`, these exceptions will be stored in the `BatchReader.ValidationErrors` collection, but they will *not* be thrown, which allows the read process to continue uninterrupted. In this case, once a batch is read you should inspect `ValidationErrors` to see if any of the exceptions logged there are important to you.
 - If `throwOnValidationError` is `true`, the exception is thrown (which of course causes the read process to fail).
 
+The validation itself is a two-step process. First, the schema itself is checked for validity. If the schema itself is not valid, the errors are treated as outlined above, and no further validation takes place. Once the schema passes validation, the contents of the batch information file is validated against it, again with any errors found treated as previously described.
+
 ## How Attributes are Mapped to Properties
 In most cases, if an attribute is defined as a string in the schema, it is mapped to a property of type `string`. The same holds for integers (which are mapped to `int`), floating point values (`float`), date/time strings (`DateTime`) and so on. 
 
