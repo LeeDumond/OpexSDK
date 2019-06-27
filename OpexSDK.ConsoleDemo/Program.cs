@@ -158,7 +158,7 @@ namespace OpexSDK.ConsoleDemo
                 Console.WriteLine($"{errorCount} validation {(errorCount == 1 ? "error" : "errors")} found:");
 
                 var counter = 1;
-                foreach (ValidationEventArgs error in reader.ValidationErrors)
+                foreach (XmlSchemaException error in reader.ValidationErrors)
                 {
                     Console.WriteLine($"\t{counter}. {error.Message}");
                     counter++;

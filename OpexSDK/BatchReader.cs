@@ -29,11 +29,11 @@ namespace OpexSDK
         internal BatchReader(IFileSystem fileSystem)
         {
             _fileSystem = fileSystem;
-            _validationErrors = new List<ValidationEventArgs>();
+            _validationErrors = new List<XmlSchemaException>();
         }
 
         private readonly IFileSystem _fileSystem;
-        private readonly IList<ValidationEventArgs> _validationErrors;
+        private readonly IList<XmlSchemaException> _validationErrors;
         private bool _throwOnValidationError;
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace OpexSDK
         ///     supplied but in itself is not valid, those errors will be contained in this collection, though data validation will
         ///     not be performed.
         /// </summary>
-        public ReadOnlyCollection<ValidationEventArgs> ValidationErrors =>
-            new ReadOnlyCollection<ValidationEventArgs>(_validationErrors);
+        public ReadOnlyCollection<XmlSchemaException> ValidationErrors =>
+            new ReadOnlyCollection<XmlSchemaException>(_validationErrors);
 
         /// <summary>
         ///     A method that asynchronously reads the data contained in the batch information file supplied to the reader. If
@@ -565,7 +565,7 @@ namespace OpexSDK
                 throw e.Exception;
             }
 
-            _validationErrors.Add(e);
+            _validationErrors.Add(e.Exception);
         }
     }
 }

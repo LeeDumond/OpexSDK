@@ -45,7 +45,7 @@ namespace OpexSDK.Tests
                 reader.ReadBatch(@"C:\Opex\test1.oxi", @"C:\Opex\badSchema.xsd", true);
             }
 
-            Assert.Throws<XmlSchemaException>(Action);
+            Assert.ThrowsAny<XmlSchemaException>(Action);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace OpexSDK.Tests
                 reader.ReadBatch(@"C:\Opex\test.oxi", @"C:\Opex\schema.xsd", true);
             }
 
-            Assert.Throws<XmlSchemaValidationException>(Action);
+            Assert.ThrowsAny<XmlSchemaException>(Action);
         }
 
         [Fact]
