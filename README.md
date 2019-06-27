@@ -38,7 +38,7 @@ The read algorithm is forgiving in that, by default, anomalies such as unexpecte
 - The properties corresponding to missing attributes will be set to `null`. 
 - Properties corresponding to attributes with empty values will be set to `null` (or `string.Empty` in the case of string properties).
 
-If you provide a schema definition file to validate against, an exception will be raised for each schema validation error that is encountered. 
+If you provide a schema definition file to validate against, an exception of type `XmlSchemaException` (or one of its derived types) will be raised for each schema validation error that is encountered. 
 - If `throwOnValidationError` is `false`, these exceptions will be stored in the `BatchReader.ValidationErrors` collection, but they will *not* be thrown, which allows the read process to continue uninterrupted. In this case, once a batch is read you should inspect `ValidationErrors` to see if any of the exceptions logged there are important to you.
 - If `throwOnValidationError` is `true`, the exception is thrown (which of course causes the read process to fail).
 
