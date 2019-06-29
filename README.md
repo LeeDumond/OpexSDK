@@ -1,4 +1,7 @@
 # OpexSDK
+
+[![Nuget](https://img.shields.io/nuget/v/OpexSDK.svg)](https://www.nuget.org/packages/OpexSDK/)
+
 A simple .NET Standard 2.0 library that facilitates the reading of data contained in batch information files conforming to the OPEX XML Interface format (\*.oxi) created by OPEX scanning devices, along with optional validation against an XSD schema definition file supplied by the user at runtime.
 
 **DISCLAIMER: This software is not authored, supported, maintained, or endorsed by OPEX Corporation or any of its employees. OPEX Corporation assumes no liability from the use of this software.**
