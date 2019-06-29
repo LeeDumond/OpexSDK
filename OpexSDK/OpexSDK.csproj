@@ -6,10 +6,23 @@
     <Authors>Lee Dumond</Authors>
     <AssemblyVersion>1.0.0.164</AssemblyVersion>
     <FileVersion>1.0.0.164</FileVersion>
+    <Description>A simple .NET Standard 2.0 library to read (and optionally validate) batch information metadata created by OPEX scanning devices.</Description>
+    <Copyright>2019 Lee Dumond</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/LeeDumond/OpexSDK</PackageProjectUrl>
+    <PackageTags>opex, scanner</PackageTags>
+    <PackageReleaseNotes>DISCLAIMER: This software is not authored, supported, maintained, or endorsed by OPEX Corporation or any of its employees. OPEX Corporation assumes no liability from the use of this software.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.IO.Abstractions" Version="6.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
